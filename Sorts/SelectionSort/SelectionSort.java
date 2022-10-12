@@ -20,7 +20,8 @@ public class SelectionSort {
             min = i;
             for(int j = i + 1; j < last; j++) 
                 if(arr[j] < arr[min]) min = j;
-            swap(arr, i, min);
+                
+            if(i != min) swap(arr, i, min);
         }
     }
 
@@ -36,7 +37,8 @@ public class SelectionSort {
             min = i;
             for(int j = i + 1; j < last; j++)
                 if(arr[j] < arr[min]) min = j;
-            swap(arr, i, min);
+            
+            if(i != min) swap(arr, i, min);
         }
     }
 

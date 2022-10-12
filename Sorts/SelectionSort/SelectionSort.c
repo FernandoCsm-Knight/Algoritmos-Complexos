@@ -33,7 +33,8 @@ void selectionSorti(int arr[], int first, int last) {
         min = i;
         for(int j = i + 1; j < last; j++) 
             if(arr[j] < arr[min]) min = j;
-        swapi(arr, i, min);
+        
+        if(i != min) swapi(arr, i, min);
     }
 }
 
@@ -49,7 +50,8 @@ void selectionSortd(double arr[], int first, int last) {
         min = i;
         for(int j = i + 1; j < last; j++) 
             if(arr[j] < arr[min]) min = j;
-        swapd(arr, i, min);
+        
+        if(i != min) swapd(arr, i, min);
     }
 }
 
