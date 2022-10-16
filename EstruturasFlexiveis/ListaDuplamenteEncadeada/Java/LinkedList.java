@@ -1,4 +1,4 @@
-package EstruturasFlexiveis.ListaSimplesmenteEncadeada.Java;
+package EstruturasFlexiveis.ListaDuplamenteEncadeada.Java;
 
 public class LinkedList<T> {
     //=====PRIVATE=====//
@@ -14,40 +14,54 @@ public class LinkedList<T> {
 
     @SuppressWarnings("unchecked")
     public LinkedList(T... arr) {
-        for(T obj : arr)
+        for(T obj : arr) 
             add(obj);
     }
 
     //=====GET=====//
-    //-----PRIVATE-----//
-    private Node<T> getFirst() {
-        return this.first;
-    }
-
-    private Node<T> getLast() {
-        return this.last;
-    }
-
     private Node<T> node(int idx) {
-        if(idx < 0 || idx > this.size()) throw new IndexOutOfBoundsException();
-
         Node<T> curr;
-        if(idx == this.size() - 1) curr = this.getLast();
-        else {
+
+        if(idx < this.size() / 2) {
             curr = this.getFirst();
-            int i = 0;  
+            int i = 0;
             while(i < idx) {
                 curr = curr.getNext();
                 i++;
             }
+        } else {
+            curr = this.getLast();
+            int i = this.size() - 1;
+            while(i > idx) {
+                curr = curr.getPrev();
+                i--;
+            }
         }
-        
+
         return curr;
     }
 
-    //-----PUBLIC-----//
+    public Node<T> getFirst() {
+        return this.first;
+    }
+
+    public Node<T> getLast() {
+        return this.last;
+    }
+
     public int size() {
         return this.length;
+    }
+
+
+
+    //=====SET=====//
+    public void setFirst(Node<T> first) {
+        this.first = first;
+    }
+
+    public void setLast(Node<T> last) {
+        this.last = last;
     }
 
     public void inc() {
@@ -57,25 +71,16 @@ public class LinkedList<T> {
     public void dec() {
         this.length--;
     }
- 
-    //=====SET=====//
-    private void setFirst(Node<T> first) {
-        this.first = first;
-    }
-
-    private void setLast(Node<T> last) {
-        this.last = last;
-    }
 
     //=====METODOS=====//
     public Boolean isEmpty() {
-        return this.size() == 0;
+        return this.length == 0;
     }
 
     //=====ADD=====//
     public void add(T obj) {
-        Node<T> node = new Node<>(obj);
-
+        Node<T> node = new Node<>(obj, null, this.getLast());
+        
         if(isEmpty()) {
             this.setFirst(node);
             this.setLast(node);
@@ -83,6 +88,7 @@ public class LinkedList<T> {
             this.getLast().setNext(node);
             this.setLast(node);
         }
+
         inc();
     }
 
@@ -90,11 +96,13 @@ public class LinkedList<T> {
         if(pos < 0 || pos > this.size()) throw new IndexOutOfBoundsException();
 
         if(pos == 0) insert(obj);
-        else if(pos == this.size()) add(obj); 
+        else if(pos == this.size()) add(obj);
         else {
-            Node<T> curr = node(pos - 1); 
-            curr.setNext(new Node<>(obj, curr.getNext()));
-            curr = null;
+            Node<T> curr = node(pos);
+            Node<T> node = new Node<>(obj, curr, curr.getPrev());
+            curr.getPrev().setNext(node);
+            curr.setPrev(node);
+            curr = node = null;
             inc();
         }
     }
@@ -102,27 +110,30 @@ public class LinkedList<T> {
     //=====INSERT=====//
     public void insert(T obj) {
         Node<T> node = new Node<>(obj, this.getFirst());
+
         if(isEmpty()) {
             this.setFirst(node);
             this.setLast(node);
-        } else this.setFirst(node);
-        node = null;
+        } else {
+            this.getFirst().setPrev(node);
+            this.setFirst(node);
+        }
+
         inc();
     }
 
     //=====POP=====//
     public T pop() {
         if(isEmpty()) throw new EmptyLinkedListException();
-
         T content = this.getLast().getObj();
+
         if(this.getFirst() == this.getLast()) {
             this.setFirst(null);
             this.setLast(null);
         } else {
-            Node<T> curr = this.node(this.size() - 2);
-            curr.setNext(null);
-            this.setLast(curr);
-            curr = null;
+            this.setLast(this.getLast().getPrev());
+            this.getLast().getNext().setPrev(null);
+            this.getLast().setNext(null);
         }
 
         dec();
@@ -132,20 +143,21 @@ public class LinkedList<T> {
     public T pop(int pos) {
         if(pos < 0 || pos >= this.size()) throw new IndexOutOfBoundsException();
         if(isEmpty()) throw new EmptyLinkedListException();
-
+        
         T content;
         if(pos == 0) content = del();
         else if(pos == this.size() - 1) content = pop();
         else {
-            Node<T> curr = this.node(pos - 1);
-            Node<T> rem = curr.getNext();
-            content = rem.getObj();
-            curr.setNext(rem.getNext());
-            rem.setNext(null);
-            curr = rem = null;
+            Node<T> curr = node(pos);
+            content = curr.getObj();
+            curr.getPrev().setNext(curr.getNext());
+            curr.getNext().setPrev(curr.getPrev());
+            curr.setNext(null);
+            curr.setPrev(null);
+            curr = null;
             dec();
         }
-
+        
         return content;
     }
 
@@ -153,7 +165,7 @@ public class LinkedList<T> {
         if(isEmpty()) throw new EmptyLinkedListException();
 
         T content = null;
-        int pos = this.search(obj);
+        int pos = search(obj);
         if(pos >= 0) content = pop(pos);
         return content;
     }
@@ -161,16 +173,15 @@ public class LinkedList<T> {
     //=====DEL=====//
     public T del() {
         if(isEmpty()) throw new EmptyLinkedListException();
-
         T content = this.getFirst().getObj();
+
         if(this.getFirst() == this.getLast()) {
             this.setFirst(null);
             this.setLast(null);
         } else {
-            Node<T> curr = this.getFirst();
-            this.setFirst(curr.getNext());
-            curr.setNext(null);
-            curr = null;
+            this.setFirst(this.getFirst().getNext());
+            this.getFirst().getPrev().setNext(null);
+            this.getFirst().setPrev(null);
         }
 
         dec();
@@ -179,10 +190,9 @@ public class LinkedList<T> {
 
     //=====SEARCH=====//
     public int search(T obj) {
-        if(isEmpty()) throw new EmptyLinkedListException();
-
-        int i = 0;
         Node<T> curr = this.getFirst();
+        int i = 0;
+
         if(obj == null) {
             while(curr != null) {
                 if(curr.getObj() == null) {
@@ -199,7 +209,7 @@ public class LinkedList<T> {
                     return i;
                 }
                 curr = curr.getNext();
-                i++;
+                i++;                
             }
         }
 
@@ -209,10 +219,9 @@ public class LinkedList<T> {
 
     //=====CONTAINS=====//
     public Boolean contains(T obj) {
-        if(isEmpty()) throw new EmptyLinkedListException();
-
-        Boolean value = false;
         Node<T> curr = this.getFirst();
+        Boolean value = false;
+
         if(obj == null) {
             while(!value && curr != null) {
                 value = curr.getObj() == null;
@@ -232,33 +241,19 @@ public class LinkedList<T> {
     //=====REPLACE=====//
     public void replace(T obj, T rep) {
         if(isEmpty()) throw new EmptyLinkedListException();
-        int pos = this.search(obj);
+        int pos = search(obj);
 
-        if(pos >= 0) this.node(pos).setObj(rep);
+        if(pos >= 0) node(pos).setObj(rep);
     }
 
     public void replaceAll(T obj, T rep) {
         if(isEmpty()) throw new EmptyLinkedListException();
-        int pos = this.search(obj);
+        int pos = search(obj);
 
         while(pos >= 0) {
-            this.node(pos).setObj(rep);
-            pos = this.search(obj);
+            node(pos).setObj(rep);
+            pos = search(obj);
         }
     }
 
-    //=====OVERRIDE=====//
-    @Override 
-    public String toString() {
-        StringBuffer sb = new StringBuffer("[");
-        Node<T> curr = this.getFirst();
-        while(curr != null) {
-            sb.append(curr.getObj());
-            if(curr.getNext() != null) sb.append(", ");
-            curr = curr.getNext();
-        }
-        curr = null;
-        sb.append("]");
-        return sb.toString();
-    }
 }
