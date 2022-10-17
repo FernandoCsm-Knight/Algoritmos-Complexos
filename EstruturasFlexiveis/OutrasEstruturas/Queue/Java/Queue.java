@@ -27,20 +27,6 @@ public class Queue<T> {
         return this.last;
     }
 
-    private T get(int idx) {
-        if(idx < 0 || idx >= this.size()) throw new IndexOutOfBoundsException();
-
-        Node<T> curr = this.getFirst();
-        int i = 0;
-        while(i < idx) {
-            curr = curr.getNext();
-            i++;
-        }
-        T content = curr.getObj();
-        curr = null;
-        return content;
-    }
-
     public int size() {
         return this.length;
     }
@@ -123,10 +109,13 @@ public class Queue<T> {
     @Override
     public String toString() {
         StringBuffer sb = new StringBuffer("[");
-        for(int i = 0; i < this.size(); i++) {
-            sb.append(this.get(i));
-            if(i != this.size() - 1) sb.append(", ");
+        Node<T> curr = this.getFirst();
+        while(curr != null) {
+            sb.append(curr.getObj());
+            if(curr.getNext() != null) sb.append(", ");
+            curr = curr.getNext();
         }
+        curr = null;
         return sb.append("]").toString();
     }
 
