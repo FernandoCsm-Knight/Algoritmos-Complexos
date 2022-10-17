@@ -7,7 +7,7 @@ public class Node<T> {
 
     //=====CONSTRUCTORS=====//
     public Node() {
-        this(null, null);
+        this(null);
     }
 
     public Node(T obj) {
