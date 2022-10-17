@@ -256,4 +256,35 @@ public class LinkedList<T> {
         }
     }
 
+    //=====INVERT=====//
+    public void invert() {
+        Node<T> i = this.getFirst();
+        Node<T> j = this.getLast();
+        while(i != j && i.getNext() != j) {
+            T aux = i.getObj();
+            i.setObj(j.getObj());
+            j.setObj(aux);
+
+            i = i.getNext();
+            j = j.getPrev();
+        }
+
+        i = j = null;
+    }
+
+    //=====OVERRIDE=====//
+    @Override 
+    public String toString() {
+        StringBuffer sb = new StringBuffer("[");
+        Node<T> curr = this.getFirst();
+        while(curr != null) {
+            sb.append(curr.getObj());
+            if(curr.getNext() != null) sb.append(", ");
+            curr = curr.getNext();
+        }
+        curr = null;
+        sb.append("]");
+        return sb.toString();
+    }
+
 }
