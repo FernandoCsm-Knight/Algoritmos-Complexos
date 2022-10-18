@@ -17,6 +17,6 @@ typedef struct node {
 //=====PROTOTYPES=====//
 Node* constructNode();
 Node* constructNodeObj(int obj);
-void clear(Node* node);
+void clearNode(Node* node);
 
 #endif
