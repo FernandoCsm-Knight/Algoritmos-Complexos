@@ -20,7 +20,7 @@ void destruct(LinkedList* const list) {
     free(list);
 }
 
-//=====SEARCH=====//
+//=====SEARCH_NODE=====//
 Node* node(LinkedList* const list, int idx) {
     Node* curr = list->first;
     
@@ -45,13 +45,13 @@ void add(LinkedList* const list, int obj) {
     list->len++;
 }
 
-void addp(LinkedList* const list, int obj, int pos) {
-    if(pos >= 0 && pos <= list->len) {
-        if(pos == 0) insert(list, obj);
-        else if(pos == list->len) add(list, obj);
+void addp(LinkedList* const list, int obj, int idx) {
+    if(idx >= 0 && idx <= list->len) {
+        if(idx == 0) insert(list, obj);
+        else if(idx == list->len) add(list, obj);
         else {
             Node* cell = constructNodeObj(obj);
-            Node* curr = node(list, pos - 1);
+            Node* curr = node(list, idx - 1);
             cell->next = curr->next;
             curr->next = cell;
             list->len++;
@@ -92,14 +92,14 @@ int pop(LinkedList* const list) {
     return i;
 }
 
-int popp(LinkedList* const list, int pos) {
+int popp(LinkedList* const list, int idx) {
     int i = 0;
 
-    if(list->len != 0 && pos >= 0 && pos <= list->len - 1) {
-        if(pos == 0) i = del(list);
-        else if(pos == list->len - 1) i = pop(list);
+    if(list->len != 0 && idx >= 0 && idx <= list->len - 1) {
+        if(idx == 0) i = del(list);
+        else if(idx == list->len - 1) i = pop(list);
         else {
-            Node* curr = node(list, pos - 1);
+            Node* curr = node(list, idx - 1);
             Node* rem = curr->next;
             i = rem->obj;
 
@@ -115,11 +115,10 @@ int popp(LinkedList* const list, int pos) {
 }
 
 int popObj(LinkedList* const list, int obj) {
-    int pos = search(list, obj);
+    int idx = search(list, obj);
 
-    int i = 0;
-    if(pos >= 0) i = popp(list, pos);
-    return i;
+    if(idx >= 0) popp(list, idx);
+    return (idx >= 0) ? obj : idx;
 }
 
 //=====DEL=====//
@@ -159,7 +158,7 @@ int search(LinkedList* const list, int obj) {
 }
 
 //=====PRINT=====//
-void print(LinkedList* list) {
+void print(LinkedList* const list) {
     Node* curr = list->first;
     printf("[");
     while(curr != NULL) {
