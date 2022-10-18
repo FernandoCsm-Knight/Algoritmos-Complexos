@@ -1,0 +1,22 @@
+
+#ifndef NODE_LINK
+#define NODE_LINK
+
+//=====INCLUDES=====//
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+
+//=====STRUCT=====//
+typedef struct node {
+    int obj;
+    struct node* next;
+    struct node* prev;
+} Node;
+
+//=====PROTOTYPES=====//
+Node* constructNode();
+Node* constructNodeObj(int obj);
+void clear(Node* node);
+
+#endif
