@@ -15,6 +15,6 @@ Node* constructNodeObj(int obj) {
 }
 
 void clearNode(Node* node) {
-    node->next = NULL;
     node->obj = 0;
+    node->next = NULL;
 }

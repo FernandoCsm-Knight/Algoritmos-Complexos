@@ -8,6 +8,7 @@
 #include <stdbool.h>
 #include "Node.h"
 
+//=====STRUCT=====//
 typedef struct {
     Node* first;
     Node* last;
