@@ -21,6 +21,7 @@ void destruct(LinkedList* const list);
 void clear(LinkedList* const list);
 
 Node* node(LinkedList* const list, int idx);
+int get(LinkedList* const list, int idx);
 int search(LinkedList* const list, int obj);
 
 void add(LinkedList* const list, int obj);

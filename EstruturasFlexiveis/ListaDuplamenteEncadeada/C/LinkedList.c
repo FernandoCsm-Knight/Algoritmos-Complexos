@@ -42,6 +42,10 @@ Node* node(LinkedList* const list, int idx) {
     return cell;
 }
 
+int get(LinkedList* const list, int idx) {
+    return node(list, idx)->obj;
+}
+
 //=====ADD=====//
 void add(LinkedList* const list, int obj) {
     Node* cell = constructNodeObj(obj);

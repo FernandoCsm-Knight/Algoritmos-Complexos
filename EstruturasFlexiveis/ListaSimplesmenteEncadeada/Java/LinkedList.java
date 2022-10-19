@@ -57,6 +57,10 @@ public class LinkedList<T> {
     public void dec() {
         this.length--;
     }
+
+    public T get(int idx) {
+        return this.node(idx).getObj();
+    }
  
     //=====SET=====//
     private void setFirst(Node<T> first) {
