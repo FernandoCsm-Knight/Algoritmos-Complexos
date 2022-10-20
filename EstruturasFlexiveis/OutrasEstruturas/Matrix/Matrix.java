@@ -102,8 +102,8 @@ public class Matrix<T> {
         if(!isSquare()) throw new IndexOutOfBoundsException();
         
         StringBuffer sb = new StringBuffer("[");
-        for(int i = this.getLine() - 1; i >= 0; i--) {
-            sb.append(this.get(i, i));
+        for(int i = 0; i < this.getLine(); i++) {
+            sb.append(this.get(i, this.getColumn() - i - 1));
             if(i != 0) sb.append(", ");
         }
         return sb.append("]").toString();
