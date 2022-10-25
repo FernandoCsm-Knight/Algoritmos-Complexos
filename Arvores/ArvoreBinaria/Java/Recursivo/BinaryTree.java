@@ -1,4 +1,4 @@
-package Arvores.ArvoreBinaria.Java;
+package Arvores.ArvoreBinaria.Java.Recursivo;
 
 public class BinaryTree {
     //======PRIVATE=====//
@@ -46,6 +46,31 @@ public class BinaryTree {
         else if(obj < node.getObj()) node.setLeft(add(obj, node.getLeft()));
         else throw new InsertionError();
         return node;
+    }
+
+    //-----POP-----//
+    public int pop(int obj) {
+        Node node = pop(obj, this.getRoot());
+        this.setRoot(node);
+        return node.getObj();
+    }
+
+    private Node pop(int obj, Node node) {
+        if(node == null) throw new IndexOutOfBoundsException();
+        else if(node.getObj() > obj) node.setRight(pop(obj, node.getRight()));
+        else if(node.getObj() < obj) node.setLeft(pop(obj, node.getLeft()));
+        else if(node.getRight() == null) node = node.getLeft();
+        else if(node.getLeft() == null) node = node.getRight();
+        else node.setLeft(bigger(node, node.getLeft()));
+        return node;
+    }
+
+    private Node bigger(Node node1, Node node2) {
+        if(node2.getRight() == null) {
+            node1.setObj(node2.getObj());
+            node2 = node2.getLeft();
+        } else node2.setRight(bigger(node1, node2.getRight()));
+        return node2;
     }
 
     //-----INORDER-----//
@@ -138,6 +163,18 @@ public class BinaryTree {
         if(node.getRight() == null) h = node.getObj();
         else h = max(node.getRight());
         return h;
+    }
+
+    //-----MIN-----//
+    public int min() {
+        return min(this.getRoot());
+    }
+
+    public int min(Node node) {
+        int l;
+        if(node.getLeft() == null) l = node.getObj();
+        else l = min(node.getLeft());
+        return l;
     }
 
     //-----SUM-----//

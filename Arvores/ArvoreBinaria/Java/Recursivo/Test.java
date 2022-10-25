@@ -1,4 +1,4 @@
-package Arvores.ArvoreBinaria.Java;
+package Arvores.ArvoreBinaria.Java.Recursivo;
 
 public class Test {
     
