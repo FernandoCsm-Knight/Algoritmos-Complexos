@@ -1,49 +1,49 @@
 package Arvores.ArvoreBinaria.Java.Recursivo;
 
-public class Node {
+public class Node<T extends Comparable<T>> {
     //=====PRIVATE=====//
-    private Node left;
-    private Node right;
-    private int obj;
+    private Node<T> left;
+    private Node<T> right;
+    private T obj;
 
     //=====CONSTRUCTOR=====//
     public Node() {
         this(null);
     }
 
-    public Node(Integer obj) {
+    public Node(T obj) {
         this(obj, null, null);
     }
 
-    public Node(Integer obj, Node left, Node right) {
+    public Node(T obj, Node<T> left, Node<T> right) {
         this.setObj(obj);
         this.setLeft(left);
         this.setRight(right);
     }
     
     //=====GET=====// 
-    public Node getLeft() {
+    public Node<T> getLeft() {
         return left;
     }
 
-    public Node getRight() {
+    public Node<T> getRight() {
         return right;
     }
 
-    public Integer getObj() {
+    public T getObj() {
         return obj;
     }
     
     //=====SET=====//
-    public void setLeft(Node left) {
+    public void setLeft(Node<T> left) {
         this.left = left;
     }
 
-    public void setRight(Node right) {
+    public void setRight(Node<T> right) {
         this.right = right;
     }
 
-    public void setObj(Integer obj) {
+    public void setObj(T obj) {
         this.obj = obj;
     }
 

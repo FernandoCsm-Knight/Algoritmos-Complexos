@@ -1,27 +1,27 @@
 package Arvores.ArvoreBinaria.Java.Recursivo;
 
-public class BinaryTree {
+public class BinaryTree<T extends Comparable<T>> {
     //======PRIVATE=====//
-    private Node root;
+    private Node<T> root;
     private int length = 0;
-    private int i = 0;
-    
+    private int index = 0;
+
     //=====CONSTRUCTOR=====//
     public BinaryTree() {
         this.setRoot(null);
     }
 
     //=====GET=====//
-    public Node getRoot() {
+    private Node<T> getRoot() {
         return this.root;
     }
 
-    public Integer get() {
-        return this.root.getObj();
+    public int size() {
+        return this.length;
     }
 
     //=====SET=====//
-    private void setRoot(Node root) {
+    private void setRoot(Node<T> root) {
         this.root = root;
     }
 
@@ -29,211 +29,151 @@ public class BinaryTree {
         this.length++;
     }
 
-    public int size() {
-        return this.length;
-    }
-    
     //=====METODOS=====//
     //-----ADD-----//
-    public void add(Integer obj) {
-        this.setRoot(add(obj, this.getRoot()));
-        inc();
+    public void add(T obj) {
+        this.add(obj, this.getRoot());
     }
 
-    private Node add(Integer obj, Node node) {
-        if(node == null) node = new Node(obj);
-        else if(obj > node.getObj()) node.setRight(add(obj, node.getRight()));
-        else if(obj < node.getObj()) node.setLeft(add(obj, node.getLeft()));
-        else throw new InsertionError();
-        return node;
-    }
-
-    //-----POP-----//
-    public int pop(int obj) {
-        Node node = pop(obj, this.getRoot());
-        this.setRoot(node);
-        return node.getObj();
-    }
-
-    private Node pop(int obj, Node node) {
-        if(node == null) throw new IndexOutOfBoundsException();
-        else if(node.getObj() > obj) node.setRight(pop(obj, node.getRight()));
-        else if(node.getObj() < obj) node.setLeft(pop(obj, node.getLeft()));
-        else if(node.getRight() == null) node = node.getLeft();
-        else if(node.getLeft() == null) node = node.getRight();
-        else node.setLeft(bigger(node, node.getLeft()));
-        return node;
-    }
-
-    private Node bigger(Node node1, Node node2) {
-        if(node2.getRight() == null) {
-            node1.setObj(node2.getObj());
-            node2 = node2.getLeft();
-        } else node2.setRight(bigger(node1, node2.getRight()));
-        return node2;
+    private void add(T obj, Node<T> node) {
+        if(node == null) {
+            this.setRoot(new Node<T>(obj));
+            this.inc();
+        } else if(obj.compareTo(node.getObj()) < 0) {
+            if(node.getLeft() == null) {
+                node.setLeft(new Node<T>(obj));
+                this.inc();
+            } else add(obj, node.getLeft());
+        } else if(obj.compareTo(node.getObj()) > 0) {
+            if(node.getRight() == null) {
+                node.setRight(new Node<T>(obj));
+                this.inc();
+            } else add(obj, node.getRight());
+        } else throw new InsertionError();
     }
 
     //-----INORDER-----//
     public void inOrder() {
-        i = 0;
+        index = 0;
         System.out.print("[");
-        inOrder(this.getRoot());
+        this.inOrder(this.getRoot());
         System.out.println("]");
     }
 
-    public void inOrder(Node node) {
+    private void inOrder(Node<T> node) {
         if(node != null) {
             inOrder(node.getLeft());
-            i++;
-            System.out.print(node.getObj() + (i != this.size() ? ", " : ""));
+            index++;
+            System.out.print(node.getObj() + (index != this.size() ? ", " : ""));
             inOrder(node.getRight());
         }
     }
 
     //-----PREORDER-----//
     public void preOrder() {
-        i = 0;
+        index = 0;
         System.out.print("[");
-        preOrder(this.getRoot());
+        this.preOrder(this.getRoot());
         System.out.println("]");
     }
 
-    public void preOrder(Node node) {
+    private void preOrder(Node<T> node) {
         if(node != null) {
-            i++;
-            System.out.print(node.getObj() + (i != this.size() ? ", " : ""));
+            index++;
+            System.out.print(node.getObj() + (index != this.size() ? ", " : ""));
             preOrder(node.getLeft());
             preOrder(node.getRight());
         }
     }
 
-    //-----POSORDER-----//
+    //-----PREORDER-----//
     public void posOrder() {
-        i = 0;
+        index = 0;
         System.out.print("[");
-        posOrder(this.getRoot());
+        this.posOrder(this.getRoot());
         System.out.println("]");
     }
 
-    public void posOrder(Node node) {
+    private void posOrder(Node<T> node) {
         if(node != null) {
             posOrder(node.getLeft());
             posOrder(node.getRight());
-            i++;
-            System.out.print(node.getObj() + (node.getObj() + (i != this.size() ? ", " : "")));
+            index++;
+            System.out.print(node.getObj() + (index != this.size() ? ", " : ""));
         }
     }
 
     //-----SEARCH-----//
-    public Boolean search(Integer obj) {
-        return search(obj, root);
+    public Boolean search(T obj) {
+        return this.search(obj, this.getRoot()).getObj() == obj;
     }
 
-    private Boolean search(Integer obj, Node node) {
-        Boolean value;
-        if(node == null) value = false;
-        else if(obj == node.getObj()) value = true;
-        else if(obj > node.getObj()) value = search(obj, node.getRight());
-        else value = search(obj, node.getLeft());
-        return value;
-    }
-
-    //-----GETALTURAA-----//
-    public int getHeigth() {
-        return getHeigth(this.getRoot(), 0);
-    }
-
-    private int getHeigth(Node node, int h) {
-        if(node == null) h--;
-        else {
-            int left = getHeigth(node.getLeft(), h + 1);
-            int right = getHeigth(node.getRight(), h + 1);
-            h = (left > right) ? left : right;
-        }   
-        return h;
+    private Node<T> search(T obj, Node<T> node) {
+        if(node != null && node.getObj() != obj) {
+            if(obj.compareTo(node.getObj()) < 0) node = search(obj, node.getLeft());
+            else node = search(obj, node.getRight());
+        } 
+        
+        return node;
     }
 
     //-----MAX-----//
-    public int max() {
-        return max(this.getRoot());
+    public T max() {
+        return this.max(this.getRoot());
     }
 
-    private int max(Node node) {
-        int h;
-        if(node.getRight() == null) h = node.getObj();
-        else h = max(node.getRight());
-        return h;
+    private T max(Node<T> node) {
+        T content = null;
+        if(node != null) {
+            if(node.getRight() != null) content = max(node.getRight());
+            else content = node.getObj();
+        }
+        return content;
     }
 
     //-----MIN-----//
-    public int min() {
-        return min(this.getRoot());
+    public T min() {
+        return this.min(this.getRoot());
     }
 
-    public int min(Node node) {
-        int l;
-        if(node.getLeft() == null) l = node.getObj();
-        else l = min(node.getLeft());
-        return l;
-    }
-
-    //-----SUM-----//
-    public long sum() {
-        return sum(this.getRoot());
-    }
-
-    private long sum(Node node) {
-        long s = 0;
+    private T min(Node<T> node) {
+        T content = null;
         if(node != null) {
-            s += sum(node.getLeft());
-            s += sum(node.getRight());
-            s += node.getObj();
-        } 
-        return s;
-    }
-
-    //-----EVEN-----//
-    public int even() {
-        return even(this.getRoot(), 0);
-    }
-
-    private int even(Node node, int num) {
-        if(node != null) {
-            if(node.getObj() % 2 == 0) num++;
-            num = even(node.getLeft(), num);
-            num = even(node.getRight(), num);
+            if(node.getLeft() != null) content = min(node.getLeft());
+            else content = node.getObj();
         }
-        return num;
+        return content;
     }
 
-    //-----ODD-----//
-    public int odd() {
-        return odd(this.getRoot(), 0);
+    //-----getHeigth-----//
+    public int getHeight() {
+        return this.getHeight(this.getRoot(), 0);
     }
 
-    private int odd(Node node, int num) {
-        if(node != null) {
-            if(node.getObj() % 2 != 0) num++;
-            num = odd(node.getLeft(), num);
-            num = odd(node.getRight(), num);
+    private int getHeight(Node<T> node, int h) {
+        if(node == null) h--;
+        else {
+            int left = getHeight(node.getLeft(), h + 1);
+            int right = getHeight(node.getRight(), h + 1);
+            h = (left > right) ? left : right;
         }
-        return num;
+        return h;
     }
 
     //=====OVERRIDE=====//
-    @Override 
-    public boolean equals(Object obj) {
-        return (obj.getClass() == this.getClass()) ? compare(((BinaryTree)obj).getRoot(), this.getRoot()) : false;        
+    @Override
+    @SuppressWarnings("unchecked")
+    public boolean equals(Object o) {
+        return (this.getClass() == o.getClass()) ? compare(((BinaryTree<T>)o).getRoot(), this.getRoot()) : false;
     }
 
-    private Boolean compare(Node node1, Node node2) {
-        Boolean value = false;
-        if(node1 != null && node2 != null) {
+    private boolean compare(Node<T> node1, Node<T> node2) {
+        Boolean value = node1 != null && node2 != null;
+        if(value) {
             value = node1.getObj() == node2.getObj();
             value &= compare(node1.getLeft(), node2.getLeft());
             value &= compare(node1.getRight(), node2.getRight());
         } else if(node1 == null && node2 == null) value = true;
-        else value = false;
         return value;
     }
 
