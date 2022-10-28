@@ -36,20 +36,22 @@ public class BinaryTree<T extends Comparable<T>> {
     }
 
     private void add(T obj, Node<T> node) {
-        if(node == null) {
-            this.setRoot(new Node<T>(obj));
+        if(node != null) {
+            if(obj.compareTo(node.getLetra()) < 0) {
+                if(node.getLeft() == null) {
+                    node.setLeft(new LinkedList<T>(obj));
+                    this.inc();
+                } else add(obj, node.getLeft());
+            } else if(obj.compareTo(node.getLetra()) > 0) {
+                if(node.getRight() == null) {
+                    node.setRight(new LinkedList<T>(obj)); 
+                    this.inc();
+                } else add(obj, node.getRight());
+            } else throw new InsertionError();
+        } else {
+            this.setRoot(new LinkedList<T>(obj));
             this.inc();
-        } else if(obj.compareTo(node.getObj()) < 0) {
-            if(node.getLeft() == null) {
-                node.setLeft(new Node<T>(obj));
-                this.inc();
-            } else add(obj, node.getLeft());
-        } else if(obj.compareTo(node.getObj()) > 0) {
-            if(node.getRight() == null) {
-                node.setRight(new Node<T>(obj));
-                this.inc();
-            } else add(obj, node.getRight());
-        } else throw new InsertionError();
+        }
     }
 
     //-----INORDER-----//
