@@ -4,7 +4,6 @@ public class Test {
     
     public static void main(String[] args) {
         BinaryTree<Integer> tree = new BinaryTree<>();
-        BinaryTree<Integer> aaaaaaaaaa = new BinaryTree<>();
         tree.add(5);
         tree.add(3);
         tree.add(7);
