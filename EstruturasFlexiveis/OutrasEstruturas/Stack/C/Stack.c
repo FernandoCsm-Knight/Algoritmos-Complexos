@@ -25,6 +25,8 @@ void destruct(Stack* const stack) {
         node = node->next;
         free(prev);
     }
+
+    free(stack);
 }
 
 //=====METODOS=====//
