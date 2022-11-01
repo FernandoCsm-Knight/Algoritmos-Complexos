@@ -4,8 +4,6 @@ import EstruturasFlexiveis.OutrasEstruturas.Stack.Java.Stack;
 
 import java.util.HashSet;
 
-import EstruturasFlexiveis.OutrasEstruturas.Queue.Java.Queue;
-
 public class BinaryTree<T extends Comparable<T>> {
     //=====PRIVATE=====//
     private Node<T> root;
