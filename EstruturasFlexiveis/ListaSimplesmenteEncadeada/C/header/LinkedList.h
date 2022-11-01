@@ -23,6 +23,8 @@ void clear(LinkedList* const list);
 Node* node(LinkedList* const list, int idx);
 int get(LinkedList* const list, int idx);
 int search(LinkedList* const list, int obj);
+bool contains(LinkedList* const list, int obj);
+void invert(LinkedList* const list);
 
 void add(LinkedList* const list, int obj);
 void addp(LinkedList* const list, int obj, int idx);

@@ -161,6 +161,33 @@ int search(LinkedList* const list, int obj) {
     return -1;
 }
 
+//=====CONTAINS=====//
+bool contains(LinkedList* const list, int obj) {
+    Node* curr = list->first;
+    bool value = false;
+
+    while(!value && curr != NULL) {
+        value = curr->obj == obj;
+        curr = curr->next;
+    }
+
+    return value;
+}
+
+//=====INVERT=====//
+void invert(LinkedList* const list) {
+    Node* anchor = list->last;
+    Node* curr = NULL;
+
+    while(list->first != anchor) {
+        curr = list->first->next;
+        list->first->next = anchor->next;
+        anchor->next = list->first;
+        list->first = curr;
+        if(list->last == anchor) list->last = anchor->next;
+    }
+}
+
 //=====PRINT=====//
 void print(LinkedList* const list) {
     Node* curr = list->first;
