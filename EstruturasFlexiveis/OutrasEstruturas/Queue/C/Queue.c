@@ -54,11 +54,15 @@ int dequeue(Queue* const queue) {
     
     if(!isEmptyq(queue)) {
         node = queue->first;
-        if(queue->first == queue->last) queue->first = queue->last = NULL;
-        else {
+        if(queue->first == queue->last) {
+            free(queue->first);
+            queue->first = queue->last = NULL;
+        } else {
             Node* rem = queue->first;
             queue->first = queue->first->next;
-            rem = rem->next = NULL;
+            rem->next = NULL;
+            free(rem);
+            rem = NULL;
         }
     }
 
