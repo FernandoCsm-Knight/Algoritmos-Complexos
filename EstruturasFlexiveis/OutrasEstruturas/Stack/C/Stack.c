@@ -75,7 +75,21 @@ int peek(const Stack* const stack) {
     return (!isEmptys(stack)) ? stack->first->obj : 0;
 }
 
-//-----PRINT-----//
+//-----INVERT-----//
+void invert(Stack* const stack) {
+    Node* anchor = stack->last;
+    Node* curr = NULL;
+
+    while(stack->first != anchor) {
+        curr = stack->first->next;
+        stack->first->next = anchor->next;
+        anchor->next = stack->first;
+        stack->first = curr;
+        if(stack->last == anchor) stack->last = anchor->next;
+    }
+}
+
+//=====PRINT=====//
 void prints(const Stack* const stack) {
     printf("[");
 

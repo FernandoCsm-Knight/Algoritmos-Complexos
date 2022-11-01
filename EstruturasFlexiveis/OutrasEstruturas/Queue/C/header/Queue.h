@@ -24,6 +24,7 @@ bool isEmptyq(const Queue* const queue);
 void enqueue(Queue* const queue, int obj);
 int dequeue(Queue* const queue);
 int peek(const Queue* const queue);
+void invert(Queue* const queue);
 
 void printq(const Queue* const queue);
 

@@ -76,6 +76,20 @@ int peek(const Queue* const queue) {
     return (!isEmptyq(queue)) ? queue->first->obj : 0;
 }
 
+//-----INVERT-----//
+void invert(Queue* const queue) {
+    Node* anchor = queue->last;
+    Node* curr = NULL;
+
+    while(queue->first != anchor) {
+        curr = queue->first->next;
+        queue->first->next = anchor->next;
+        anchor->next = queue->first;
+        queue->first = curr;
+        if(queue->last == anchor) queue->last = anchor->next;
+    }
+}
+
 //=====PRINT=====//
 void printq(const Queue* const queue) {
     printf("[");

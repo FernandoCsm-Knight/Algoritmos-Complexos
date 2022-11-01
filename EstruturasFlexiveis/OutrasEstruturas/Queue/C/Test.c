@@ -9,6 +9,8 @@ int main(int argc, char** args) {
     enqueue(queue, 4);
     dequeue(queue);
     printq(queue);
+    invert(queue);
+    printq(queue);
     printf("%i\n", queue->len);
     destruct(queue);
     return 0;

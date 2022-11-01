@@ -24,6 +24,7 @@ bool isEmptys(const Stack* const stack);
 void push(Stack* const stack, int obj);
 int pop(Stack* const stack);
 int peek(const Stack* const stack);
+void invert(Stack* const stack);
 
 void prints(const Stack* const stack);
 
