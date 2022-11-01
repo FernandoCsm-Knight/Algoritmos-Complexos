@@ -89,8 +89,8 @@ int pop(LinkedList* const list) {
             list->last = node(list, list->len - 2);
             free(list->last->next);
             list->last->next = NULL;
-            list->len--;
         }
+        list->len--;
     }
 
     return i;
@@ -141,9 +141,10 @@ int del(LinkedList* const list) {
             curr->next = NULL;
             free(curr);
         }
+        
+        list->len--;
     }
 
-    list->len--;
     return i;
 }
 

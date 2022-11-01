@@ -50,24 +50,25 @@ void enqueue(Queue* const queue, int obj) {
 
 //-----DEQUEUE-----//
 int dequeue(Queue* const queue) {
-    Node* node = NULL;
+    int obj = 0;
     
     if(!isEmptyq(queue)) {
-        node = queue->first;
+        obj = queue->first->obj;
+
         if(queue->first == queue->last) {
             free(queue->first);
             queue->first = queue->last = NULL;
         } else {
             Node* rem = queue->first;
-            queue->first = queue->first->next;
+            queue->first = rem->next;
             rem->next = NULL;
             free(rem);
-            rem = NULL;
         }
+
+        queue->len--;
     }
 
-    queue->len--;
-    return node->obj;
+    return obj;
 }
 
 //-----PEEK-----//
