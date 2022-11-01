@@ -8,7 +8,8 @@ int main(int argc, char** args) {
     enqueue(queue, 3);
     enqueue(queue, 4);
     dequeue(queue);
-    print(queue);
+    printq(queue);
     printf("%i\n", queue->len);
     destruct(queue);
+    return 0;
 }

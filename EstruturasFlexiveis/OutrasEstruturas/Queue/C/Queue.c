@@ -31,7 +31,7 @@ void destruct(Queue* const queue) {
 
 //=====METODOS=====//
 //-----ISEMPTY-----//
-bool isEmpty(const Queue* const queue) {
+bool isEmptyq(const Queue* const queue) {
     return queue->len == 0;
 }
 
@@ -39,7 +39,7 @@ bool isEmpty(const Queue* const queue) {
 void enqueue(Queue* const queue, int obj) {
     Node* node = constructNodeObj(obj);
 
-    if(isEmpty(queue)) queue->first = queue->last = node;
+    if(isEmptyq(queue)) queue->first = queue->last = node;
     else {
         queue->last->next = node;
         queue->last = node;
@@ -52,7 +52,7 @@ void enqueue(Queue* const queue, int obj) {
 int dequeue(Queue* const queue) {
     Node* node = NULL;
     
-    if(!isEmpty(queue)) {
+    if(!isEmptyq(queue)) {
         node = queue->first;
         if(queue->first == queue->last) queue->first = queue->last = NULL;
         else {
@@ -68,11 +68,11 @@ int dequeue(Queue* const queue) {
 
 //-----PEEK-----//
 int peek(const Queue* const queue) {
-    return queue->first->obj;
+    return (!isEmptyq(queue)) ? queue->first->obj : 0;
 }
 
 //=====PRINT=====//
-void print(const Queue* const queue) {
+void printq(const Queue* const queue) {
     printf("[");
 
     Node* curr = queue->first;

@@ -20,11 +20,11 @@ Queue* construct();
 void clear(Queue* const queue);
 void destruct(Queue* const queue);
 
-bool isEmpty(const Queue* const queue);
+bool isEmptyq(const Queue* const queue);
 void enqueue(Queue* const queue, int obj);
 int dequeue(Queue* const queue);
 int peek(const Queue* const queue);
 
-void print(const Queue* const queue);
+void printq(const Queue* const queue);
 
 #endif
