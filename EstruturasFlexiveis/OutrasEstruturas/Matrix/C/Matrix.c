@@ -74,6 +74,20 @@ void setObj(Matrix* const mat, int obj, int lin, int col) {
     getNode(mat, lin, col)->obj = obj;
 }
 
+//-----SUM-----//
+Matrix* sum(Matrix* const mat1, Matrix* const mat2) {
+    Matrix* m = NULL; 
+    
+    if(mat1 != NULL && mat2 != NULL && mat1->line == mat2->line && mat1->column == mat2->column) {
+        m = construct(mat1->line, mat1->column);
+        for(int i = 0; i < mat1->line; i++) 
+            for(int j = 0; j < mat1->column; j++) 
+                setObj(m, get(mat1, i, j) + get(mat2, i, j), i, j);
+    }
+
+    return m;
+}
+
 //=====PRINT=====//
 void printm(Matrix* const mat) {
     Node* getNode(Matrix* const, int, int);

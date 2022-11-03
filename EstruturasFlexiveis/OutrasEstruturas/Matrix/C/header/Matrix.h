@@ -21,6 +21,9 @@ void destruct(Matrix* const mat);
 
 int get(Matrix* const mat, int i, int j);
 void setObj(Matrix* const mat, int obj, int lin, int col);
+
+Matrix* sum(Matrix* const mat1, Matrix* const mat2);
+
 void printm(Matrix* const mat);
 
 #endif
