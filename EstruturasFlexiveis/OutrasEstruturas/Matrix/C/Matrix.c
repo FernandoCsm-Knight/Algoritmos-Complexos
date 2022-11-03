@@ -88,6 +88,26 @@ Matrix* sum(Matrix* const mat1, Matrix* const mat2) {
     return m;
 }
 
+//-----MULT-----//
+Matrix* mult(Matrix* const mat1, Matrix* const mat2) {
+    Matrix* m = NULL;
+
+    if(mat1 != NULL && mat2 != NULL && mat1->column == mat2->line) {
+        int sum = 0;
+        m = construct(mat1->line, mat2->column);
+        for(int i = 0; i < mat1->line; i++) {
+            for(int j = 0; j < mat2->column; j++) {
+                sum = 0;
+                for(int k = 0; k < mat1->column; k++)
+                    sum += get(mat1, i, k) * get(mat2, k, j);
+                setObj(m, sum, i, j);
+            }
+        }
+    }
+
+    return m;
+}
+
 //=====PRINT=====//
 void printm(Matrix* const mat) {
     Node* getNode(Matrix* const, int, int);
