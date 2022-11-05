@@ -52,6 +52,17 @@ public class BinaryTree<T extends Comparable<T>> {
         }
     }
 
+    //-----SEARCH-----//
+    public Boolean search(T obj) {
+        Node<T> curr = this.getRoot();
+        while(curr != null && obj.compareTo(curr.getObj()) != 0) {
+            if(obj.compareTo(curr.getObj()) < 0) curr = curr.getLeft();
+            else curr = curr.getRight();
+        }
+
+        return curr != null;
+    }
+
     //-----INORDER-----//
     public void inOrder() {
         Node<T> curr = this.getRoot();

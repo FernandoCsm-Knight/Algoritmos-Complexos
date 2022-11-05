@@ -14,5 +14,6 @@ public class Test {
 
         tree.inOrder();
         tree.posOrder();
+        System.out.println(tree.search(80));
     }
 }
