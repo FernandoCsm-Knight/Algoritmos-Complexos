@@ -1,9 +1,9 @@
 package Arvores.ArvoreAVL;
 
-import java.util.Stack;
+import EstruturasFlexiveis.OutrasEstruturas.Stack.Java.Stack;
 
 public class Tree<T extends Comparable<T>> {
-   //=====PRIVATE=====//
+   //=====RPIVATE=====//
    private Node<T> root;
 
    //=====CONSTRUCTOR=====//
@@ -21,79 +21,115 @@ public class Tree<T extends Comparable<T>> {
       this.root = root;
    }
 
-   //=====METODOS=====//
-   //-----BOOLEAN-----//
+   //=====METHODS=====//
+   //=====BOOLEAN=====//
    public Boolean isEmpty() {
       return this.getRoot() == null;
    }
+   
+   //=====HEIGHT=====//
+   public int height() {
+      return this.height(this.getRoot(), 0);
+   }
 
-   //-----ADD-----//
+   private int height(Node<T> node, int h) {
+      if(node != null) {
+         int left = this.height(node.getLeft(), h + 1);
+         int right = this.height(node.getRight(), h + 1);
+         h = (left > right) ? left : right;
+      } else h--;
+      return h;
+   }
+
+   //=====ADD=====//
    public void add(T obj) {
       if(obj == null) throw new InsertionError();
-      Node<T> curr = this.getRoot();
-      Node<T> parent = null;
-
-      while(curr != null) {
-         parent = curr;
-         if(obj.compareTo(curr.getObj()) < 0) curr = curr.getLeft();
-         else if(obj.compareTo(curr.getObj()) > 0) curr = curr.getRight();
-         else throw new InsertionError();
-      }
-      
-      if(parent != null) {
-         if(obj.compareTo(parent.getObj()) < 0) parent.setLeft(new Node<T>(obj));
-         else parent.setRight(new Node<T>(obj));
-      } else this.setRoot(new Node<T>(obj));
-      curr = parent = null;
+      this.setRoot(this.add(obj, this.getRoot()));
    }
 
-   //-----POP-----//
+   private Node<T> add(T obj, Node<T> node) {
+      if(node == null) node = new Node<T>(obj);
+      else if(obj.compareTo(node.getObj()) < 0) node.setLeft(this.add(obj, node.getLeft()));
+      else if(obj.compareTo(node.getObj()) > 0) node.setRight(this.add(obj, node.getRight()));
+      else throw new InsertionError();
+
+      return this.balance(node);
+   }
+
+   //=====POP=====//
    public void pop(T obj) {
-      if(this.isEmpty() || obj == null) throw new InsertionError();
-
-      Node<T> curr = this.getRoot(), prev = null;
-      while(curr != null && obj.compareTo(curr.getObj()) != 0) {
-         prev = curr;
-         if(obj.compareTo(curr.getObj()) < 0) curr = curr.getLeft();
-         else curr = curr.getRight();
-      }
-
-      if(prev == null) {
-      
-         if(curr.getLeft() == null) this.setRoot(curr.getRight());
-         else if(curr.getRight() == null) this.setRoot(curr.getLeft());
-         else remMaxRight(curr);
-      
-      } else {
-
-         if(curr.getLeft() == null) {
-
-            if(prev.getRight() == curr) prev.setRight(curr.getRight());
-            else prev.setLeft(curr.getRight());
-            
-         } else if(curr.getRight() == null) {
-   
-            if(prev.getRight() == curr) prev.setRight(curr.getLeft());
-            else prev.setLeft(curr.getLeft());
-            
-         } else remMaxRight(curr);
-
-      } 
-   }
-   
-   private void remMaxRight(Node<T> removed) {
-      Node<T> curr = removed.getLeft(), prev = null;
-      while(curr.getRight() != null) {
-         prev = curr;
-         curr = curr.getRight();
-      }
-
-      removed.setObj(curr.getObj());
-      if(prev != null) prev.setRight(curr.getLeft());
-      else removed.setLeft(curr.getLeft());
+      if(obj == null || this.isEmpty()) throw new RemoveError();
+      this.pop(obj, this.getRoot());
    }
 
-   //-----MIN-----// 
+   private Node<T> pop(T obj, Node<T> node) {
+      if(node == null) throw new RemoveError();
+      
+      if(obj.compareTo(node.getObj()) < 0) node.setLeft(this.pop(obj, node.getLeft()));
+      else if(obj.compareTo(node.getObj()) > 0) node.setRight(this.pop(obj, node.getRight()));
+      else if(node.getLeft() == null) node = node.getRight();
+      else if(node.getRight() == null) node = node.getLeft();
+      else node.setLeft(this.remMaxLeft(node, node.getLeft()));
+      
+      return this.balance(node);
+   }
+
+   private Node<T> remMaxLeft(Node<T> removed, Node<T> curr) {
+      if(curr.getRight() == null) {
+         removed.setObj(curr.getObj());
+         curr = curr.getLeft();
+      } else curr.setRight(curr.getRight());
+      return curr;
+   }
+
+   //=====BALANCE=====//
+   public Node<T> balance(Node<T> node) {
+      int BF = this.balanceFactor(node);
+      Node<T> child;
+
+      if(node != null && Math.abs(Node.factor(node)) <= 1) {
+         Node.updateFactor(node);
+      } else if(BF > 1) {
+         child = node.getRight();
+         if(this.balanceFactor(child) == -1) node.setRight(this.rotateRight(child));
+         node = this.rotateLeft(node);
+      } else if(BF < -1) {
+         child = node.getLeft();
+         if(this.balanceFactor(child) == 1) node.setLeft(this.rotateLeft(child));
+         node = this.rotateRight(node);
+      }
+
+      return node;
+   }
+
+   private int balanceFactor(Node<T> node) {
+      return node == null ? 0 : Node.factor(node.getRight()) - Node.factor(node.getLeft());
+   }
+
+   //=====ROTATION=====//
+   public Node<T> rotateRight(Node<T> node) {
+      Node<T> child = node.getLeft();
+
+      node.setLeft(child.getRight());
+      child.setRight(node);
+
+      Node.updateFactor(child);
+      Node.updateFactor(node);
+      return child;
+   }
+
+   public Node<T> rotateLeft(Node<T> node) {
+      Node<T> child = node.getRight();
+
+      node.setRight(child.getLeft());
+      child.setLeft(node);
+
+      Node.updateFactor(child);
+      Node.updateFactor(node);
+      return child;
+   }
+
+   //=====MIN=====// 
    public T min() {
       return min(this.getRoot()).getObj();
    }
@@ -105,7 +141,7 @@ public class Tree<T extends Comparable<T>> {
       return node;
    }
 
-   //-----MAX-----//
+   //=====MAX=====//
    public T max() {
       return max(this.getRoot()).getObj();
    }
@@ -117,7 +153,7 @@ public class Tree<T extends Comparable<T>> {
       return node;
    }
 
-   //-----SEARCH-----//
+   //=====SEARCH=====//
    public Boolean contains(T obj) {
       return search(obj) != null;
    }
@@ -132,14 +168,14 @@ public class Tree<T extends Comparable<T>> {
       return curr;
    }
 
-   //-----INORDER-----//
+   //=====INORDER=====//
    public void inOrder() {
       Stack<Node<T>> stack = new Stack<>();
       
       Node<T> curr = this.getRoot();
       while(curr != null || !stack.isEmpty()) {
          if(curr != null) {
-            stack.add(curr);
+            stack.push(curr);
             curr = curr.getLeft();
          } else {
             curr = stack.pop();
@@ -150,7 +186,7 @@ public class Tree<T extends Comparable<T>> {
       System.out.println();
    }
 
-   //-----PREORDER-----//
+   //=====PREORDER=====//
    public void preOrder() {
       Stack<Node<T>> stack = new Stack<>();
 
@@ -158,7 +194,7 @@ public class Tree<T extends Comparable<T>> {
       while(curr != null || !stack.isEmpty()) {
          if(curr != null) {
             System.out.print(curr.getObj() + " ");
-            stack.add(curr);
+            stack.push(curr);
             curr = curr.getLeft();
          } else {
             curr = stack.pop();
@@ -169,37 +205,18 @@ public class Tree<T extends Comparable<T>> {
       System.out.println();
    }
 
-   //-----POSORDER-----//
+   //=====POSORDER=====//
    public void posOrder() {
-      Stack<Node<T>> stack = new Stack<>();
-
-      Node<T> curr = this.getRoot();
-      if(curr == null) return;
-      Node<T> prev = null;
-      stack.add(curr);
-      while(!stack.isEmpty()) {
-         curr = stack.peek();
-
-         if(prev == null || prev.getLeft() == curr || prev.getRight() == curr) {
-            if(curr.getLeft() != null) stack.add(curr.getLeft());
-            else if(curr.getRight() != null) stack.add(curr.getRight());
-            else {
-               stack.pop(); 
-               System.out.print(curr.getObj() + " ");
-            } 
-         } else if(curr.getLeft() == prev) {
-            if(curr.getRight() != null) stack.add(curr.getRight());
-            else {
-               stack.pop();
-               System.out.print(curr.getObj() + " ");
-            }
-         } else if(curr.getRight() == prev) {
-            stack.pop();
-            System.out.print(curr.getObj() + " ");
-         }
-
-         prev = curr;
-      }
+      this.posOrder(this.getRoot());
       System.out.println();
    }
-} 
+
+   private void posOrder(Node<T> node) {
+      if(node != null) {
+         this.posOrder(node.getLeft());
+         System.out.print(node.getObj() + " ");
+         this.posOrder(node.getRight());
+      }
+   }
+
+}
