@@ -5,71 +5,136 @@ import EstruturasFlexiveis.OutrasEstruturas.Stack.Java.Stack;
 import java.util.HashSet;
 
 public class BinaryTree<T extends Comparable<T>> {
-    //=====PRIVATE=====//
+    // =====PRIVATE=====//
     private Node<T> root;
 
-    //=====CONSTRUCTOR=====//
+    // =====CONSTRUCTOR=====//
     public BinaryTree() {
         this.setRoot(null);
     }
 
-    //=====GET=====//
+    // =====GET=====//
     private Node<T> getRoot() {
         return this.root;
     }
 
-    //=====SET=====//
+    // =====SET=====//
     private void setRoot(Node<T> root) {
         this.root = root;
     }
 
-    //=====METODOS=====//
+    // =====METODOS=====//
     public Boolean isEmpty() {
         return this.getRoot() == null;
     }
 
-    //-----ADD-----//
+    // -----ADD-----//
     public void add(T obj) {
         Node<T> node = new Node<>(obj);
 
-        if(this.isEmpty()) this.setRoot(node);
+        if (this.isEmpty())
+            this.setRoot(node);
         else {
             Node<T> prev = null;
             Node<T> curr = this.getRoot();
 
-            while(curr != null) {
-                if(obj.compareTo(curr.getObj()) < 0) {
+            while (curr != null) {
+                if (obj.compareTo(curr.getObj()) < 0) {
                     prev = curr;
                     curr = curr.getLeft();
-                } else if(obj.compareTo(curr.getObj()) > 0) {
+                } else if (obj.compareTo(curr.getObj()) > 0) {
                     prev = curr;
                     curr = curr.getRight();
-                } else throw new InsertionError();
+                } else
+                    throw new InsertionError();
             }
 
-            if(obj.compareTo(prev.getObj()) < 0) prev.setLeft(node);
-            else prev.setRight(node);
+            if (obj.compareTo(prev.getObj()) < 0)
+                prev.setLeft(node);
+            else
+                prev.setRight(node);
         }
     }
 
-    //-----SEARCH-----//
+    // -----POP-----//
+    public void pop(T obj) {
+        if (this.isEmpty() || obj == null)
+            throw new InsertionError();
+
+        Node<T> curr = this.getRoot(), prev = null;
+        while (curr != null && obj.compareTo(curr.getObj()) != 0) {
+            prev = curr;
+            if (obj.compareTo(curr.getObj()) < 0)
+                curr = curr.getLeft();
+            else
+                curr = curr.getRight();
+        }
+
+        if (prev == null) {
+
+            if (curr.getLeft() == null)
+                this.setRoot(curr.getRight());
+            else if (curr.getRight() == null)
+                this.setRoot(curr.getLeft());
+            else
+                remMaxRight(curr);
+
+        } else {
+
+            if (curr.getLeft() == null) {
+
+                if (prev.getRight() == curr)
+                    prev.setRight(curr.getRight());
+                else
+                    prev.setLeft(curr.getRight());
+
+            } else if (curr.getRight() == null) {
+
+                if (prev.getRight() == curr)
+                    prev.setRight(curr.getLeft());
+                else
+                    prev.setLeft(curr.getLeft());
+
+            } else
+                remMaxRight(curr);
+
+        }
+    }
+
+    private void remMaxRight(Node<T> removed) {
+        Node<T> curr = removed.getLeft(), prev = null;
+        while (curr.getRight() != null) {
+            prev = curr;
+            curr = curr.getRight();
+        }
+
+        removed.setObj(curr.getObj());
+        if (prev != null)
+            prev.setRight(curr.getLeft());
+        else
+            removed.setLeft(curr.getLeft());
+    }
+
+    // -----SEARCH-----//
     public Boolean search(T obj) {
         Node<T> curr = this.getRoot();
-        while(curr != null && obj.compareTo(curr.getObj()) != 0) {
-            if(obj.compareTo(curr.getObj()) < 0) curr = curr.getLeft();
-            else curr = curr.getRight();
+        while (curr != null && obj.compareTo(curr.getObj()) != 0) {
+            if (obj.compareTo(curr.getObj()) < 0)
+                curr = curr.getLeft();
+            else
+                curr = curr.getRight();
         }
 
         return curr != null;
     }
 
-    //-----INORDER-----//
+    // -----INORDER-----//
     public void inOrder() {
         Node<T> curr = this.getRoot();
 
-        Stack<Node<T>> stack = new Stack<>(); 
-        while(curr != null || !stack.isEmpty()) {
-            if(curr != null) {
+        Stack<Node<T>> stack = new Stack<>();
+        while (curr != null || !stack.isEmpty()) {
+            if (curr != null) {
                 stack.push(curr);
                 curr = curr.getLeft();
             } else {
@@ -81,13 +146,13 @@ public class BinaryTree<T extends Comparable<T>> {
         System.out.println();
     }
 
-    //-----PREORDER-----//
+    // -----PREORDER-----//
     public void preOrder() {
         Node<T> curr = this.getRoot();
 
         Stack<Node<T>> stack = new Stack<>();
-        while(curr != null || !stack.isEmpty()) {
-            if(curr != null) {
+        while (curr != null || !stack.isEmpty()) {
+            if (curr != null) {
                 stack.push(curr);
                 System.out.print(curr.getObj() + " ");
                 curr = curr.getLeft();
@@ -97,17 +162,17 @@ public class BinaryTree<T extends Comparable<T>> {
             }
         }
         System.out.println();
-    }   
+    }
 
-    //-----POSORDER-----//
+    // -----POSORDER-----//
     public void posOrder() {
         Node<T> curr = this.getRoot();
 
         HashSet<Node<T>> hash = new HashSet<>();
-        while(curr != null && !hash.contains(curr)) {
-            if(curr.getLeft() != null && !hash.contains(curr.getLeft())) {
+        while (curr != null && !hash.contains(curr)) {
+            if (curr.getLeft() != null && !hash.contains(curr.getLeft())) {
                 curr = curr.getLeft();
-            } else if(curr.getRight() != null && !hash.contains(curr.getRight())) {
+            } else if (curr.getRight() != null && !hash.contains(curr.getRight())) {
                 curr = curr.getRight();
             } else {
                 hash.add(curr);

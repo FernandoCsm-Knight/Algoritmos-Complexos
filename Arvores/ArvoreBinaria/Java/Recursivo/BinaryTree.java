@@ -29,6 +29,10 @@ public class BinaryTree<T extends Comparable<T>> {
         this.length++;
     }
 
+    private void dec() {
+        this.length--;
+    }
+
     //=====METODOS=====//
     //-----ADD-----//
     public void add(T obj) {
@@ -52,6 +56,32 @@ public class BinaryTree<T extends Comparable<T>> {
             this.setRoot(new Node<T>(obj));
             this.inc();
         }
+    }
+
+    //-----POP-----//
+    public void pop(T obj) {
+        this.setRoot(this.pop(obj, this.getRoot()));
+        this.dec();
+    }
+
+    private Node<T> pop(T obj, Node<T> node) {
+        if(node == null) throw new RemoveError();
+        else if(obj.compareTo(node.getObj()) < 0) node.setLeft(this.pop(obj, node.getLeft()));
+        else if(obj.compareTo(node.getObj()) > 0) node.setRight(this.pop(obj, node.getRight()));
+        else if(node.getLeft() == null) node = node.getRight();
+        else if(node.getRight() == null) node = node.getLeft();
+        else node.setLeft(this.remMaxLeft(node, node.getLeft()));
+
+        return node;
+    }
+
+    private Node<T> remMaxLeft(Node<T> removed, Node<T> curr) {
+        if(curr.getRight() == null) {
+            removed.setObj(curr.getObj());
+            curr = curr.getLeft();
+        } else curr.setRight(this.remMaxLeft(removed, curr.getRight()));
+
+        return curr;
     }
 
     //-----INORDER-----//
