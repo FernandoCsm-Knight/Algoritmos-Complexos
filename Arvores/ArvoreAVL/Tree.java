@@ -78,7 +78,7 @@ public class Tree<T extends Comparable<T>> {
       if(curr.getRight() == null) {
          removed.setObj(curr.getObj());
          curr = curr.getLeft();
-      } else curr.setRight(curr.getRight());
+      } else curr.setRight(this.remMaxLeft(removed, curr.getRight()));
       return curr;
    }
 
