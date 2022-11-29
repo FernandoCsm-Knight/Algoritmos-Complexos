@@ -22,6 +22,21 @@ public class Tree<T extends Comparable<T>> {
       return this.getRoot() == null;
    }
 
+   //=====HEIGHT=====//
+   public int height() {
+      return this.height(this.getRoot(), 0);
+   }
+
+   private int height(Node<T> node, int h) {
+      if(node != null) {
+         int left = this.height(node.getLeft(), h + 1);
+         int right = this.height(node.getRight(), h + 1);
+         h = left > right ? left : right;
+      } else h--;
+
+      return h;
+   }
+
    //=====ADD=====//
    public void add(T obj) {
       if(obj == null) throw new InsertionError();
@@ -126,6 +141,45 @@ public class Tree<T extends Comparable<T>> {
       node.setParent(child);
    }
 
+   //=====CONTAINS=====//
+   public Boolean contains(T obj) {
+      return (obj == null) ? false : this.search(obj) != null;
+   }
+
+   private Node<T> search(T obj) {
+      Node<T> curr = this.getRoot();
+      while(curr != null && obj.compareTo(curr.getObj()) != 0) {
+         if(obj.compareTo(curr.getObj()) < 0) curr = curr.getLeft();
+         else curr = curr.getRight();
+      }
+
+      return curr;
+   }
+
+   //=====MAX=====//
+   public T max() {
+      return this.max(this.getRoot()).getObj();
+   }
+
+   private Node<T> max(Node<T> node) {
+      if(node != null)
+         while(node.getRight() != null) 
+            node = node.getRight();
+      return node;
+   }
+
+   //=====MIN=====//
+   public T min() {
+      return this.min(this.getRoot()).getObj();
+   }
+
+   private Node<T> min(Node<T> node) {
+      if(node != null)
+         while(node.getLeft() != null)
+            node = node.getLeft();
+      return node;
+   }
+
    //=====INORDER=====//
    public void inOrder() {
       Stack<Node<T>> stack = new Stack<>();
@@ -137,7 +191,7 @@ public class Tree<T extends Comparable<T>> {
             curr = curr.getLeft();
          } else {
             curr = stack.pop();
-            System.out.println(curr.getObj() + " ");
+            System.out.print(curr.getObj() + " ");
             curr = curr.getRight();
          }
       }
