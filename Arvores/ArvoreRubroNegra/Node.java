@@ -80,4 +80,5 @@ public class Node<T> {
       if(node.getLeft() != null) node.getLeft().setColor(!color(node.getLeft()));
       if(node.getRight() != null) node.getRight().setColor(!color(node.getRight()));
    }
+
 }
