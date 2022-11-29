@@ -9,6 +9,9 @@ public class Test {
       tree.add(12);
       tree.add(13);
       tree.add(14);
+      tree.add(6);
+      tree.add(5);
+      tree.add(4);
 
       System.out.println(tree.getRoot().getObj() + " => " + tree.getRoot().getColor());
       System.out.println(tree.getRoot().getRight().getObj() + " => " + tree.getRoot().getRight().getColor());
