@@ -1,4 +1,4 @@
-package HashDiretaComReserva;
+package HashSet.HashDiretaComReserva;
 
 public class InsertionError extends RuntimeException {
    public InsertionError() {

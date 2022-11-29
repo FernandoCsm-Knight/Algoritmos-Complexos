@@ -1,9 +1,9 @@
-package HashIndireta;
+package HashSet.HashIndireta;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
+import EstruturasFlexiveis.ListaDuplamenteEncadeada.Java.LinkedList;
 
-public class HashSet<T> {
+public class HashSet<T extends Comparable<T>> {
    //=====PRIVATE=====//
    private ArrayList<LinkedList<T>> table;
    private int cap = 87;
@@ -12,16 +12,16 @@ public class HashSet<T> {
    public HashSet() {
       this.setTable(new ArrayList<LinkedList<T>>(this.cap));
 
-      for(int i = 0; i < this.table.size(); i++) 
-         this.table.set(i, new LinkedList<T>());
+      for(int i = 0; i < this.capacity(); i++) 
+         this.table.add(new LinkedList<T>());
    }
 
    public HashSet(int cap) {
       this.setCapacity(cap);
       this.setTable(new ArrayList<LinkedList<T>>(this.cap));
 
-      for(int i = 0; i < this.table.size(); i++) 
-         this.table.set(i, new LinkedList<T>());
+      for(int i = 0; i < this.capacity(); i++) 
+         this.table.add(new LinkedList<T>());
    }
 
    //=====GET=====//
@@ -44,13 +44,21 @@ public class HashSet<T> {
 
    //=====METHODS=====//
    //=====ADD=====//
-   public void add(T obj) {
-      table.get(obj.hashCode() % this.capacity()).add(obj);
+   public Boolean add(T obj) {
+      int index = obj.hashCode() % this.capacity();
+      Boolean value = obj != null && !table.get(index).contains(obj);
+      if(value) table.get(index).add(obj);
+      
+      return value;
    }
 
    //=====POP=====//
-   public void pop(T obj) {
-      table.get(obj.hashCode() % this.capacity()).remove(obj);
+   public Boolean pop(T obj) {
+      int index = obj.hashCode() % this.capacity();
+      Boolean value = obj != null && table.get(index).contains(obj);
+      if(value) table.get(index).pop(obj);
+
+      return value;
    }
 
    //=====CONTAINS=====//

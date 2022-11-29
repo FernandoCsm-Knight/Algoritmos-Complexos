@@ -1,4 +1,4 @@
-package HashDiretaComReserva;
+package HashSet.HashDiretaComReserva;
 
 import java.util.ArrayList;
 

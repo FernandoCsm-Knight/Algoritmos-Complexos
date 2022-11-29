@@ -1,4 +1,4 @@
-package HashDiretaComReserva;
+package HashSet.HashDiretaComReserva;
 
 public class RemoveError extends RuntimeException {
    public RemoveError() {
