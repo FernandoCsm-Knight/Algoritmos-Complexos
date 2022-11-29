@@ -274,6 +274,21 @@ public class LinkedList<T> {
         i = j = null;
     }
 
+    //=====CLEAR=====//
+    public void clear() {
+        Node<T> curr = this.getFirst();
+        this.setFirst(null);
+        this.setLast(null);
+        
+        Node<T> next;
+        while(curr != null) {
+            next = curr.getNext();
+            curr.setNext(null);
+            curr.setPrev(null);
+            curr = next;
+        } 
+    }
+
     //=====OVERRIDE=====//
     @Override 
     public String toString() {
