@@ -11,12 +11,18 @@ public class HashSet<T extends Comparable<T>> {
    //=====CONSTRUCTOR=====//
    public HashSet() {
       this.setTable(new ArrayList<T>(this.capacity() + this.getSup()));
+      
+      for(int i = 0; i < this.capacity() + this.getSup(); i++) 
+         this.table.add(null);
    }
 
    public HashSet(int cap) {
       this.setCapacity((int)Math.ceil(cap * 0.9));
       this.setSup((int)Math.ceil(cap * 0.1));
       this.setTable(new ArrayList<T>(this.capacity() + this.getSup()));
+
+      for(int i = 0; i < this.capacity() + this.getSup(); i++) 
+         this.table.add(null);
    }
 
    //=====GET=====//
@@ -26,6 +32,10 @@ public class HashSet<T extends Comparable<T>> {
 
    public int capacity() {
       return cap;
+   }
+
+   public ArrayList<T> getTable() {
+      return table;
    }
 
    //=====SET=====//

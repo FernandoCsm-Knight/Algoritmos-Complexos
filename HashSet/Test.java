@@ -1,6 +1,6 @@
 package HashSet;
 
-import HashSet.HashIndireta.HashSet;
+import HashSet.HashDiretaComReserva.HashSet;
 
 public class Test {
 
