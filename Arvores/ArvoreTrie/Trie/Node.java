@@ -2,12 +2,10 @@ package Arvores.ArvoreTrie.Trie;
 
 public class Node {
    //=====PRIVATE=====//
-   private Character c;
-   private Boolean isWord;
-   private final int size = 255;
-   
-   //=====PUBLIC=====//
+   private static final int size = 255;
    public Node[] children;
+   private Character c;
+   private Boolean isWord = false;
 
    //=====CONSTRUCTOR=====//
    public Node() {
@@ -15,22 +13,25 @@ public class Node {
    }
 
    public Node(Character c) {
-      this.setChar(c);
       this.setChildren(new Node[size]);
-      this.setWord(false);
+      this.setChar(c);
    }
 
    //=====GET=====//
-   public int size() {
+   public static int size() {
       return size;
    }
 
-   public Boolean isWord() {
-      return this.isWord;
+   public Node[] getChildren() {
+      return children;
    }
 
    public Character getChar() {
-      return  this.c == null ? '\0' : c;
+      return c == null ? '\0' : c;
+   }
+
+   public Boolean isWord() {
+      return isWord;
    }
 
    //=====SET=====//
@@ -38,11 +39,12 @@ public class Node {
       this.children = children;
    }
 
+   public void setChar(Character c) {
+      this.c = c;
+   }
+
    public void setWord(Boolean isWord) {
       this.isWord = isWord;
    }
 
-   public void setChar(Character c) {
-      this.c = c;
-   }
 }

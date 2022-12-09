@@ -6,82 +6,83 @@ public class Tree {
    //=====PRIVATE=====//
    private Node root;
 
-   //=====CONSTRUCT=====//
+   //=====CONSTRUCTOR=====//
    public Tree() {
       this.setRoot(new Node());
    }
 
+   public Tree(String... arr) {
+      this.setRoot(new Node());
+      for(String s : arr) add(s);
+   }
+
    //=====GET=====//
-   private Node getRoot() {
+   public Node getRoot() {
       return root;
    }
 
    //=====SET=====//
-   private void setRoot(Node root) {
+   public void setRoot(Node root) {
       this.root = root;
    }
-   
+
    //=====METHODS=====//
    //=====ADD=====//
-   public void add(String s) {
+   public Boolean add(String s) {
       Node curr = this.getRoot();
 
-      char c;
-      for(int i = 0; i < s.length(); i++) {
-         c = s.charAt(i);
-
+      for(char c : s.toCharArray()) {
          if(curr.children[c] == null) 
             curr.children[c] = new Node(c);
-         
+
          curr = curr.children[c];
       }
-      
+
       curr.setWord(true);
+      return true;
    }
 
    //=====POP=====//
-   public void pop(String s) {
+   public Boolean pop(String s) {
+      if(s == null || s.isEmpty()) 
+         throw new IllegalArgumentException();
+         
       Stack<Node> stack = new Stack<>();
 
       Node curr = this.getRoot();
-      for(int i = 0; i < s.length() && curr.children[s.charAt(i)] != null; i++) {
+      for(int i = 0; i < s.length() && curr != null; i++) {
          stack.push(curr);
          curr = curr.children[s.charAt(i)];
       } 
       
+      if(curr == null) return false;
+
       Boolean value = true;
-      for(int i = 0; value && i < curr.size(); i++) 
+      for(int i = 0; value && i < Node.size(); i++) 
          value = curr.children[i] == null;
       
       if(curr.isWord() && value) {
-         Node prox = curr;
-         curr = stack.pop();
+         Node next = null;
 
          while(curr != this.getRoot() && !curr.isWord()) {
-            prox = curr;
+            next = curr;
             curr = stack.pop();
-         } 
+         }
 
-         curr.children[prox.getChar()].setChar('\0');
-         curr.children[prox.getChar()] = null;
+         if(next != null) curr.children[next.getChar()] = null;
       } else curr.setWord(false);
+
+      return true;
    }
 
    //=====CONTAINS=====//
    public Boolean contains(String s) {
-      if(s == null || s.isEmpty()) 
-         throw new IllegalArgumentException();
-      
-      return this.search(s) != null;
-   }
-
-   private Node search(String s) {
       Node curr = this.getRoot();
 
-      for(int i = 0; i < s.length() && curr.children[s.charAt(i)] != null; i++) 
+      for(int i = 0; i < s.length() && curr != null; i++) 
          curr = curr.children[s.charAt(i)];
 
-      return curr.isWord() ? curr : null;
+      return curr == null ? false : curr.isWord();
    }
 
    //=====STARTS_WITH=====//
@@ -90,13 +91,10 @@ public class Tree {
    }
 
    private Node _startsWith(String s) {
-      Boolean value = s == null || s.isEmpty();
       Node curr = this.getRoot();
 
-      if(!value) {
-         for(int i = 0; i < s.length() && curr.children[s.charAt(i)] != null; i++) 
-            curr = curr.children[s.charAt(i)];
-      }
+      for(int i = 0; s != null && i < s.length() && curr != null; i++) 
+         curr = curr.children[s.charAt(i)];
 
       return curr;
    }
@@ -108,18 +106,14 @@ public class Tree {
 
    public void prefix(String s) {
       Node node = this._startsWith(s);
-      if(node != this.getRoot()) 
-         s = s.substring(0, s.length() - 1);
-
-      this.prefix(s, node);
+      if(node != null) this.prefix(s, node);
    }
 
    private void prefix(String s, Node node) {
-      if(node.isWord()) System.out.println(s + node.getChar());
+      if(node.isWord()) System.out.println(s);
 
-      for(int i = 0; i < node.size(); i++) {
-         if(node.children[i] != null) 
-            this.prefix(s + node.getChar(), node.children[i]);
-      }
-   }
+      for(int i = 0; i < Node.size(); i++) 
+         if(node.children[i] != null)
+            this.prefix(s + node.children[i].getChar(), node.children[i]);
+   }  
 }
