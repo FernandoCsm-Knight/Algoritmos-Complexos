@@ -18,14 +18,39 @@ public class BinaryTree<T extends Comparable<T>> {
         return this.root;
     }
 
+    public T get(T obj) {
+        return this.search(obj) == null ? null : this.search(obj).getObj();
+    } 
+
     // =====SET=====//
     private void setRoot(Node<T> root) {
         this.root = root;
     }
 
     // =====METODOS=====//
+    // -----BOOLEAN-----//
     public Boolean isEmpty() {
         return this.getRoot() == null;
+    }
+
+    // -----LENGTH-----//
+    public int size() {
+        Stack<Node<T>> stack = new Stack<>();
+        Node<T> curr = this.getRoot();
+
+        int len = 0;
+        while(curr != null || !stack.isEmpty()) {
+            if(curr != null) {
+                stack.push(curr);
+                curr = curr.getLeft();
+                len++;
+            } else {
+                curr = stack.pop();
+                curr = curr.getRight();
+            }
+        }
+
+        return len;
     }
 
     // -----ADD-----//
@@ -115,17 +140,42 @@ public class BinaryTree<T extends Comparable<T>> {
             removed.setLeft(curr.getLeft());
     }
 
-    // -----SEARCH-----//
-    public Boolean search(T obj) {
+    // -----CONTAINS-----//
+    public Boolean contains(T obj) {
+        return this.search(obj) != null;
+    }
+
+    private Node<T> search(T obj) {
         Node<T> curr = this.getRoot();
-        while (curr != null && obj.compareTo(curr.getObj()) != 0) {
-            if (obj.compareTo(curr.getObj()) < 0)
+        while(curr != null && obj.compareTo(curr.getObj()) != 0) {
+            if(obj.compareTo(curr.getObj()) < 0) 
                 curr = curr.getLeft();
-            else
+            else 
                 curr = curr.getRight();
         }
 
-        return curr != null;
+        return curr;
+    }
+
+    // -----TOARRAY-----//
+    public Object[] toArray() {
+        Stack<Node<T>> stack = new Stack<>();
+        Object[] arr = new Object[this.size()];
+
+        int i = 0;
+        Node<T> curr = this.getRoot();
+        while(curr != null || !stack.isEmpty()) {
+            if(curr != null) {
+                stack.push(curr);
+                curr = curr.getLeft();
+            } else {
+                curr = stack.pop();
+                arr[i++] = curr.getObj();
+                curr = curr.getRight();
+            }
+        }
+        
+        return arr;
     }
 
     // -----INORDER-----//

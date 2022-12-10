@@ -1,5 +1,7 @@
 package Arvores.ArvoreBinaria.Java.Interativo;
 
+import java.util.Arrays;
+
 public class Test {
     public static void main(String[] args) {
         BinaryTree<Integer> tree = new BinaryTree<>();
@@ -14,6 +16,8 @@ public class Test {
 
         tree.inOrder();
         tree.posOrder();
-        System.out.println(tree.search(80));
+        System.out.println(tree.contains(80));
+        System.out.println(tree.size());
+        System.out.println(Arrays.toString(tree.toArray()));
     }
 }
