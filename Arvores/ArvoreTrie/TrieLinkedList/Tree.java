@@ -27,6 +27,11 @@ public class Tree {
    }
 
    //=====METHODS=====//
+   //=====BOOLEAN=====//
+   public Boolean isEmpty() {
+      return this.getRoot().children.isEmpty();
+   }
+
    //=====ADD=====//
    public Boolean add(String s) {
       Node curr = this.getRoot();
@@ -58,9 +63,10 @@ public class Tree {
       if(curr == null) return false;
 
       if(curr.isWord() && curr.children.isEmpty()) {
-         Node next = null;
+         Node next = curr;
+         curr = stack.pop();
 
-         while(!curr.isWord() && !stack.isEmpty()) {
+         while(!curr.isWord() && curr.children.isEmpty() && !stack.isEmpty()) {
             next = curr;
             curr = stack.pop();
          }

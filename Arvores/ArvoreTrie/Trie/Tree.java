@@ -27,6 +27,18 @@ public class Tree {
    }
 
    //=====METHODS=====//
+   //=====BOOLEAN=====//
+   public Boolean isEmpty() {
+      return this._isEmpty(this.getRoot());
+   }
+
+   private Boolean _isEmpty(Node curr) {
+      Boolean value = true;
+      for(int i = 0; value && i < Node.size(); i++) 
+         value = curr.children[i] == null;
+      return value;
+   }
+
    //=====ADD=====//
    public Boolean add(String s) {
       Node curr = this.getRoot();
@@ -57,14 +69,11 @@ public class Tree {
       
       if(curr == null) return false;
 
-      Boolean value = true;
-      for(int i = 0; value && i < Node.size(); i++) 
-         value = curr.children[i] == null;
-      
-      if(curr.isWord() && value) {
-         Node next = null;
-
-         while(curr != this.getRoot() && !curr.isWord()) {
+      if(curr.isWord() && this._isEmpty(curr)) {
+         Node next = curr;
+         curr = stack.pop();
+         
+         while(!curr.isWord() && this._isEmpty(curr) && !stack.isEmpty()) {
             next = curr;
             curr = stack.pop();
          }

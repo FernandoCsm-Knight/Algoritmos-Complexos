@@ -13,17 +13,13 @@ public class Node {
    }
 
    public Node(Character c) {
-      this.setChildren(new Node[size]);
+      this.children = new Node[size];
       this.setChar(c);
    }
 
    //=====GET=====//
    public static int size() {
       return size;
-   }
-
-   public Node[] getChildren() {
-      return children;
    }
 
    public Character getChar() {
@@ -35,10 +31,6 @@ public class Node {
    }
 
    //=====SET=====//
-   public void setChildren(Node[] children) {
-      this.children = children;
-   }
-
    public void setChar(Character c) {
       this.c = c;
    }
