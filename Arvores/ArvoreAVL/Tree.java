@@ -87,7 +87,7 @@ public class Tree<T extends Comparable<T>> {
       int BF = this.balanceFactor(node);
       Node<T> child;
 
-      if(node != null && Math.abs(Node.factor(node)) <= 1) {
+      if(node != null && Math.abs(BF) <= 1) {
          Node.updateFactor(node);
       } else if(BF > 1) {
          child = node.getRight();
