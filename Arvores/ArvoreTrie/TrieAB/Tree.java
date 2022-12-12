@@ -1,5 +1,7 @@
 package Arvores.ArvoreTrie.TrieAB;
 
+import EstruturasFlexiveis.OutrasEstruturas.Stack.Java.Stack;
+
 public class Tree {
    //=====PRIVATE=====//
    private Node root;
@@ -47,18 +49,18 @@ public class Tree {
 
    //=====POP=====//
    public Boolean pop(String s) {
-        Stack<Cell> stack = new Stack<>();
-        Cell curr = this.getRoot();
+        Stack<Node> stack = new Stack<>();
+        Node curr = this.getRoot();
 
         for(int i = 0; i < s.length() && curr != null; i++) {
             stack.push(curr);
-            curr = curr.children.get(new Cell(s.charAt(i)));
+            curr = curr.children.get(new Node(s.charAt(i)));
         } 
 
         if(curr == null) return false;
 
         if(curr.isWord() && curr.children.isEmpty()) {
-            Cell next = curr;
+            Node next = curr;
             curr = stack.pop();
 
             while(!curr.isWord() && curr.children.isEmpty() && !stack.isEmpty()) {
