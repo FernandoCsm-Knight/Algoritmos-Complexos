@@ -1,4 +1,4 @@
-package EstruturasLineares.OutrasEstruturas.Fila;
+package EstruturasLineares.OutrasEstruturas.Queue;
 
 import EstruturasLineares.ArrayListJava.ArrayList;
 

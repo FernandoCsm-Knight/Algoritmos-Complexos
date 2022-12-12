@@ -1,4 +1,4 @@
-package EstruturasLineares.OutrasEstruturas.FilaCircular;
+package EstruturasLineares.OutrasEstruturas.CircularQueue;
 
 public class EmptyQueueException extends RuntimeException {
    public EmptyQueueException() {

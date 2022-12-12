@@ -1,4 +1,4 @@
-package EstruturasLineares.OutrasEstruturas.Pilha;
+package EstruturasLineares.OutrasEstruturas.Stack;
 
 import EstruturasLineares.ArrayListJava.ArrayList;
 
