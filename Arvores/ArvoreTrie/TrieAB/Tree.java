@@ -45,6 +45,33 @@ public class Tree {
       curr.setWord(true);
    }
 
+   //=====POP=====//
+   public Boolean pop(String s) {
+        Stack<Cell> stack = new Stack<>();
+        Cell curr = this.getRoot();
+
+        for(int i = 0; i < s.length() && curr != null; i++) {
+            stack.push(curr);
+            curr = curr.children.get(new Cell(s.charAt(i)));
+        } 
+
+        if(curr == null) return false;
+
+        if(curr.isWord() && curr.children.isEmpty()) {
+            Cell next = curr;
+            curr = stack.pop();
+
+            while(!curr.isWord() && curr.children.isEmpty() && !stack.isEmpty()) {
+                next = curr;
+                curr = stack.pop();
+            }
+
+            curr.children.pop(next);
+        } else curr.setWord(false);
+
+        return true;
+    }
+
    //=====CONTAINS=====//
    public Boolean contains(String s) {
       Node curr = this.getRoot();
