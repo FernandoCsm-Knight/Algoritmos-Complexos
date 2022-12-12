@@ -53,7 +53,9 @@ public class LinkedList<T> {
         return this.length;
     }
 
-
+    public T get(int idx) {
+        return this.node(idx).getObj();
+    }
 
     //=====SET=====//
     public void setFirst(Node<T> first) {
@@ -270,6 +272,21 @@ public class LinkedList<T> {
         }
 
         i = j = null;
+    }
+
+    //=====CLEAR=====//
+    public void clear() {
+        Node<T> curr = this.getFirst();
+        this.setFirst(null);
+        this.setLast(null);
+        
+        Node<T> next;
+        while(curr != null) {
+            next = curr.getNext();
+            curr.setNext(null);
+            curr.setPrev(null);
+            curr = next;
+        } 
     }
 
     //=====OVERRIDE=====//

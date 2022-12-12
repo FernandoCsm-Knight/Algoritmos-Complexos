@@ -10,7 +10,10 @@ int main(int argc, char** args) {
     add(list, 5);
     add(list, 6);
     popObj(list, 6);
+    print(list);
+    invert(list);
     printf("%i\n", search(list, 6));
+    printf("%i\n", contains(list, 4));
     print(list);
     destruct(list);
     return 0;

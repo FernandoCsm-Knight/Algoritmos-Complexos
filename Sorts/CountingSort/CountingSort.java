@@ -15,21 +15,30 @@ public class CountingSort {
     }
 
     public static void countingSort(int[] arr, int first, int last) {
-        int[] aux = new int[max(arr, first, last) + 1];
+        int[] out = new int[arr.length],
+              count = new int[max(arr, first, last) + 1];
 
         for(int i = first; i < last; i++) 
-            aux[arr[i]]++;
+            count[arr[i]]++;
         
-        for(int i = 0, k = first; i < aux.length; i++)
-            for(int j = aux[i]; j > 0; j--)
-                arr[k++] = i;
+        for(int i = 0; i < count.length - 1; i++) 
+            count[i + 1] += count[i];
+
+        for(int i = last - 1; i >= first; i--) {
+            out[count[arr[i]] - 1] = arr[i];
+            count[arr[i]]--;
+        }
+
+        for(int i = first; i < last; i++) 
+            arr[i] = out[i];
     }
 
     public static int max(int[] arr, int first, int last) {
-        int i = arr[first];
-        for(int j = first + 1; j < last; j++) 
-            if(arr[j] > i) i = arr[j];
-        return i;
+        int max = arr[first];
+        for(int i = first + 1; i < last; i++) 
+            if(arr[i] > max) max = arr[i];
+
+        return max;
     }
 
 }

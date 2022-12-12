@@ -1,4 +1,4 @@
-package EstruturasFlexiveis.OutrasEstruturas.Matrix;
+package EstruturasFlexiveis.OutrasEstruturas.Matrix.Java;
 
 public class Test {
     
