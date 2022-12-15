@@ -1,4 +1,4 @@
-package HashSet.HashIndireta;
+package Hash.HashSet.HashIndireta;
 
 import java.util.ArrayList;
 import EstruturasFlexiveis.ListaDuplamenteEncadeada.Java.LinkedList;

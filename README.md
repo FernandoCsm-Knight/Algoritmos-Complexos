@@ -18,8 +18,9 @@ Este repositório apresenta as estruturas de dados basicas de programação:
    - [Fila Linear](./EstruturasLineares/OutrasEstruturas/Queue/)
    - [Fila Circular](./EstruturasLineares/OutrasEstruturas/CircularQueue/)
  - Conjuntos
-   - [HashSet com Lista Flexível](./HashSet/HashIndireta/)
-   - [HashSet com Reserva](./HashSet/HashDiretaComReserva/)
+   - [HashSet com Lista Flexível](./Hash/HashSet/HashIndireta/)
+   - [HashSet com Reserva](./Hash/HashSet/HashDiretaComReserva/)
+   - [HashMap](./Hash/HashMap/)
  - Dicionários
    - [Árvore Trie](./Arvores/ArvoreTrie/Trie/)
    - [Árvore Trie com Lista Flexível](./Arvores/ArvoreTrie/TrieLinkedList/)
