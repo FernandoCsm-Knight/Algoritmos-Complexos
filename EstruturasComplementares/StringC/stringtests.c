@@ -40,7 +40,7 @@ bool cut_test() {
 //=====COPY=====//
 bool copy_test() {
     String s = createStr("Fernando");
-    s.copy(&s, "Fernando Campos Silva Dal Maria");
+    s.lcopy(&s, "Fernando Campos Silva Dal Maria");
 
     bool value = s.len == strlen(s.buf);
     value &= strcmp(s.buf, "Fernando Campos Silva Dal Maria") == 0;
@@ -97,6 +97,18 @@ bool captalize_test() {
     return value; 
 }
 
+//=====CLEAR=====//
+bool clear_test() {
+    String s = createStr("Fernando Campos Silva Dal Maria");
+    s.clear(&s);
+
+    bool value = s.len == strlen(s.buf);
+    value &= strcmp(s.buf, "") == 0; 
+
+    destruct(s);
+    return value;
+}
+
 //=====SUBSTR=====//
 bool substr_test() {
     String s = createStr(" Fernando Campos Silva Dal Maria 0123456789! ");
@@ -109,6 +121,20 @@ bool substr_test() {
     destruct(s);
     destruct(str);
     return value; 
+}
+
+//=====CLONE=====//
+bool clone_test() {
+    String s = createStr(" Fernando Campos Silva Dal Maria 0123456789! ");
+    String str = s.clone(s);
+
+    bool value = str.len == strlen(str.buf) && s.len == strlen(s.buf) && str.len == s.len;
+    value &= strcmp(s.buf, str.buf) == 0;
+    value &= s.buf != str.buf;
+
+    destruct(s);
+    destruct(str);
+    return value;
 }
 
 //=====SPLIT=====//
@@ -129,11 +155,24 @@ bool split_test() {
     return value; 
 }
 
+//=====ISEMPTY=====//
+bool isEmpty_test() {
+    String s = createStr("");
+    bool value = s.isEmpty(s);
+    destruct(s);
+
+    s = createStr(NULL);
+    value &= s.isEmpty(s);
+    destruct(s);
+
+    return value; 
+}
+
 //=====EQUALS=====//
 bool equals_test() {
     String s = createStr(" fernando CAMPOS Silva dal MaRiA 0123456789! ");
     
-    bool value = s.equals(s, " fernando CAMPOS Silva dal MaRiA 0123456789! ");
+    bool value = s.lequals(s, " fernando CAMPOS Silva dal MaRiA 0123456789! ");
     value &= s.len == strlen(s.buf);
 
     destruct(s);
@@ -144,23 +183,75 @@ bool equals_test() {
 bool contains_test() {
     String s = createStr(" fernando CAMPOS Silva dal MaRiA 0123456789!FFFEFeFer");
     
-    bool value = s.contains(s, "fer");
-    value &= s.contains(s, "A");
-    value &= s.contains(s, "Fer");
-    value &= !s.contains(s, "abacaxi");
+    bool value = s.lcontains(s, "fer");
+    value &= s.lcontains(s, "A");
+    value &= s.lcontains(s, "Fer");
+    value &= !s.lcontains(s, "abacaxi");
     value &= s.len == strlen(s.buf);
 
     destruct(s);
     return value; 
 }
 
+//=====STARTS_WITH=====//
+bool startsWith_test() {
+    String s = createStr("Fernando Campos Silva Dal Maria");
+
+    bool value = s.lstartsWith(s, "Fer");
+    value &= s.lstartsWith(s, "Fernando Campos Silva Dal Maria");
+    value &= !s.lstartsWith(s, "Campos");
+    value &= s.lstartsWith(s, "");
+    value &= s.len == strlen(s.buf);
+
+    destruct(s);
+    return value;
+}
+
+//=====ENDS_WITH=====//
+bool endsWith_test() {
+    String s = createStr("Fernando Campos Silva Dal Maria");
+
+    bool value = s.lendsWith(s, "ria");
+    value &= s.lendsWith(s, "Fernando Campos Silva Dal Maria");
+    value &= !s.lendsWith(s, "Campos");
+    value &= s.lendsWith(s, "");
+    value &= s.len == strlen(s.buf);
+
+    destruct(s);
+    return value;
+}
+
 //=====COMPARE_TO=====//
 bool compareTo_test() {
     String s = createStr("Fernando");
     
-    bool value = s.compareTo(s, "Fernanda") > 0;
-    value &= s.compareTo(s, "Fernando") == 0;
-    value &= s.compareTo(s, "Freire") < 0;
+    bool value = s.lcompareTo(s, "Fernanda") > 0;
+    value &= s.lcompareTo(s, "Fernando") == 0;
+    value &= s.lcompareTo(s, "Freire") < 0;
+    value &= s.len == strlen(s.buf);
+
+    destruct(s);
+    return value; 
+}
+
+//=====PARSE_INT=====//
+bool parseInt_test() {
+    String s = createStr("95721672");
+    
+    bool value = s.parseInt(s) == atoi(s.buf);
+    value &= strcmp(s.buf, "95721672") == 0;
+    value &= s.len == strlen(s.buf);
+
+    destruct(s);
+    return value; 
+}
+
+//=====PARSE_FLOAT=====//
+bool parseFloat_test() {
+    String s = createStr("48102.24691");
+
+    bool value = s.parseFloat(s) == atof(s.buf); 
+    value &= strcmp(s.buf, "48102.24691") == 0;
     value &= s.len == strlen(s.buf);
 
     destruct(s);
