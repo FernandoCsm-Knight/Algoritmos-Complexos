@@ -1,32 +1,48 @@
 
 #include "header/mystring.h"
 
-//=====PROTOTYPES=====//
-bool str_equals(const char* const s1, const char* const s2);
-size_t str_length(const char* const s);
-void str_copy(char** s, const char* const c);
-char* str_trim(const char* const s);
-void str_replace(char* const s, const char r, const char c);
-void str_remove(char** s, const char c);
-char* str_substr(const char* const s, int start, int end);
-unsigned int str_count(const char* const s, const char c);
+//=====STRING_MANIP=====//
+void trim(String* const s);
+void replace(String* const s, const char r, const char c);
+void cut(String* const s, const char c);
+void copy(String* const s, const char* const str);
+void upper(String* const s);
+void lower(String* const s);
+void title(String* const s);
+void captalize(String* const s);
+
+String substr(const String s, int start, int end);
+
+String* split(const String s, const char c);
+
+bool isEmpty(const String s);
+bool equals(const String s1, const char* const s2);
+bool contains(const String s, const char* const str);
+
+int compareTo(const String s, const char* const str);
+
+size_t length(const String s);
 
 //=====CONSTRUCTOR=====//
 String createStr(const char* const str) {
     String s;
+
     s.len = 0;
     s.buf = NULL;
     s.trim = trim;
     s.replace = replace;
-    s.remove = remove;
+    s.cut = cut;
     s.copy = copy;
+    s.upper = upper;
+    s.lower = lower;
+    s.title = title;
+    s.captalize = captalize;
     s.substr = substr;
-    s.split = split; 
+    s.split = split;
     s.equals = equals;
     s.contains = contains;
     s.compareTo = compareTo;
     s.length = length;
-    s.this = &s;
 
     if(str != NULL) 
         s.copy(&s, str);
@@ -51,14 +67,37 @@ void replace(String* const s, const char r, const char c) {
     str_replace(s->buf, r, c);
 }
 
-void remove(String* const s, const char c) {
-    str_remove(&s->buf, c);
+void cut(String* const s, const char c) {
+    str_cut(&s->buf, c);
+    s->len = str_length(s->buf);
 }
 
 void copy(String* const s, const char* const str) {
-    if(s->buf != NULL) free(s->buf);
     str_copy(&s->buf, str);
     s->len = str_length(s->buf);
+}
+
+void upper(String* const s) {
+    str_upper(s->buf);
+}
+
+void lower(String* const s) {
+    str_lower(s->buf);
+}
+
+void title(String* const s) {
+    str_title(s->buf);
+}
+
+void captalize(String* const s) {
+    str_captalize(s->buf);
+}
+
+String substr(const String s, int start, int end) {
+    char* aux = str_substr(s.buf, start, end);
+    String str = createStr(aux);
+    free(aux);
+    return str;
 }
 
 String* split(const String s, const char c) {
@@ -85,8 +124,16 @@ String* split(const String s, const char c) {
     return strs;
 }
 
-String substr(const String s, int start, int end) {
-    return createStr(str_substr(s.buf, start, end));
+bool isEmpty(const String s) {
+    return s.buf == NULL || s.len == 0;
+}
+
+bool equals(const String s1, const char* const s2) {
+    size_t len = s1.length(s1);
+    bool value = len == str_length(s2);
+    for(int i = 0; value && i < len; i++) 
+        value = s1.buf[i] == s2[i];
+    return value;
 }
 
 bool contains(const String s, const char* const str) {
@@ -108,14 +155,6 @@ bool contains(const String s, const char* const str) {
     return value;
 }
 
-bool equals(const String s1, const char* const s2) {
-    int len = s1.length(s1);
-    bool value = len == str_length(s2);
-    for(int i = 0; value && i < len; i++) 
-        value = s1.buf[i] == s2[i];
-    return value;
-}
-
 int compareTo(const String s, const char* const str) {
     int strl = str_length(str),
         limit = (s.len < strl) ? s.len : strl;
@@ -132,25 +171,11 @@ size_t length(const String s) {
 }
 
 //=====CHAR*_MANIP=====//
-bool str_equals(const char* const s1, const char* const s2) {
-    int len = str_length(s1);
-    bool value = len == str_length(s2);
-    for(int i = 0; value && i < len; i++) 
-        value = s1[i] == s2[i];
-    return value;
-}
-
-size_t str_length(const char* const s) {
-    size_t len = 0;
-    if(s != NULL)
-        while(s[len] != '\0') len++;
-    return len;
-}
-
 void str_copy(char** s, const char* const c) {
+    if(*s != NULL) free(*s);
+
     size_t len = str_length(c);
-    if(*s == NULL) 
-        *s = (char*)calloc(len + 1, sizeof(char));
+    *s = (char*)calloc(len + 1, sizeof(char));
 
     int i = 0;
     while(i < len) {
@@ -159,6 +184,67 @@ void str_copy(char** s, const char* const c) {
     }
     
     (*s)[i] = '\0';
+}
+
+void str_replace(char* const s, const char r, const char c) {
+    size_t len = str_length(s);
+    
+    for(int i = 0; i < len; i++) 
+        if(s[i] == r) s[i] = c;
+}
+
+void str_cut(char** s, const char c) {
+    size_t len = str_length(*s),
+        strl = len - str_count(*s, c);
+
+    char* str = (char*)calloc(strl + 1, sizeof(char));
+
+    int j = 0;
+    for(int i = 0; i < len; i++) 
+        if((*s)[i] != c) 
+            str[j++] = (*s)[i];
+
+    str[j] = '\0';
+
+    free(*s);
+    *s = str;
+}
+
+void str_upper(char* const s) {
+    size_t len = str_length(s);
+
+    for(int i = 0; i < len; i++) 
+        if(s[i] >= 97 && s[i] <= 122) 
+            s[i] -= 32; 
+}
+
+void str_lower(char* const s) {
+    size_t len = str_length(s);
+
+    for(int i = 0; i < len; i++) 
+        if(s[i] >= 65 && s[i] <= 90) 
+            s[i] += 32; 
+}
+
+void str_title(char* const s) {
+    str_captalize(s);
+    size_t len = str_length(s);
+
+    for(int i = 0; i < len; i++)
+        if(s[i] == ' ' && i < len - 1 && s[i + 1] >= 97 && s[i + 1] <= 122)
+            s[i + 1] -= 32;
+}
+
+void str_captalize(char* const s) {
+    str_lower(s);
+
+    int i = 0;
+    int len = str_length(s);
+
+    while(i < len && s[i] == ' ') i++;
+
+    if(str_length(s) != 0 && s[i] >= 97 && s[i] <= 122)
+        s[i] -= 32;
 }
 
 char* str_trim(const char* const s) {
@@ -178,30 +264,6 @@ char* str_trim(const char* const s) {
     return str;
 }
 
-void str_replace(char* const s, const char r, const char c) {
-    int len = str_length(s);
-    
-    for(int i = 0; i < len; i++) 
-        if(s[i] == r) s[i] = c;
-}
-
-void str_remove(char** s, const char c) {
-    int len = str_length(*s),
-        strl = len - str_count(*s, c);
-
-    char* str = (char*)calloc(strl + 1, sizeof(char));
-
-    int j = 0;
-    for(int i = 0; i < len; i++) 
-        if((*s)[i] != c) 
-            str[j++] = (*s)[i];
-
-    str[j] = '\0';
-
-    free(*s);
-    *s = str;
-}
-
 char* str_substr(const char* const s, int start, int end) {
     char* str = (char*)calloc(end - start + 1, sizeof(char));
 
@@ -215,11 +277,26 @@ char* str_substr(const char* const s, int start, int end) {
 
 unsigned int str_count(const char* const s, const char c) {
     unsigned int num = 0;
-    int len = str_length(s); 
+    size_t len = str_length(s); 
 
     if(s != NULL)
         for(int i = 0; i < len; i++)
             if(s[i] == c) num++;
 
     return num;
+}
+
+bool str_equals(const char* const s1, const char* const s2) {
+    size_t len = str_length(s1);
+    bool value = len == str_length(s2);
+    for(int i = 0; value && i < len; i++) 
+        value = s1[i] == s2[i];
+    return value;
+}
+
+size_t str_length(const char* const s) {
+    size_t len = 0;
+    if(s != NULL)
+        while(s[len] != '\0') len++;
+    return len;
 }

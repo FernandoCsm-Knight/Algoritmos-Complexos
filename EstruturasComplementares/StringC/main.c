@@ -1,21 +1,26 @@
-
 #include "header/mystring.h"
 #include <string.h>
 
 int main(int argc, char **args) {
-    String s = createStr("Fe mwçql dmpcnk ascFFe FFer");
+    String s = createStr("Fer Cam Sil Dal Mar");
     printf("%s\n", s.buf);
-    printf("%s // %li == %li\n", s.contains(s, "Fer")?"true":"false", s.len, strlen(s.buf));
-    String* strs = s.split(s, ' ');
+    printf("%li == %li\n", s.len, strlen(s.buf));
 
-    // for(int i = 0; i < 5; i++)
-    //     printf("%s\n", strs[i].buf);
+    s.upper(s.this);
 
+    printf("%s\n", s.buf);
+    printf("%li == %li\n", s.len, strlen(s.buf));
 
-    for(int i = 0; i < 5; i++) 
-        destruct(strs[i]);
+    s.lower(s.this);
     
-    free(strs);
+    printf("%s\n", s.buf);
+    printf("%li == %li\n", s.len, strlen(s.buf));
+    
+    s.title(s.this);
+
+    printf("%s\n", s.buf);
+    printf("%li == %li\n", s.len, strlen(s.buf));
+
     destruct(s);
     return 0;
 }
