@@ -1,50 +1,323 @@
+/**
+ * @file mystring.c
+ * @author Fernando Campos Silva Dal Maria (fernandocsdm@gmail.com)
+ * @brief This source code provides a set of features for manipulating strings with high level instructions in C promgraming language.
+ * @version 1.0.4
+ * @date 01-01-2023
+ * 
+ * @copyright Copyright (c) 2023
+ * 
+ */
 
 #include "header/mystring.h"
 
+/*
+ * Notice that the subsequent prototypes are orginized by return type 
+ */
+
 //=====STRING_MANIP=====//
 //=====VOID=====//
+
+/**
+ * @brief Removes spaces at the start and the end of a string.
+ * 
+ * @param s
+ *        The reference to specify a string. 
+ */
 void trim(String* const s);
+
+/**
+ * @brief Replaces all occurrences of a given char by another.
+ * 
+ * @param s 
+ *        The reference to specify a string. 
+ * @param r
+ *        Character to be replaced. 
+ * @param c 
+ *        Character to be reseted.
+ */
 void replace(String* const s, const char r, const char c);
+
+/**
+ * @brief Removes all occurrences of a given char.
+ * 
+ * @param s 
+ *        The reference to specify a string.
+ * @param c 
+ *        The character that should be removed.
+ */
 void cut(String* const s, const char c);
+
+/**
+ * @brief Copies a given string to another.
+ * 
+ * @param s 
+ *        The reference to specify a string.
+ * @param str 
+ *        The string to be copied.
+ */
 void copy(String* const s, const String str);
+
+/**
+ * @brief Copies a given character sequence for the string.
+ * 
+ * @param s 
+ *        The reference to specify a string.
+ * @param str 
+ *        The character sequence to be copied.
+ */
 void lcopy(String* const s, const char* const str);
+
+/**
+ * @brief Changes all characters of a string to upper case.
+ * 
+ * @param s 
+ *        The reference to specify a string.
+ */
 void upper(String* const s);
+
+/**
+ * @brief Changes all characters of a string to lower case.
+ * 
+ * @param s 
+ *        The reference to specify a string.
+ */
 void lower(String* const s);
+
+/**
+ * @brief Changes all letters of a string to upper case.
+ * 
+ * @param s 
+ *        The reference to specify a string.
+ */
 void title(String* const s);
+
+/**
+ * @brief Changes the first letter of a string to upper case and the others to lower case.
+ * 
+ * @param s 
+ *        The reference to specify a string.
+ */
 void captalize(String* const s);
+
+/**
+ * @brief Clear all characters from a string.
+ * 
+ * @param s 
+ *        Ther reference to specify a string.
+ */
 void clear(String* const s);
 
 //=====STRING=====//
+
+/**
+ * @brief Gets a substring beggining at the starting position and ending at the end index - 1.
+ * 
+ * @param s 
+ *        The string object.
+ * @param start 
+ *        The start index, inclusive.
+ * @param end 
+ *        The end index, exclusive.
+ * @return String 
+ */
 String substr(const String s, int start, int end);
+
+/**
+ * @brief Creates and return a copy of a given string.
+ * 
+ * @param s 
+ *        The string object.
+ * @return String 
+ */
 String clone(const String s);
 
-//=====STRING*=====/
+//=====STRING*=====//
+/**
+ * @brief Creates and return an array of strings with subsequences from a given string. Uses a character to identify the break point.
+ * 
+ * @param s 
+ *        The string object.
+ * @param c 
+ *        The character that specifies the break point.
+ * @return String* 
+ */
 String* split(const String s, const char c);
 
 //=====BOOL=====//
+
+/**
+ * @brief Returns true if the string is NULL or its length is equal to zero.
+ * 
+ * @param s 
+ *        The string object.
+ * @return true - for an empty string.
+ * @return false - for an non-empty string.
+ */
 bool isEmpty(const String s);
+
+/**
+ * @brief Returns true if both given strings are equals.
+ * 
+ * @param s1 
+ *        The string object to be the template.
+ * @param s2 
+ *        The string object to be compared.
+ * @return true - for matching strings.
+ * @return false - for different strings.
+ */
 bool equals(const String s1, const String s2);
+
+/**
+ * @brief Returns true if both given strings are equals.
+ * 
+ * @param s1 
+ *        The string object to be the template.
+ * @param s2 
+ *        The character sequence to be compared.
+ * @return true - for matching strings.
+ * @return false - for different strings.
+ */
 bool lequals(const String s1, const char* const s2);
+
+/**
+ * @brief Returns true if a character sequense is a subsequence of a given string.
+ * 
+ * @param s 
+ *        The string object.
+ * @param str 
+ *        The string object with the target sequence.
+ * @return true - if the subsequence is a part of the string.
+ * @return false -  if the subsequence is not a part of the string.
+ */
 bool contains(const String s, const String str);
+
+/**
+ * @brief Returns true if a character sequense is a subsequence of a given string.
+ * 
+ * @param s 
+ *        The string object.
+ * @param str 
+ *        The  character subsequence.
+ * @return true - if the subsequence is a part of the string.
+ * @return false -  if the subsequence is not a part of the string.
+ */
 bool lcontains(const String s, const char* const str);
+
+/**
+ * @brief Tests if a string starts with the specified prefix.
+ * 
+ * @param s
+ *        The string object. 
+ * @param str 
+ *        The string prefix.
+ * @return true - if the string starts with the prefix.
+ * @return false - if the prefix is not in the start of the string.
+ */
 bool startsWith(const String s, const String str);
+
+/**
+ * @brief Tests if a string starts with the specified prefix.
+ * 
+ * @param s
+ *        The string object. 
+ * @param str 
+ *        The character sequence prefix.
+ * @return true - if the string starts with the prefix.
+ * @return false - if the prefix is not in the start of the string.
+ */
 bool lstartsWith(const String s, const char* const str);
+
+/**
+ * @brief Tests if a string ends with the specified suffix.
+ * 
+ * @param s
+ *        The string object. 
+ * @param str 
+ *        The string suffix.
+ * @return true - if the string ends with the suffix.
+ * @return false - if the suffix is not in the end of the string.
+ */
 bool endsWith(const String s, const String str);
+
+/**
+ * @brief Tests if a string ends with the specified suffix.
+ * 
+ * @param s
+ *        The string object. 
+ * @param str 
+ *        The character sequence suffix.
+ * @return true - if the string ends with the suffix.
+ * @return false - if the suffix is not in the end of the string.
+ */
 bool lendsWith(const String s, const char* const str);
 
 //=====INT=====//
+
+/**
+ * @brief Compares two strings lexicographically. The comparison is based on the Unicode value of each character in the strings. The result is a negative integer if this String object lexicographically precedes the argument string. The result is a positive integer if this String object lexicographically follows the argument string. The result is zero if the strings are equal.
+ * 
+ * @param s 
+ *        The string object.
+ * @param str 
+ *        The target string object.
+ * @return int value, 0 if the strings are equal, a positive integer if the "s" string lexicographically follows the "str" string and a negative integer if the "s" string lexicographically precedes the "str" string.
+ */
 int compareTo(const String s, const String str);
+
+/**
+ * @brief Compares two strings lexicographically. The comparison is based on the Unicode value of each character in the strings. The result is a negative integer if this String object lexicographically precedes the argument string. The result is a positive integer if this String object lexicographically follows the argument string. The result is zero if the strings are equal.
+ * 
+ * @param s 
+ *        The string object.
+ * @param str 
+ *        The target character sequence.
+ * @return int value, 0 if the strings are equal, a positive integer if the "s" string lexicographically follows the "str" string and a negative integer if the "s" string lexicographically precedes the "str" string.
+ */
 int lcompareTo(const String s, const char* const str);
+
+/**
+ * @brief This is a polynomial rolling hash function that returns the string's hash.
+ * 
+ * @param s 
+ *        The string object.
+ * @return int 
+ */
+int hashCode(const String s);
+
+/**
+ * @brief Parses the string argument as a signed decimal integer.
+ * 
+ * @param s 
+ *        The string object.
+ * @return int 
+ */
 int parseInt(const String s);
 
 //=====DOUBLE=====//
+
+/**
+ * @brief Parses the string argument as a signed decimal integer.
+ * 
+ * @param s 
+ *        The string object.
+ * @return int 
+ */
 double parseFloat(const String s);
 
 //=====SIZE_T=====//
+
+/**
+ * @brief Calculate and returns the length of a string. 
+ * 
+ * @param s 
+ *        The string object.
+ * @return size_t 
+ */
 size_t length(const String s);
 
 //=====CONSTRUCTOR=====//
-String createStr(const char* const str) {
+String newStr(const char* const str) {
     String s;
 
     s.len = 0;
@@ -83,6 +356,7 @@ String createStr(const char* const str) {
     //=====INT=====//
     s.compareTo = compareTo;
     s.lcompareTo = lcompareTo;
+    s.hashCode = hashCode;
     s.parseInt = parseInt;
 
     //=====DOUBLE=====//
@@ -98,7 +372,7 @@ String createStr(const char* const str) {
 }
 
 //=====DESTRUCTOR=====//
-void destruct(String s) {
+void delStr(String s) {
     free(s.buf);
 }
 
@@ -156,13 +430,13 @@ void clear(String* const s) {
 //=====STRING=====//
 String substr(const String s, int start, int end) {
     char* aux = str_substr(s.buf, start, end);
-    String str = createStr(aux);
+    String str = newStr(aux);
     free(aux);
     return str;
 }
 
 String clone(const String s) {
-    return createStr(s.buf);
+    return newStr(s.buf);
 }
 
 //=====STRING*=====//
@@ -178,14 +452,14 @@ String* split(const String s, const char c) {
     for(int i = 0; i < s.len; i++, end++) {
         if(s.buf[i] == c) {
             new_str = str_substr(s.buf, start, end);
-            strs[j++] = createStr(new_str);
+            strs[j++] = newStr(new_str);
             start = end + 1;
             free(new_str);
         }
     }
 
     new_str = str_substr(s.buf, start, end);
-    strs[j] = createStr(new_str);
+    strs[j] = newStr(new_str);
     free(new_str);
     return strs;
 }
@@ -244,22 +518,42 @@ int lcompareTo(const String s, const char* const str) {
     return str_compareTo(s.buf, str);
 }
 
-int parseInt(const String s) {
-    int sum = 0;
-
-    for(int i = s.len - 1, j = 1; i >= 0; i--, j *= 10) 
-        sum += (s.buf[i] - 48) * j;
-
-    return sum;
+int hashCode(const String s) {
+    return str_hashCode(s.buf);
 }
 
+int parseInt(const String s) {
+    int sig = 0;
+    
+    bool pos = true;
+    if(s.buf != NULL && (s.buf[0] == '+' || s.buf[0] == '-')) {
+        sig = 1;
+        if(s.buf[0] == '-') pos = false;
+    } 
+    
+    int sum = 0;
+    for(int i = s.len - 1, j = 1; i >= sig; i--, j *= 10) 
+        sum += (s.buf[i] - 48) * j;
+
+    return (pos) ? sum : -sum;
+}
+
+//=====DOUBLE=====//
 double parseFloat(const String s) {
+    int sig = 0;
+    
+    bool pos = true;
+    if(s.buf != NULL && (s.buf[0] == '+' || s.buf[0] == '-')) {
+        sig = 1;
+        if(s.buf[0] == '-') pos = false;
+    } 
+    
     double sum = 0.0;
 
     int i = s.len - 1;
     double j = 1.0;
 
-    while(i >= 0 && s.buf[i] != '.' && s.buf[i] != ',')  {
+    while(i >= sig && s.buf[i] != '.' && s.buf[i] != ',')  {
         j /= 10;
         i--;
     }
@@ -268,11 +562,11 @@ double parseFloat(const String s) {
     str.cut(&str, '.');
     str.cut(&str, ',');
 
-    for(int k = str.len - 1; k >= 0; k--, j *= 10) 
+    for(int k = str.len - 1; k >= sig; k--, j *= 10) 
         sum += (str.buf[k] - 48) * j;
 
-    destruct(str);
-    return sum;
+    delStr(str);
+    return (pos) ? sum : -sum;
 }
 
 //=====size_t=====//
@@ -398,6 +692,20 @@ int str_compareTo(const char* const s, const char* const str) {
             return s[i] - str[i];
 
     return sl - strl;
+}
+
+int str_hashCode(const char* const s) {
+    const int p = 31, m = 1e9 + 7;
+    int sum = 0,
+        len = str_length(s);
+
+    long p_pow = 1;
+    for(int i = 0; i < len; i++) {
+        sum = (sum + (s[i] - 'a' + 1) * p_pow) % m;
+        p_pow = (p_pow * p) % m;
+    }
+
+    return sum;
 }
 
 //=====UNS_INT=====//

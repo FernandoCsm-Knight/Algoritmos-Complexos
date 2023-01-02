@@ -1,3 +1,14 @@
+/**
+ * @file mystring.h
+ * @author Fernando Campos Silva Dal Maria (fernandocsdm@gmail.com)
+ * @brief This lib provides a string struct with several features for manipulating strings with high level instructions in C.
+ * @version 1.0.4
+ * @date 01-01-2023
+ * 
+ * @copyright Copyright (c) 2023
+ * 
+ */
+
 
 #ifndef MY_STRING
 #define MY_STRING
@@ -7,58 +18,337 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
+/*
+ * Notice that the subsequent prototypes are orginized by return type 
+ */
+
 //=====STRUCT=====//
 typedef struct string {
     char* buf;
     size_t len;
 
     //=====VOID=====//
+
+    /**
+     * @brief Removes spaces at the start and the end of a string.
+     * 
+     * @param s
+     *        The reference to specify a string. 
+     */
     void (*trim)(struct string* const);
+
+    /**
+     * @brief Replaces all occurrences of a given char by another.
+     * 
+     * @param s 
+     *        The reference to specify a string. 
+     * @param r
+     *        Character to be replaced. 
+     * @param c 
+     *        Character to be reseted.
+     */
     void (*replace)(struct string* const, const char, const char);
+
+    /**
+     * @brief Removes all occurrences of a given char.
+     * 
+     * @param s 
+     *        The reference to specify a string.
+     * @param c 
+     *        The character that should be removed.
+     */
     void (*cut)(struct string* const, const char);
+
+    /**
+     * @brief Copies a given string to another.
+     * 
+     * @param s 
+     *        The reference to specify a string.
+     * @param str 
+     *        The string to be copied.
+     */
     void (*copy)(struct string* const, const struct string);
+
+    /**
+     * @brief Copies a given character sequence for the string.
+     * 
+     * @param s 
+     *        The reference to specify a string.
+     * @param str 
+     *        The character sequence to be copied.
+     */
     void (*lcopy)(struct string* const, const char* const);
+
+    /**
+     * @brief Changes all characters of a string to upper case.
+     * 
+     * @param s 
+     *        The reference to specify a string.
+     */
     void (*upper)(struct string* const);
+
+    /**
+     * @brief Changes all characters of a string to lower case.
+     * 
+     * @param s 
+     *        The reference to specify a string.
+     */
     void (*lower)(struct string* const);
+
+    /**
+     * @brief Changes all letters of a string to upper case.
+     * 
+     * @param s 
+     *        The reference to specify a string.
+     */
     void (*title)(struct string* const);
+
+    /**
+     * @brief Changes the first letter of a string to upper case and the others to lower case.
+     * 
+     * @param s 
+     *        The reference to specify a string.
+     */
     void (*captalize)(struct string* const);
+
+    /**
+     * @brief Clear all characters from a string.
+     * 
+     * @param s 
+     *        Ther reference to specify a string.
+     */
     void (*clear)(struct string* const);
     
     //=====STRING=====//
+
+    /**
+     * @brief Gets a substring beggining at the starting position and ending at the end index - 1.
+     * 
+     * @param s 
+     *        The string object.
+     * @param start 
+     *        The start index, inclusive.
+     * @param end 
+     *        The end index, exclusive.
+     * @return String 
+     */
     struct string (*substr)(const struct string, int, int);
+
+    /**
+     * @brief Creates and return a copy of a given string.
+     * 
+     * @param s 
+     *        The string object.
+     * @return String 
+     */
     struct string (*clone)(const struct string);
 
     //=====STRING*=====//
+
+    /**
+     * @brief Creates and return an array of strings with subsequences from a given string. Uses a character to identify the break point.
+     * 
+     * @param s 
+     *        The string object.
+     * @param c 
+     *        The character that specifies the break point.
+     * @return String* 
+     */
     struct string* (*split)(const struct string, const char);
 
     //=====BOOL=====//
+
+    /**
+     * @brief Returns true if the string is NULL or its length is equal to zero.
+     * 
+     * @param s 
+     *        The string object.
+     * @return true - for an empty string.
+     * @return false - for an non-empty string.
+     */
     bool (*isEmpty)(const struct string);
+
+    /**
+     * @brief Returns true if both given strings are equals.
+     * 
+     * @param s1 
+     *        The string object to be the template.
+     * @param s2 
+     *        The string object to be compared.
+     * @return true - for matching strings.
+     * @return false - for different strings.
+     */
     bool (*equals)(const struct string, const struct string);
+
+    /**
+     * @brief Returns true if both given strings are equals.
+     * 
+     * @param s1 
+     *        The string object to be the template.
+     * @param s2 
+     *        The character sequence to be compared.
+     * @return true - for matching strings.
+     * @return false - for different strings.
+     */
     bool (*lequals)(const struct string, const char* const);
+
+    /**
+     * @brief Returns true if a character sequense is a subsequence of a given string.
+     * 
+     * @param s 
+     *        The string object.
+     * @param str 
+     *        The string object with the target sequence.
+     * @return true - if the subsequence is a part of the string.
+     * @return false -  if the subsequence is not a part of the string.
+     */
     bool (*contains)(const struct string, const struct string);
+
+    /**
+     * @brief Returns true if a character sequense is a subsequence of a given string.
+     * 
+     * @param s 
+     *        The string object.
+     * @param str 
+     *        The  character subsequence.
+     * @return true - if the subsequence is a part of the string.
+     * @return false -  if the subsequence is not a part of the string.
+     */
     bool (*lcontains)(const struct string, const char* const);
+
+    /**
+     * @brief Tests if a string starts with the specified prefix.
+     * 
+     * @param s
+     *        The string object. 
+     * @param str 
+     *        The string prefix.
+     * @return true - if the string starts with the prefix.
+     * @return false - if the prefix is not in the start of the string.
+     */
     bool (*startsWith)(const struct string, const struct string);
+
+    /**
+     * @brief Tests if a string starts with the specified prefix.
+     * 
+     * @param s
+     *        The string object. 
+     * @param str 
+     *        The character sequence prefix.
+     * @return true - if the string starts with the prefix.
+     * @return false - if the prefix is not in the start of the string.
+     */
     bool (*lstartsWith)(const struct string, const char* const);
+
+    /**
+     * @brief Tests if a string ends with the specified suffix.
+     * 
+     * @param s
+     *        The string object. 
+     * @param str 
+     *        The string suffix.
+     * @return true - if the string ends with the suffix.
+     * @return false - if the suffix is not in the end of the string.
+     */
     bool (*endsWith)(const struct string, const struct string);
+
+    /**
+     * @brief Tests if a string ends with the specified suffix.
+     * 
+     * @param s
+     *        The string object. 
+     * @param str 
+     *        The character sequence suffix.
+     * @return true - if the string ends with the suffix.
+     * @return false - if the suffix is not in the end of the string.
+     */
     bool (*lendsWith)(const struct string, const char* const);
 
     //=====INT=====//
+
+    /**
+     * @brief Compares two strings lexicographically. The comparison is based on the Unicode value of each character in the strings. The result is a negative integer if this String object lexicographically precedes the argument string. The result is a positive integer if this String object lexicographically follows the argument string. The result is zero if the strings are equal.
+     * 
+     * @param s 
+     *        The string object.
+     * @param str 
+     *        The target string object.
+     * @return int value, 0 if the strings are equal, a positive integer if the "s" string lexicographically follows the "str" string and a negative integer if the "s" string lexicographically precedes the "str" string.
+     */
     int (*compareTo)(const struct string, const struct string);
+
+    /**
+     * @brief Compares two strings lexicographically. The comparison is based on the Unicode value of each character in the strings. The result is a negative integer if this String object lexicographically precedes the argument string. The result is a positive integer if this String object lexicographically follows the argument string. The result is zero if the strings are equal.
+     * 
+     * @param s 
+     *        The string object.
+     * @param str 
+     *        The target character sequence.
+     * @return int value, 0 if the strings are equal, a positive integer if the "s" string lexicographically follows the "str" string and a negative integer if the "s" string lexicographically precedes the "str" string.
+     */
     int (*lcompareTo)(const struct string, const char* const);
+
+    /**
+     * @brief This is a polynomial rolling hash function that returns the string's hash.
+     * 
+     * @param s 
+     *        The string object.
+     * @return int 
+     */
+    int (*hashCode)(const struct string);
+
+    /**
+     * @brief Parses the string argument as a signed decimal integer.
+     * 
+     * @param s 
+     *        The string object.
+     * @return int 
+     */
     int (*parseInt)(const struct string);
 
     //=====DOUBLE=====//
+
+    /**
+     * @brief Parses the string argument as a signed decimal integer.
+     * 
+     * @param s 
+     *        The string object.
+     * @return int 
+     */
     double (*parseFloat)(const struct string);
 
     //=====SIZE_T=====//
+
+    /**
+     * @brief Calculate and returns the length of a string. 
+     * 
+     * @param s 
+     *        The string object.
+     * @return size_t 
+     */
     size_t (*length)(const struct string);
 } String;
 
 //=====CONSTRUCTOR=====//
-String createStr(const char* const str);
+
+/**
+ * @brief Initialize and return a new String object.
+ * 
+ * @param str 
+ *        The character sequence that should compose the string.
+ * @return String 
+ */
+String newStr(const char* const str);
 
 //=====DESTRUCTOR=====//
-void destruct(String s);
+
+/**
+ * @brief Delete a specified string object.
+ * 
+ * @param s 
+ *        The string that should be deleted.
+ */
+void delStr(String s);
 
 //=====CHAR*_MANIP=====//
 //=====VOID=====//
@@ -76,6 +366,7 @@ char* str_substr(const char* const s, int start, int end);
 
 //=====INT=====//
 int str_compareTo(const char* const s, const char* const str);
+int str_hashCode(const char* const s);
 
 //=====UNS_INT=====//
 unsigned int str_count(const char* const s, const char c);

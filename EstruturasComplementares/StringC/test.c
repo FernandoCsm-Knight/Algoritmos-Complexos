@@ -22,6 +22,7 @@ int main(int argc, char** args) {
     printf("StartsWith test:  |  %s  |\n", startsWith_test() ? "true :D" : "false :d");
     printf("EndsWith test:    |  %s  |\n", endsWith_test() ? "true :D" : "false :d");
     printf("Compare To test:  |  %s  |\n", compareTo_test() ? "true :D" : "false :d");
+    printf("HashCode test:    |  %s  |\n", hashCode_test() ? "true :D" : "false :d");
     printf("ParseInt test:    |  %s  |\n", parseInt_test() ? "true :D" : "false :d");
     printf("ParseFloat test:  |  %s  |\n", parseFloat_test() ? "true :D" : "false :d");
     printf("Length test:      |  %s  |\n\n", length_test() ? "true :D" : "false :d");
