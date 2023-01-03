@@ -38,6 +38,26 @@ typedef struct string {
     void (*trim)(struct string* const);
 
     /**
+     * @brief Concatenates the specified string 'str' to the end of another string 's'.
+     * 
+     * @param s 
+     *        The reference to specify a string. 
+     * @param str 
+     *        The String that is concatenated to the end of this String.
+     */
+    void (*concat)(struct string* const, const struct string);
+
+    /**
+     * @brief Concatenates the specified string 'str' to the end of another string 's'.
+     * 
+     * @param s 
+     *        The reference to specify a string. 
+     * @param str 
+     *        The character sequence that is concatenated to the end of this String.
+     */
+    void (*lconcat)(struct string* const, const char* const);
+
+    /**
      * @brief Replaces all occurrences of a given char by another.
      * 
      * @param s 
@@ -267,6 +287,29 @@ typedef struct string {
     //=====INT=====//
 
     /**
+     * @brief Returns the index within this string of the first occurrence of the specified character. 
+     * 
+     * @param s 
+     *        The string object.
+     * @param c 
+     *        The target character.
+     * @return int - index of the first occurrence of the character in the character sequence represented by this object, or -1 if the character does not occur.
+     */
+    int (*indexOf)(const struct string, const char);
+
+
+    /**
+     * @brief Returns the index within this string of the last occurrence of the specified character. 
+     * 
+     * @param s 
+     *        The string object.
+     * @param c 
+     *        The target character.
+     * @return int - index of the last occurrence of the character in the character sequence represented by this object, or -1 if the character does not occur.
+     */
+    int (*lastIndexOf)(const struct string, const char);
+
+    /**
      * @brief Compares two strings lexicographically. The comparison is based on the Unicode value of each character in the strings. The result is a negative integer if this String object lexicographically precedes the argument string. The result is a positive integer if this String object lexicographically follows the argument string. The result is zero if the strings are equal.
      * 
      * @param s 
@@ -352,6 +395,7 @@ void delStr(String s);
 
 //=====CHAR*_MANIP=====//
 //=====VOID=====//
+void str_concat(char** s, const char* const str);
 void str_copy(char** s, const char* const c);
 void str_replace(char* const s, const char r, const char c);
 void str_cut(char** s, const char c);
@@ -365,6 +409,8 @@ char* str_trim(const char* const s);
 char* str_substr(const char* const s, int start, int end);
 
 //=====INT=====//
+int str_indexOf(const char* const s, const char c);
+int str_lastIndexOf(const char* const s, const char c);
 int str_compareTo(const char* const s, const char* const str);
 int str_hashCode(const char* const s);
 

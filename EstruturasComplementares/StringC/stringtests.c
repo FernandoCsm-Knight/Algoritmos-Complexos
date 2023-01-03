@@ -13,6 +13,18 @@ bool trim_test() {
     return value;
 }
 
+//=====CONCAT=====//
+bool concat_test() {
+    String s = newStr("Fernando Campos ");
+    s.lconcat(&s, "Silva Dal Maria");
+
+    bool value = s.len == strlen(s.buf);
+    value &= strcmp(s.buf, "Fernando Campos Silva Dal Maria") == 0;
+
+    delStr(s);
+    return value;
+}
+
 //=====REPLACE=====//
 bool replace_test() {
     String s = newStr(" aaaabbbbababababakdbdqwyahhvcjasowebcj");
@@ -215,6 +227,30 @@ bool endsWith_test() {
     value &= s.lendsWith(s, "Fernando Campos Silva Dal Maria");
     value &= !s.lendsWith(s, "Campos");
     value &= s.lendsWith(s, "");
+    value &= s.len == strlen(s.buf);
+
+    delStr(s);
+    return value;
+}
+
+//=====INDEX_OF=====//
+bool indexOf_test() {
+    String s = newStr("Fernando Campos Silva Dal Maria");
+
+    bool value = s.indexOf(s, 'C') == 9;
+    value &= s.indexOf(s, 'a') == 4;
+    value &= s.len == strlen(s.buf);
+
+    delStr(s);
+    return value;
+}
+
+//=====LAST_INDEX_OF=====//
+bool lastIdxOf_test() {
+    String s = newStr("Fernando Campos Silva Dal Maria");
+
+    bool value = s.lastIndexOf(s, 'C') == 9;
+    value &= s.lastIndexOf(s, 'a') == s.len - 1;
     value &= s.len == strlen(s.buf);
 
     delStr(s);

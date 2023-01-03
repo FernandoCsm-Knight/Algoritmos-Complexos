@@ -27,6 +27,26 @@
 void trim(String* const s);
 
 /**
+ * @brief Concatenates the specified string 'str' to the end of another string 's'.
+ * 
+ * @param s 
+ *        The reference to specify a string. 
+ * @param str 
+ *        The String that is concatenated to the end of this String.
+ */
+void concat(String* const s, const String str);
+
+/**
+ * @brief Concatenates the specified string 'str' to the end of another string 's'.
+ * 
+ * @param s 
+ *        The reference to specify a string. 
+ * @param str 
+ *        The character sequence that is concatenated to the end of this String.
+ */
+void lconcat(String* const s, const char* const str);
+
+/**
  * @brief Replaces all occurrences of a given char by another.
  * 
  * @param s 
@@ -255,6 +275,28 @@ bool lendsWith(const String s, const char* const str);
 //=====INT=====//
 
 /**
+ * @brief Returns the index within this string of the first occurrence of the specified character. 
+ * 
+ * @param s 
+ *        The string object.
+ * @param c 
+ *        The target character.
+ * @return int - index of the first occurrence of the character in the character sequence represented by this object, or -1 if the character does not occur.
+ */
+int indexOf(const String s, const char c);
+
+/**
+ * @brief Returns the index within this string of the last occurrence of the specified character. 
+ * 
+ * @param s 
+ *        The string object.
+ * @param c 
+ *        The target character.
+ * @return int - index of the last occurrence of the character in the character sequence represented by this object, or -1 if the character does not occur.
+ */
+int lastIndexOf(const String s, const char c);
+
+/**
  * @brief Compares two strings lexicographically. The comparison is based on the Unicode value of each character in the strings. The result is a negative integer if this String object lexicographically precedes the argument string. The result is a positive integer if this String object lexicographically follows the argument string. The result is zero if the strings are equal.
  * 
  * @param s 
@@ -325,6 +367,8 @@ String newStr(const char* const str) {
 
     //=====VOID=====//
     s.trim = trim;
+    s.concat = concat;
+    s.lconcat = lconcat;
     s.replace = replace;
     s.cut = cut;
     s.copy = copy;
@@ -354,6 +398,8 @@ String newStr(const char* const str) {
     s.lendsWith = lendsWith;
 
     //=====INT=====//
+    s.indexOf = indexOf;
+    s.lastIndexOf = lastIndexOf;
     s.compareTo = compareTo;
     s.lcompareTo = lcompareTo;
     s.hashCode = hashCode;
@@ -382,6 +428,16 @@ void trim(String* const s) {
     char* aux = str_trim(s->buf);
     free(s->buf);
     s->buf = aux;
+    s->len = str_length(s->buf);
+}
+
+void concat(String* const s, const String str) {
+    str_concat(&s->buf, str.buf);
+    s->len = str_length(s->buf);
+}
+
+void lconcat(String* const s, const char* const str) {
+    str_concat(&s->buf, str);
     s->len = str_length(s->buf);
 }
 
@@ -510,6 +566,14 @@ bool lendsWith(const String s, const char* const str) {
 }
 
 //=====INT=====//
+int indexOf(const String s, const char c) {
+    return str_indexOf(s.buf, c);
+}
+
+int lastIndexOf(const String s, const char c) {
+    return str_lastIndexOf(s.buf, c);
+}
+
 int compareTo(const String s, const String str) {
     return str_compareTo(s.buf, str.buf);
 }
@@ -576,6 +640,21 @@ size_t length(const String s) {
 
 //=====CHAR*_MANIP=====//
 //=====VOID=====//
+void str_concat(char** s, const char* const str) {
+    int sl = str_length(*s),
+        strl = str_length(str);
+    
+    char* news = (char*)calloc(sl + strl + 1, sizeof(char));
+
+    int i = 0;
+    for(i = 0; i < sl; i++) news[i] = (*s)[i];
+    for(int j = 0; j < strl; i++, j++) news[i] = str[j];
+    
+    news[i] = '\0';
+    free(*s);
+    *s = news;
+}
+
 void str_copy(char** s, const char* const c) {
     if(*s != NULL) free(*s);
 
@@ -682,6 +761,26 @@ char* str_substr(const char* const s, int start, int end) {
 }
 
 //=====INT=====//
+int str_indexOf(const char* const s, const char c) {
+    int i = -1,
+        len = str_length(s);
+    
+    for(int k = 0; i == -1 && k < len; k++)
+        if(s[k] == c) i = k;
+
+    return i;
+}
+
+int str_lastIndexOf(const char* const s, const char c) {
+    int i = -1,
+        len = str_length(s);
+    
+    for(int k = len - 1; i == -1 && k >= 0; k--)
+        if(s[k] == c) i = k;
+
+    return i;
+}
+
 int str_compareTo(const char* const s, const char* const str) {
     int sl = str_length(s),
         strl = str_length(str),
