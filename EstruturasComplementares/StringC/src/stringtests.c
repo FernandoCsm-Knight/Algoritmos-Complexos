@@ -242,7 +242,7 @@ bool toBytes_test() {
 
     bool value = s.len == strlen(s.buf);
     
-    for(int i = 0; value && i < s.len; i++) 
+    for(size_t i = 0; value && i < s.len; i++) 
         value = template[i] == arr[i];
 
     free(arr);
@@ -267,7 +267,7 @@ bool lastIdxOf_test() {
     String s = newStr("Fernando Campos Silva Dal Maria");
 
     bool value = s.lastIndexOf(s, 'C') == 9;
-    value &= s.lastIndexOf(s, 'a') == s.len - 1;
+    value &= s.lastIndexOf(s, 'a') == (int)s.len - 1;
     value &= s.len == strlen(s.buf);
 
     delStr(s);

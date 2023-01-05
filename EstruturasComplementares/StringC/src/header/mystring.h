@@ -2,7 +2,7 @@
  * @file mystring.h
  * @author Fernando Campos Silva Dal Maria (fernandocsdm@gmail.com)
  * @brief This lib provides a string struct with several features for manipulating strings with high level instructions in C.
- * @version 1.0.4
+ * @version 1.1.5
  * @date 01-01-2023
  * 
  * @copyright Copyright (c) 2023

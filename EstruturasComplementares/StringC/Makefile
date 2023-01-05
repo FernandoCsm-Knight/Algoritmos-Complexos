@@ -20,7 +20,10 @@ $(BINARY): $(OBJECTS)
 	$(CC) $^ -o $@ 
 	
 $(OBJDIR)/%.o:$(SOURCEDIR)/%.c 
-	$(CC) $(FLAGS) -c $< -o $@ 
+	$(CC) $(CFLAGS) -c $< -o $@ 
+
+run: 
+	./$(BINDIR)/./strTests
 
 clean:
 	rm -r $(OBJDIR)/*.o $(BINDIR)/*
