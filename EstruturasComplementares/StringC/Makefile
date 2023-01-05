@@ -22,6 +22,9 @@ $(BINARY): $(OBJECTS)
 $(OBJDIR)/%.o:$(SOURCEDIR)/%.c 
 	$(CC) $(CFLAGS) -c $< -o $@ 
 
+valgrind:
+	valgrind --leak-check=yes --show-leak-kinds=all ./$(BINDIR)/./strTests
+
 run: 
 	./$(BINDIR)/./strTests
 
