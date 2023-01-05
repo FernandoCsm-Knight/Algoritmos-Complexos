@@ -31,7 +31,7 @@ Este repositório apresenta as estruturas de dados basicas de programação:
    - [Árvore Rubro Negra](./Arvores/ArvoreRubroNegra/)
    - [Árvore Binária de Busca](./Arvores/ArvoreBinaria/)
 
-Além disso também apresenta alguns algoritmos de ordenação:
+Veja também alguns algoritmos de ordenação:
 
  - [BubbleSort](./Sorts/BubbleSort/)
  - [CountingSort](./Sorts/CountingSort/)
@@ -41,6 +41,10 @@ Além disso também apresenta alguns algoritmos de ordenação:
  - [QuickSort](./Sorts/QuickSort/)
  - [SelectionSort](./Sorts/SelectionSort/)
  - [ShellSort](./Sorts/ShellSort/)
+
+Por fim, caso seja necessário manipular strings em c:
+
+ - [String em C](./EstruturasComplementares/StringC/)
 
 Fique a vontade para estudar por meio do material aqui disponibilizado. Entretanto apresento-lhes uma resalva: cuidado com copias. **Sobre nenhuma hipótese recomendo que copiem as implementações presentes neste repositório sem entende-las**, caso queira copia-las para aprender e as modificar fique a vontade. 
 
