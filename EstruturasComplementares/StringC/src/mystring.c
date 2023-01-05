@@ -2,7 +2,7 @@
  * @file mystring.c
  * @author Fernando Campos Silva Dal Maria (fernandocsdm@gmail.com)
  * @brief This source code provides a set of features for manipulating strings with high level instructions in C promgraming language.
- * @version 1.0.4
+ * @version 1.1.5
  * @date 01-01-2023
  * 
  * @copyright Copyright (c) 2023
@@ -519,7 +519,7 @@ String* split(const String s, const char c) {
     char* new_str;
 
     int j = 0;
-    for(int i = 0; i < s.len; i++, end++) {
+    for(size_t i = 0; i < s.len; i++, end++) {
         if(s.buf[i] == c) {
             new_str = str_substr(s.buf, start, end);
             strs[j++] = newStr(new_str);
@@ -541,7 +541,7 @@ bool isEmpty(const String s) {
 
 bool equals(const String s1, const String s2) {
     bool value = s1.len == s2.len;
-    for(int i = 0; value && i < s1.len; i++) 
+    for(size_t i = 0; value && i < s1.len; i++) 
         value = s1.buf[i] == s2.buf[i];
 
     return value;
@@ -549,7 +549,7 @@ bool equals(const String s1, const String s2) {
 
 bool lequals(const String s1, const char* const s2) {
     bool value = s1.len == str_length(s2);
-    for(int i = 0; value && i < s1.len; i++) 
+    for(size_t i = 0; value && i < s1.len; i++) 
         value = s1.buf[i] == s2[i];
 
     return value;
@@ -680,7 +680,7 @@ void str_copy(char** s, const char* const c) {
     size_t len = str_length(c);
     *s = (char*)calloc(len + 1, sizeof(char));
 
-    int i = 0;
+    size_t i = 0;
     while(i < len) {
         (*s)[i] = c[i];
         i++;
@@ -692,7 +692,7 @@ void str_copy(char** s, const char* const c) {
 void str_replace(char* const s, const char r, const char c) {
     size_t len = str_length(s);
     
-    for(int i = 0; i < len; i++) 
+    for(size_t i = 0; i < len; i++) 
         if(s[i] == r) s[i] = c;
 }
 
@@ -703,7 +703,7 @@ void str_cut(char** s, const char c) {
     char* str = (char*)calloc(strl + 1, sizeof(char));
 
     int j = 0;
-    for(int i = 0; i < len; i++) 
+    for(size_t i = 0; i < len; i++) 
         if((*s)[i] != c) 
             str[j++] = (*s)[i];
 
@@ -716,7 +716,7 @@ void str_cut(char** s, const char c) {
 void str_upper(char* const s) {
     size_t len = str_length(s);
 
-    for(int i = 0; i < len; i++) 
+    for(size_t i = 0; i < len; i++) 
         if(s[i] >= 97 && s[i] <= 122) 
             s[i] -= 32; 
 }
@@ -724,7 +724,7 @@ void str_upper(char* const s) {
 void str_lower(char* const s) {
     size_t len = str_length(s);
 
-    for(int i = 0; i < len; i++) 
+    for(size_t i = 0; i < len; i++) 
         if(s[i] >= 65 && s[i] <= 90) 
             s[i] += 32; 
 }
@@ -733,7 +733,7 @@ void str_title(char* const s) {
     str_captalize(s);
     size_t len = str_length(s);
 
-    for(int i = 0; i < len; i++)
+    for(size_t i = 0; i < len; i++)
         if(s[i] == ' ' && i < len - 1 && s[i + 1] >= 97 && s[i + 1] <= 122)
             s[i + 1] -= 32;
 }
@@ -741,8 +741,8 @@ void str_title(char* const s) {
 void str_captalize(char* const s) {
     str_lower(s);
 
-    int i = 0;
-    size_t len = str_length(s);
+    size_t i = 0,
+           len = str_length(s);
 
     while(i < len && s[i] == ' ') i++;
 
@@ -844,7 +844,7 @@ unsigned int str_count(const char* const s, const char c) {
     size_t len = str_length(s); 
 
     if(s != NULL)
-        for(int i = 0; i < len; i++)
+        for(size_t i = 0; i < len; i++)
             if(s[i] == c) num++;
 
     return num;
@@ -854,7 +854,7 @@ unsigned int str_count(const char* const s, const char c) {
 bool str_equals(const char* const s1, const char* const s2) {
     size_t len = str_length(s1);
     bool value = len == str_length(s2);
-    for(int i = 0; value && i < len; i++) 
+    for(size_t i = 0; value && i < len; i++) 
         value = s1[i] == s2[i];
     return value;
 }
@@ -865,7 +865,7 @@ bool str_contains(const char* const s, const char* const str) {
     bool value = s != NULL && sl >= strl;
 
     if(value) {
-        for(int i = 0, j = 0; i < sl && j < strl && (sl - i >= strl || j != 0); i++) {
+        for(size_t i = 0, j = 0; i < sl && j < strl && (sl - i >= strl || j != 0); i++) {
             value = s[i] == str[j];
             
             if(value) j++;
@@ -884,7 +884,7 @@ bool str_startsWith(const char* const s, const char* const str) {
            strl = str_length(str);
     bool value = sl >= strl;
 
-    for(int i = 0; value && i < strl; i++) 
+    for(size_t i = 0; value && i < strl; i++) 
         value = s[i] == str[i];
 
     return value;

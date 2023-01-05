@@ -20,7 +20,13 @@ $(BINARY): $(OBJECTS)
 	$(CC) $^ -o $@ 
 	
 $(OBJDIR)/%.o:$(SOURCEDIR)/%.c 
-	$(CC) $(FLAGS) -c $< -o $@ 
+	$(CC) $(CFLAGS) -c $< -o $@ 
+
+valgrind:
+	valgrind --leak-check=yes --show-leak-kinds=all ./$(BINDIR)/./strTests
+
+run: 
+	./$(BINDIR)/./strTests
 
 clean:
 	rm -r $(OBJDIR)/*.o $(BINDIR)/*

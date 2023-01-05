@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include "header/tests.h"
 
-int main(int argc, char** args) {
+int main() {
     printf("\n========= String Tests =========\n\n");
 
     printf("Trim test:        |  %s  |\n", trim_test() ? "true :D" : "false :d");
