@@ -1,5 +1,6 @@
 BINDIR=bin
 OBJDIR=obj
+DEPDIR=lib
 SOURCEDIR=src
 INCDIR=. ./src/header
 
@@ -10,11 +11,12 @@ DEPFLAGS=-MP -MD
 
 CFILES=$(notdir $(foreach D,$(SOURCEDIR),$(wildcard $(D)/*.c)))
 OBJECTS=$(patsubst %.c,$(OBJDIR)/%.o,$(CFILES))
-DEPFILES=$(patsubst %.c,%.d,$(CFILES))
+DEPFILES=$(patsubst %.c,$(DEPDIR)%.d,$(CFILES))
 
 BINARY=$(BINDIR)/strTests
 
 default: $(BINARY)
+	mv $(OBJDIR)/*.d $(DEPDIR)
 
 $(BINARY): $(OBJECTS)
 	$(CC) $^ -o $@ 
@@ -29,4 +31,4 @@ run:
 	./$(BINDIR)/./strTests
 
 clean:
-	rm -r $(OBJDIR)/*.o $(BINDIR)/*
+	rm -r $(OBJDIR)/*.o $(DEPDIR)/*.d $(BINDIR)/* 

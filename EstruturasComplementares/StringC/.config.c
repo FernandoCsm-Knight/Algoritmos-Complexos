@@ -18,5 +18,11 @@ int main() {
     } else    
         printf("The directory bin already exists\n");
 
+    if(stat("./lib", &st)) {
+        mkdir("lib", 0700);
+        printf("The directory lib has been created\n");
+    } else    
+        printf("The directory lib already exists\n");
+
     return 0;
 }
