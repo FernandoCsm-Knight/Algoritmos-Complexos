@@ -22,8 +22,9 @@ int main(int argc, char** args) {
     printf("Contains test:    |  %s  |\n", contains_test() ? "true :D" : "false :d");
     printf("StartsWith test:  |  %s  |\n", startsWith_test() ? "true :D" : "false :d");
     printf("EndsWith test:    |  %s  |\n", endsWith_test() ? "true :D" : "false :d");
+    printf("IoBytes test:     |  %s  |\n", toBytes_test() ? "true :D" : "false :d");
     printf("IndexOf test:     |  %s  |\n", indexOf_test() ? "true :D" : "false :d");
-    printf("lastIdxOf test:   |  %s  |\n", lastIdxOf_test() ? "true :D" : "false :d");
+    printf("LastIdxOf test:   |  %s  |\n", lastIdxOf_test() ? "true :D" : "false :d");
     printf("Compare To test:  |  %s  |\n", compareTo_test() ? "true :D" : "false :d");
     printf("HashCode test:    |  %s  |\n", hashCode_test() ? "true :D" : "false :d");
     printf("ParseInt test:    |  %s  |\n", parseInt_test() ? "true :D" : "false :d");

@@ -23,6 +23,7 @@ bool equals_test();
 bool contains_test();
 bool startsWith_test();
 bool endsWith_test();
+bool toBytes_test();
 bool indexOf_test();
 bool lastIdxOf_test();
 bool compareTo_test();

@@ -284,6 +284,17 @@ typedef struct string {
      */
     bool (*lendsWith)(const struct string, const char* const);
 
+    //=====INT*=====//
+    
+    /**
+     * @brief Return a byte array with a byto for each character in a string.
+     * 
+     * @param s
+     *        The string object. 
+     * @return int* - with a byte for each character in the string.
+     */
+    int* (*toBytes)(const struct string s);
+
     //=====INT=====//
 
     /**
@@ -407,6 +418,9 @@ void str_captalize(char* const s);
 //=====CHAR*=====//
 char* str_trim(const char* const s);
 char* str_substr(const char* const s, int start, int end);
+
+//=====INT*=====//
+int* str_toBytes(const char* const s);
 
 //=====INT=====//
 int str_indexOf(const char* const s, const char c);

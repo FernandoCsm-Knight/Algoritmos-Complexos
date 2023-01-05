@@ -272,6 +272,17 @@ bool endsWith(const String s, const String str);
  */
 bool lendsWith(const String s, const char* const str);
 
+//=====INT*=====//
+
+/**
+ * @brief Return a byte array with a byto for each character in a string.
+ * 
+ * @param s
+ *        The string object. 
+ * @return int* - with a byte for each character in the string.
+ */
+int* toBytes(const String s);
+
 //=====INT=====//
 
 /**
@@ -396,6 +407,9 @@ String newStr(const char* const str) {
     s.lstartsWith = lstartsWith;
     s.endsWith = endsWith;
     s.lendsWith = lendsWith;
+
+    //=====INT*=====//
+    s.toBytes = toBytes;
 
     //=====INT=====//
     s.indexOf = indexOf;
@@ -563,6 +577,11 @@ bool endsWith(const String s, const String str) {
 
 bool lendsWith(const String s, const char* const str) {
     return str_endsWith(s.buf, str);
+}
+
+//=====INT*=====//
+int* toBytes(const String s) {
+    return str_toBytes(s.buf);
 }
 
 //=====INT=====//
@@ -758,6 +777,18 @@ char* str_substr(const char* const s, int start, int end) {
 
     str[j] = '\0';
     return str;
+}
+
+//=====INT*=====//
+int* str_toBytes(const char* const s) {
+    int len = str_length(s);
+    
+    int* bytes = (int*)calloc(len, sizeof(int));
+
+    for(int i = 0; i < len; i++) 
+        bytes[i] = (int)s[i];
+
+    return bytes;
 }
 
 //=====INT=====//

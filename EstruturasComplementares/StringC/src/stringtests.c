@@ -233,6 +233,23 @@ bool endsWith_test() {
     return value;
 }
 
+//=====TO_BYTES=====//
+bool toBytes_test() {
+    String s = newStr("Fernando");
+
+    int* arr = s.toBytes(s);
+    int template[] = {70, 101, 114, 110, 97, 110, 100, 111};
+
+    bool value = s.len == strlen(s.buf);
+    
+    for(int i = 0; value && i < s.len; i++) 
+        value = template[i] == arr[i];
+
+    free(arr);
+    delStr(s);
+    return value;
+}
+
 //=====INDEX_OF=====//
 bool indexOf_test() {
     String s = newStr("Fernando Campos Silva Dal Maria");
