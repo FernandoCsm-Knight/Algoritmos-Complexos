@@ -31,5 +31,6 @@ bool hashCode_test();
 bool parseInt_test();
 bool parseFloat_test();
 bool length_test();
+bool count_test();
 
 #endif

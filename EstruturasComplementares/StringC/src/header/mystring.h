@@ -2,7 +2,7 @@
  * @file mystring.h
  * @author Fernando Campos Silva Dal Maria (fernandocsdm@gmail.com)
  * @brief This lib provides a string struct with several features for manipulating strings with high level instructions in C.
- * @version 1.1.5
+ * @version 1.2.5
  * @date 01-01-2023
  * 
  * @copyright Copyright (c) 2023
@@ -381,6 +381,17 @@ typedef struct string {
      * @return size_t 
      */
     size_t (*length)(const struct string);
+
+    /**
+     * @brief Returns the total occurrences of a given char in a string.
+     * 
+     * @param s 
+     *        The string object.
+     * @param c 
+     *        The target character.
+     * @return size_t 
+     */
+    size_t (*count)(const struct string s, const char c);
 } String;
 
 //=====CONSTRUCTOR=====//
@@ -428,9 +439,6 @@ int str_lastIndexOf(const char* const s, const char c);
 int str_compareTo(const char* const s, const char* const str);
 int str_hashCode(const char* const s);
 
-//=====UNS_INT=====//
-unsigned int str_count(const char* const s, const char c);
-
 //=====BOOL=====//
 bool str_equals(const char* const s1, const char* const s2);
 bool str_contains(const char* const s, const char* const str);
@@ -439,5 +447,6 @@ bool str_endsWith(const char* const s, const char* const str);
 
 //=====SIZE_T=====//
 size_t str_length(const char* const s);
+size_t str_count(const char* const s, const char c);
 
 #endif

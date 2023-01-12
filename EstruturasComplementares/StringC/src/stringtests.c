@@ -335,3 +335,16 @@ bool length_test() {
     delStr(s);
     return value; 
 }
+
+//=====COUNT=====//
+bool count_test() {
+    String s = newStr("Fernando Campos Silva Dal Maria");
+
+    bool value = s.count(s, 'F') == 1;
+    value &= s.count(s, 'o') == 2;
+    value &= s.count(s, 'K') == 0;
+    value &= s.len == strlen(s.buf);
+
+    delStr(s);
+    return value;
+}

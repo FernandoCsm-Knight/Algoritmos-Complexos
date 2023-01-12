@@ -2,7 +2,7 @@
  * @file mystring.c
  * @author Fernando Campos Silva Dal Maria (fernandocsdm@gmail.com)
  * @brief This source code provides a set of features for manipulating strings with high level instructions in C promgraming language.
- * @version 1.1.5
+ * @version 1.2.5
  * @date 01-01-2023
  * 
  * @copyright Copyright (c) 2023
@@ -369,6 +369,17 @@ double parseFloat(const String s);
  */
 size_t length(const String s);
 
+/**
+ * @brief Returns the total occurrences of a given char in a string.
+ * 
+ * @param s 
+ *        The string object.
+ * @param c 
+ *        The target character.
+ * @return size_t 
+ */
+size_t count(const String s, const char c);
+
 //=====CONSTRUCTOR=====//
 String newStr(const char* const str) {
     String s;
@@ -424,6 +435,7 @@ String newStr(const char* const str) {
 
     //=====SIZE_T=====//
     s.length = length;
+    s.count = count;
 
     if(str != NULL) 
         s.lcopy(&s, str);
@@ -652,9 +664,13 @@ double parseFloat(const String s) {
     return (pos) ? sum : -sum;
 }
 
-//=====size_t=====//
+//=====SIZE_T=====//
 size_t length(const String s) {
     return str_length(s.buf);
+}
+
+size_t count(const String s, const char c) {
+    return str_count(s.buf, c);
 }
 
 //=====CHAR*_MANIP=====//
@@ -838,18 +854,6 @@ int str_hashCode(const char* const s) {
     return sum;
 }
 
-//=====UNS_INT=====//
-unsigned int str_count(const char* const s, const char c) {
-    unsigned int num = 0;
-    size_t len = str_length(s); 
-
-    if(s != NULL)
-        for(size_t i = 0; i < len; i++)
-            if(s[i] == c) num++;
-
-    return num;
-}
-
 //=====BOOL=====//
 bool str_equals(const char* const s1, const char* const s2) {
     size_t len = str_length(s1);
@@ -907,4 +911,15 @@ size_t str_length(const char* const s) {
     if(s != NULL)
         while(s[len] != '\0') len++;
     return len;
+}
+
+size_t str_count(const char* const s, const char c) {
+    size_t num = 0;
+    size_t len = str_length(s); 
+
+    if(s != NULL)
+        for(size_t i = 0; i < len; i++)
+            if(s[i] == c) num++;
+
+    return num;
 }

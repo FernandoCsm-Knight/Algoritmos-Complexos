@@ -29,7 +29,8 @@ int main() {
     printf("HashCode test:    |  %s  |\n", hashCode_test() ? "true :D" : "false :d");
     printf("ParseInt test:    |  %s  |\n", parseInt_test() ? "true :D" : "false :d");
     printf("ParseFloat test:  |  %s  |\n", parseFloat_test() ? "true :D" : "false :d");
-    printf("Length test:      |  %s  |\n\n", length_test() ? "true :D" : "false :d");
+    printf("Length test:      |  %s  |\n", length_test() ? "true :D" : "false :d");
+    printf("Count test:       |  %s  |\n\n", count_test() ? "true :D" : "false :d");
 
     return 0;
 }
