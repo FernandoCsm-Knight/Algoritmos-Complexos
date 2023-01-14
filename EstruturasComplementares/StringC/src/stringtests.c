@@ -40,10 +40,16 @@ bool replace_test() {
 //=====CUT=====//
 bool cut_test() {
     String s = newStr(" aaaabbbbababababakdbdqwyahhvcjasowebcj");
-    s.cut(&s, 'a');
+    s.lcut(&s, "a");
 
     bool value = s.len == strlen(s.buf);
     value &= strcmp(s.buf, " bbbbbbbbkdbdqwyhhvcjsowebcj") == 0;
+
+    s.lcopy(&s, "erneernFernernandoerne");
+    s.lcut(&s, "ern");
+
+    value &= s.len == strlen(s.buf);
+    value &= strcmp(s.buf, "eFandoe") == 0;
 
     delStr(s);
     return value; 
@@ -152,7 +158,7 @@ bool clone_test() {
 //=====SPLIT=====//
 bool split_test() {
     String s = newStr(" Fernando Campos Silva Dal Maria 0123456789! ");
-    String* strs = s.split(s, ' ');
+    String* strs = s.split(s, " ");
     char* arr[] = {"", "Fernando", "Campos", "Silva", "Dal", "Maria", "0123456789!", ""};
 
     bool value = s.len == strlen(s.buf);
@@ -338,11 +344,15 @@ bool length_test() {
 
 //=====COUNT=====//
 bool count_test() {
-    String s = newStr("Fernando Campos Silva Dal Maria");
+    String s = newStr("erFerernandoer");
 
-    bool value = s.count(s, 'F') == 1;
-    value &= s.count(s, 'o') == 2;
-    value &= s.count(s, 'K') == 0;
+    bool value = s.lcount(s, "F") == 1;
+    value &= s.lcount(s, "o") == 1;
+    value &= s.lcount(s, "K") == 0;
+    value &= s.lcount(s, "lqwkn") == 0;
+    value &= s.lcount(s, "er") == 4;
+    value &= s.lcount(s, "nando") == 1;
+    value &= s.lcount(s, "oer") == 1;
     value &= s.len == strlen(s.buf);
 
     delStr(s);

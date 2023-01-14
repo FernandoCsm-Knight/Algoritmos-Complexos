@@ -2,7 +2,7 @@
  * @file mystring.h
  * @author Fernando Campos Silva Dal Maria (fernandocsdm@gmail.com)
  * @brief This lib provides a string struct with several features for manipulating strings with high level instructions in C.
- * @version 1.2.5
+ * @version 1.3.7
  * @date 01-01-2023
  * 
  * @copyright Copyright (c) 2023
@@ -70,14 +70,24 @@ typedef struct string {
     void (*replace)(struct string* const, const char, const char);
 
     /**
-     * @brief Removes all occurrences of a given char.
+     * @brief Removes all occurrences of a given substring.
      * 
      * @param s 
      *        The reference to specify a string.
-     * @param c 
-     *        The character that should be removed.
+     * @param str
+     *        The substring that should be removed.
      */
-    void (*cut)(struct string* const, const char);
+    void (*cut)(struct string* const, const struct string);
+
+    /**
+     * @brief Removes all occurrences of a given substring.
+     * 
+     * @param s 
+     *        The reference to specify a string.
+     * @param str
+     *        The substring that should be removed.
+     */
+    void (*lcut)(struct string* const, const char* const);
 
     /**
      * @brief Copies a given string to another.
@@ -170,11 +180,11 @@ typedef struct string {
      * 
      * @param s 
      *        The string object.
-     * @param c 
+     * @param regex 
      *        The character that specifies the break point.
      * @return String* 
      */
-    struct string* (*split)(const struct string, const char);
+    struct string* (*split)(const struct string, const char* const);
 
     //=====BOOL=====//
 
@@ -383,15 +393,26 @@ typedef struct string {
     size_t (*length)(const struct string);
 
     /**
-     * @brief Returns the total occurrences of a given char in a string.
+     * @brief Returns the total of occurrences of a given substring in a string.
      * 
      * @param s 
      *        The string object.
-     * @param c 
-     *        The target character.
+     * @param str 
+     *        The target substring.
      * @return size_t 
      */
-    size_t (*count)(const struct string s, const char c);
+    size_t (*count)(const struct string, const struct string);
+
+    /**
+     * @brief Returns the total of occurrences of a given substring in a string.
+     * 
+     * @param s 
+     *        The string object.
+     * @param str 
+     *        The target substring.
+     * @return size_t 
+     */
+    size_t (*lcount)(const struct string, const char* const);
 } String;
 
 //=====CONSTRUCTOR=====//
@@ -420,7 +441,7 @@ void delStr(String s);
 void str_concat(char** s, const char* const str);
 void str_copy(char** s, const char* const c);
 void str_replace(char* const s, const char r, const char c);
-void str_cut(char** s, const char c);
+void str_cut(char** s, const char* const str);
 void str_upper(char* const s);
 void str_lower(char* const s);
 void str_title(char* const s);
@@ -447,6 +468,6 @@ bool str_endsWith(const char* const s, const char* const str);
 
 //=====SIZE_T=====//
 size_t str_length(const char* const s);
-size_t str_count(const char* const s, const char c);
+size_t str_count(const char* const s, const char* const str);
 
 #endif

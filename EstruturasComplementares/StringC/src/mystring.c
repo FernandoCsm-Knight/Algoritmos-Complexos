@@ -2,7 +2,7 @@
  * @file mystring.c
  * @author Fernando Campos Silva Dal Maria (fernandocsdm@gmail.com)
  * @brief This source code provides a set of features for manipulating strings with high level instructions in C promgraming language.
- * @version 1.2.5
+ * @version 1.3.7
  * @date 01-01-2023
  * 
  * @copyright Copyright (c) 2023
@@ -59,14 +59,24 @@ void lconcat(String* const s, const char* const str);
 void replace(String* const s, const char r, const char c);
 
 /**
- * @brief Removes all occurrences of a given char.
+ * @brief Removes all occurrences of a given substring.
  * 
  * @param s 
  *        The reference to specify a string.
- * @param c 
- *        The character that should be removed.
+ * @param str
+ *        The substring that should be removed.
  */
-void cut(String* const s, const char c);
+void cut(String* const s, const String str);
+
+/**
+ * @brief Removes all occurrences of a given substring.
+ * 
+ * @param s 
+ *        The reference to specify a string.
+ * @param str
+ *        The substring that should be removed.
+ */
+void lcut(String* const s, const char* const str);
 
 /**
  * @brief Copies a given string to another.
@@ -158,11 +168,11 @@ String clone(const String s);
  * 
  * @param s 
  *        The string object.
- * @param c 
+ * @param regex 
  *        The character that specifies the break point.
  * @return String* 
  */
-String* split(const String s, const char c);
+String* split(const String s, const char* const regex);
 
 //=====BOOL=====//
 
@@ -370,15 +380,26 @@ double parseFloat(const String s);
 size_t length(const String s);
 
 /**
- * @brief Returns the total occurrences of a given char in a string.
+ * @brief Returns the total of occurrences of a given substring in a string.
  * 
  * @param s 
  *        The string object.
- * @param c 
- *        The target character.
+ * @param str 
+ *        The target substring.
  * @return size_t 
  */
-size_t count(const String s, const char c);
+size_t count(const String s, const String str);
+
+/**
+ * @brief Returns the total of occurrences of a given substring in a string.
+ * 
+ * @param s 
+ *        The string object.
+ * @param str 
+ *        The target substring.
+ * @return size_t 
+ */
+size_t lcount(const String s, const char* const str);
 
 //=====CONSTRUCTOR=====//
 String newStr(const char* const str) {
@@ -393,6 +414,7 @@ String newStr(const char* const str) {
     s.lconcat = lconcat;
     s.replace = replace;
     s.cut = cut;
+    s.lcut = lcut;
     s.copy = copy;
     s.lcopy = lcopy;
     s.upper = upper;
@@ -436,6 +458,7 @@ String newStr(const char* const str) {
     //=====SIZE_T=====//
     s.length = length;
     s.count = count;
+    s.lcount = lcount;
 
     if(str != NULL) 
         s.lcopy(&s, str);
@@ -471,8 +494,13 @@ void replace(String* const s, const char r, const char c) {
     str_replace(s->buf, r, c);
 }
 
-void cut(String* const s, const char c) {
-    str_cut(&s->buf, c);
+void cut(String* const s, const String str) {
+    str_cut(&s->buf, str.buf);
+    s->len = str_length(s->buf);
+}
+
+void lcut(String* const s, const char* const str) {
+    str_cut(&s->buf, str);
     s->len = str_length(s->buf);
 }
 
@@ -522,8 +550,8 @@ String clone(const String s) {
 }
 
 //=====STRING*=====//
-String* split(const String s, const char c) {
-    String* strs = (String*)calloc(str_count(s.buf, c) + 1, sizeof(String));
+String* split(const String s, const char* const regex) {
+    String* strs = (String*)calloc(str_count(s.buf, regex) + 1, sizeof(String));
 
     int start = 0,
         end = 0;
@@ -532,7 +560,7 @@ String* split(const String s, const char c) {
 
     int j = 0;
     for(size_t i = 0; i < s.len; i++, end++) {
-        if(s.buf[i] == c) {
+        if(s.buf[i] == regex[0]) {
             new_str = str_substr(s.buf, start, end);
             strs[j++] = newStr(new_str);
             start = end + 1;
@@ -654,8 +682,8 @@ double parseFloat(const String s) {
     }
     
     String str = s.clone(s);
-    str.cut(&str, '.');
-    str.cut(&str, ',');
+    str.lcut(&str, ".");
+    str.lcut(&str, ",");
 
     for(int k = str.len - 1; k >= sig; k--, j *= 10) 
         sum += (str.buf[k] - 48) * j;
@@ -669,8 +697,12 @@ size_t length(const String s) {
     return str_length(s.buf);
 }
 
-size_t count(const String s, const char c) {
-    return str_count(s.buf, c);
+size_t count(const String s, const String str) {
+    return str_count(s.buf, str.buf);
+}
+
+size_t lcount(const String s, const char* const str) {
+    return str_count(s.buf, str);
 }
 
 //=====CHAR*_MANIP=====//
@@ -712,21 +744,32 @@ void str_replace(char* const s, const char r, const char c) {
         if(s[i] == r) s[i] = c;
 }
 
-void str_cut(char** s, const char c) {
-    size_t len = str_length(*s),
-        strl = len - str_count(*s, c);
+void str_cut(char** s, const char* const str) {
+    size_t sl = str_length(*s),
+           strl = str_length(str),
+           nstrl = sl - str_count(*s, str) * strl;
 
-    char* str = (char*)calloc(strl + 1, sizeof(char));
+    char* nstr = (char*)calloc(nstrl + 1, sizeof(char));
 
-    int j = 0;
-    for(size_t i = 0; i < len; i++) 
-        if((*s)[i] != c) 
-            str[j++] = (*s)[i];
+    bool found;
+    size_t k = 0;
+    for(size_t i = 0, j = 0; i < sl; i++) {
+        
+        j = 0;
+        found = ((*s)[i] == str[j]);
+        while(found && j < strl) {
+            found = (*s)[i + j] == str[j];
+            j++;
+        } 
 
-    str[j] = '\0';
+        if(found) i += j - 1;
+        else nstr[k++] = (*s)[i];
+    }
+
+    nstr[k] = '\0';
 
     free(*s);
-    *s = str;
+    *s = nstr;
 }
 
 void str_upper(char* const s) {
@@ -913,13 +956,19 @@ size_t str_length(const char* const s) {
     return len;
 }
 
-size_t str_count(const char* const s, const char c) {
+size_t str_count(const char* const s, const char* const str) {        
     size_t num = 0;
-    size_t len = str_length(s); 
+    size_t sl = str_length(s),
+           strl = str_length(str); 
 
-    if(s != NULL)
-        for(size_t i = 0; i < len; i++)
-            if(s[i] == c) num++;
+    bool found;
+    for(size_t i = 0, j = 0; i <= sl - strl; i++) {
+        found = true;
+        for(j = 0; found && j < strl; j++) 
+            found = s[i + j] == str[j];
+        
+        if(found) num++;
+    }    
 
     return num;
 }
