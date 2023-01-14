@@ -7,6 +7,7 @@ int main() {
     printf("Trim test:        |  %s  |\n", trim_test() ? "true :D" : "false :d");
     printf("Concat test:      |  %s  |\n", concat_test() ? "true :D" : "false :d");
     printf("Replace test:     |  %s  |\n", replace_test() ? "true :D" : "false :d");
+    printf("Add test:         |  %s  |\n", add_test() ? "true :D" : "false :d");
     printf("Cut test:         |  %s  |\n", cut_test() ? "true :D" : "false :d");
     printf("Copy test:        |  %s  |\n", copy_test() ? "true :D" : "false :d");
     printf("Upper test:       |  %s  |\n", upper_test() ? "true :D" : "false :d");
@@ -29,7 +30,8 @@ int main() {
     printf("HashCode test:    |  %s  |\n", hashCode_test() ? "true :D" : "false :d");
     printf("ParseInt test:    |  %s  |\n", parseInt_test() ? "true :D" : "false :d");
     printf("ParseFloat test:  |  %s  |\n", parseFloat_test() ? "true :D" : "false :d");
-    printf("Length test:      |  %s  |\n\n", length_test() ? "true :D" : "false :d");
+    printf("Length test:      |  %s  |\n", length_test() ? "true :D" : "false :d");
+    printf("Count test:       |  %s  |\n\n", count_test() ? "true :D" : "false :d");
 
     return 0;
 }

@@ -2,7 +2,7 @@
  * @file mystring.h
  * @author Fernando Campos Silva Dal Maria (fernandocsdm@gmail.com)
  * @brief This lib provides a string struct with several features for manipulating strings with high level instructions in C.
- * @version 1.1.5
+ * @version 1.3.7
  * @date 01-01-2023
  * 
  * @copyright Copyright (c) 2023
@@ -58,26 +58,56 @@ typedef struct string {
     void (*lconcat)(struct string* const, const char* const);
 
     /**
-     * @brief Replaces all occurrences of a given char by another.
+     * @brief Replaces all occurrences of a given substring by another.
      * 
      * @param s 
      *        The reference to specify a string. 
-     * @param r
-     *        Character to be replaced. 
-     * @param c 
-     *        Character to be reseted.
+     * @param reg
+     *        Old substring that must be replaced. 
+     * @param str
+     *        New substring to be reseted.
      */
-    void (*replace)(struct string* const, const char, const char);
+    void (*replace)(struct string* const, const char* const, const char* const);
 
     /**
-     * @brief Removes all occurrences of a given char.
+     * @brief Interpolates a given string into another, at a given index.
+     * 
+     * @param s 
+     *        The string object.
+     * @param str
+     *        The target string to be interpolated.
+     */
+    void (*add)(struct string* const, const struct string, size_t);
+
+    /**
+     * @brief Interpolates a given string into another, at a given index.
+     * 
+     * @param s 
+     *        The string object.
+     * @param str
+     *        The target character sequence to be interpolated.
+     */
+    void (*ladd)(struct string* const, const char* const, size_t);
+
+    /**
+     * @brief Removes all occurrences of a given substring.
      * 
      * @param s 
      *        The reference to specify a string.
-     * @param c 
-     *        The character that should be removed.
+     * @param str
+     *        The substring that should be removed.
      */
-    void (*cut)(struct string* const, const char);
+    void (*cut)(struct string* const, const struct string);
+
+    /**
+     * @brief Removes all occurrences of a given substring.
+     * 
+     * @param s 
+     *        The reference to specify a string.
+     * @param str
+     *        The substring that should be removed.
+     */
+    void (*lcut)(struct string* const, const char* const);
 
     /**
      * @brief Copies a given string to another.
@@ -170,11 +200,11 @@ typedef struct string {
      * 
      * @param s 
      *        The string object.
-     * @param c 
+     * @param regex 
      *        The character that specifies the break point.
      * @return String* 
      */
-    struct string* (*split)(const struct string, const char);
+    struct string* (*split)(const struct string, const char* const);
 
     //=====BOOL=====//
 
@@ -298,27 +328,49 @@ typedef struct string {
     //=====INT=====//
 
     /**
-     * @brief Returns the index within this string of the first occurrence of the specified character. 
+     * @brief Returns the index within this string for the first occurrence of the substring. 
      * 
      * @param s 
      *        The string object.
-     * @param c 
-     *        The target character.
-     * @return int - index of the first occurrence of the character in the character sequence represented by this object, or -1 if the character does not occur.
+     * @param str
+     *        The target substring.
+     * @return int - index of the first occurrence of the substring in the character sequence represented by this object, or -1 if the character does not occur.
      */
-    int (*indexOf)(const struct string, const char);
-
+    int (*indexOf)(const struct string, const struct string);
 
     /**
-     * @brief Returns the index within this string of the last occurrence of the specified character. 
+     * @brief Returns the index within this string for the first occurrence of the substring. 
      * 
      * @param s 
      *        The string object.
-     * @param c 
-     *        The target character.
-     * @return int - index of the last occurrence of the character in the character sequence represented by this object, or -1 if the character does not occur.
+     * @param str
+     *        The target substring.
+     * @return int - index of the first occurrence of the substring in the character sequence represented by this object, or -1 if the character does not occur.
      */
-    int (*lastIndexOf)(const struct string, const char);
+    int (*lindexOf)(const struct string, const char* const);
+
+    /**
+     * @brief Returns the index within this string for the last occurrence of the substring. 
+     * 
+     * @param s 
+     *        The string object.
+     * @param str
+     *        The target substring.
+     * @return int - index of the last occurrence of the substring in the character sequence represented by this object, or -1 if the character does not occur.
+     */
+    int (*lastIndexOf)(const struct string, const struct string);
+
+    /**
+     * @brief Returns the index within this string for the last occurrence of the substring. 
+     * 
+     * @param s 
+     *        The string object.
+     * @param str
+     *        The target substring.
+     * @return int - index of the last occurrence of the substring in the character sequence represented by this object, or -1 if the character does not occur.
+     */
+    int (*llastIndexOf)(const struct string, const char* const);
+
 
     /**
      * @brief Compares two strings lexicographically. The comparison is based on the Unicode value of each character in the strings. The result is a negative integer if this String object lexicographically precedes the argument string. The result is a positive integer if this String object lexicographically follows the argument string. The result is zero if the strings are equal.
@@ -381,6 +433,28 @@ typedef struct string {
      * @return size_t 
      */
     size_t (*length)(const struct string);
+
+    /**
+     * @brief Returns the total of occurrences of a given substring in a string.
+     * 
+     * @param s 
+     *        The string object.
+     * @param str 
+     *        The target substring.
+     * @return size_t 
+     */
+    size_t (*count)(const struct string, const struct string);
+
+    /**
+     * @brief Returns the total of occurrences of a given substring in a string.
+     * 
+     * @param s 
+     *        The string object.
+     * @param str 
+     *        The target substring.
+     * @return size_t 
+     */
+    size_t (*lcount)(const struct string, const char* const);
 } String;
 
 //=====CONSTRUCTOR=====//
@@ -408,8 +482,9 @@ void delStr(String s);
 //=====VOID=====//
 void str_concat(char** s, const char* const str);
 void str_copy(char** s, const char* const c);
-void str_replace(char* const s, const char r, const char c);
-void str_cut(char** s, const char c);
+void str_replace(char** const s, const char* const reg, const char* const str);
+void str_add(char** s, const char* const str, size_t idx);
+void str_cut(char** s, const char* const str);
 void str_upper(char* const s);
 void str_lower(char* const s);
 void str_title(char* const s);
@@ -423,13 +498,10 @@ char* str_substr(const char* const s, int start, int end);
 int* str_toBytes(const char* const s);
 
 //=====INT=====//
-int str_indexOf(const char* const s, const char c);
-int str_lastIndexOf(const char* const s, const char c);
+int str_indexOf(const char* const s, const char* const str);
+int str_lastIndexOf(const char* const s, const char* const str);
 int str_compareTo(const char* const s, const char* const str);
 int str_hashCode(const char* const s);
-
-//=====UNS_INT=====//
-unsigned int str_count(const char* const s, const char c);
 
 //=====BOOL=====//
 bool str_equals(const char* const s1, const char* const s2);
@@ -439,5 +511,6 @@ bool str_endsWith(const char* const s, const char* const str);
 
 //=====SIZE_T=====//
 size_t str_length(const char* const s);
+size_t str_count(const char* const s, const char* const str);
 
 #endif

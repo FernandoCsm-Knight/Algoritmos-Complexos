@@ -1,5 +1,6 @@
 BINDIR=bin
 OBJDIR=obj
+DEPDIR=lib
 SOURCEDIR=src
 INCDIR=. ./src/header
 
@@ -10,14 +11,14 @@ DEPFLAGS=-MP -MD
 
 CFILES=$(notdir $(foreach D,$(SOURCEDIR),$(wildcard $(D)/*.c)))
 OBJECTS=$(patsubst %.c,$(OBJDIR)/%.o,$(CFILES))
-DEPFILES=$(patsubst %.c,%.d,$(CFILES))
 
 BINARY=$(BINDIR)/strTests
 
 default: $(BINARY)
-
+	
 $(BINARY): $(OBJECTS)
 	$(CC) $^ -o $@ 
+	$(foreach F,$(wildcard $(OBJDIR)/*.d),mv $(F) -t $(DEPDIR);)
 	
 $(OBJDIR)/%.o:$(SOURCEDIR)/%.c 
 	$(CC) $(CFLAGS) -c $< -o $@ 
@@ -25,8 +26,10 @@ $(OBJDIR)/%.o:$(SOURCEDIR)/%.c
 valgrind:
 	valgrind --leak-check=yes --show-leak-kinds=all ./$(BINDIR)/./strTests
 
-run: 
+run: $(BINARY)
 	./$(BINDIR)/./strTests
 
 clean:
-	rm -r $(OBJDIR)/*.o $(BINDIR)/*
+	$(foreach F,$(wildcard $(OBJDIR)/*.o),rm -r $(F);) 
+	$(foreach F,$(wildcard $(DEPDIR)/*.d),rm -r $(F);)
+	rm -r $(BINDIR)/* 

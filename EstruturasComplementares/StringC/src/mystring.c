@@ -2,7 +2,7 @@
  * @file mystring.c
  * @author Fernando Campos Silva Dal Maria (fernandocsdm@gmail.com)
  * @brief This source code provides a set of features for manipulating strings with high level instructions in C promgraming language.
- * @version 1.1.5
+ * @version 1.3.7
  * @date 01-01-2023
  * 
  * @copyright Copyright (c) 2023
@@ -47,26 +47,56 @@ void concat(String* const s, const String str);
 void lconcat(String* const s, const char* const str);
 
 /**
- * @brief Replaces all occurrences of a given char by another.
+ * @brief Replaces all occurrences of a given substring by another.
  * 
  * @param s 
  *        The reference to specify a string. 
- * @param r
- *        Character to be replaced. 
- * @param c 
- *        Character to be reseted.
+ * @param reg
+ *        Old substring that must be replaced. 
+ * @param str
+ *        New substring to be reseted.
  */
-void replace(String* const s, const char r, const char c);
+void replace(String* const s, const char* const reg, const char* const str);
 
 /**
- * @brief Removes all occurrences of a given char.
+ * @brief Interpolates a given string into another, at a given index.
+ * 
+ * @param s 
+ *        The string object.
+ * @param str
+ *        The target string to be interpolated.
+ */
+void add(String* const s, const String str, size_t idx);
+
+/**
+ * @brief Interpolates a given string into another, at a given index.
+ * 
+ * @param s 
+ *        The string object.
+ * @param str
+ *        The target character sequence to be interpolated.
+ */
+void ladd(String* const s, const char* const str, size_t idx);
+
+/**
+ * @brief Removes all occurrences of a given substring.
  * 
  * @param s 
  *        The reference to specify a string.
- * @param c 
- *        The character that should be removed.
+ * @param str
+ *        The substring that should be removed.
  */
-void cut(String* const s, const char c);
+void cut(String* const s, const String str);
+
+/**
+ * @brief Removes all occurrences of a given substring.
+ * 
+ * @param s 
+ *        The reference to specify a string.
+ * @param str
+ *        The substring that should be removed.
+ */
+void lcut(String* const s, const char* const str);
 
 /**
  * @brief Copies a given string to another.
@@ -158,11 +188,11 @@ String clone(const String s);
  * 
  * @param s 
  *        The string object.
- * @param c 
+ * @param regex 
  *        The character that specifies the break point.
  * @return String* 
  */
-String* split(const String s, const char c);
+String* split(const String s, const char* const regex);
 
 //=====BOOL=====//
 
@@ -286,26 +316,48 @@ int* toBytes(const String s);
 //=====INT=====//
 
 /**
- * @brief Returns the index within this string of the first occurrence of the specified character. 
+ * @brief Returns the index within this string for the first occurrence of the substring. 
  * 
  * @param s 
  *        The string object.
- * @param c 
- *        The target character.
- * @return int - index of the first occurrence of the character in the character sequence represented by this object, or -1 if the character does not occur.
+ * @param str
+ *        The target substring.
+ * @return int - index of the first occurrence of the substring in the string object represented by this object, or -1 if the character does not occur.
  */
-int indexOf(const String s, const char c);
+int indexOf(const String s, const String str);
 
 /**
- * @brief Returns the index within this string of the last occurrence of the specified character. 
+ * @brief Returns the index within this string for the first occurrence of the substring. 
  * 
  * @param s 
  *        The string object.
- * @param c 
- *        The target character.
- * @return int - index of the last occurrence of the character in the character sequence represented by this object, or -1 if the character does not occur.
+ * @param str
+ *        The target substring.
+ * @return int - index of the first occurrence of the substring in the character sequence represented by this object, or -1 if the character does not occur.
  */
-int lastIndexOf(const String s, const char c);
+int lindexOf(const String s, const char* const str);
+
+/**
+ * @brief Returns the index within this string for the last occurrence of the substring. 
+ * 
+ * @param s 
+ *        The string object.
+ * @param str
+ *        The target substring.
+ * @return int - index of the last occurrence of the substring in the string represented by this object, or -1 if the character does not occur.
+ */
+int lastIndexOf(const String s, const String str);
+
+/**
+ * @brief Returns the index within this string for the last occurrence of the substring. 
+ * 
+ * @param s 
+ *        The string object.
+ * @param str
+ *        The target substring.
+ * @return int - index of the last occurrence of the substring in the character sequence represented by this object, or -1 if the character does not occur.
+ */
+int llastIndexOf(const String s, const char* const str);
 
 /**
  * @brief Compares two strings lexicographically. The comparison is based on the Unicode value of each character in the strings. The result is a negative integer if this String object lexicographically precedes the argument string. The result is a positive integer if this String object lexicographically follows the argument string. The result is zero if the strings are equal.
@@ -369,6 +421,28 @@ double parseFloat(const String s);
  */
 size_t length(const String s);
 
+/**
+ * @brief Returns the total of occurrences of a given substring in a string.
+ * 
+ * @param s 
+ *        The string object.
+ * @param str 
+ *        The target substring.
+ * @return size_t 
+ */
+size_t count(const String s, const String str);
+
+/**
+ * @brief Returns the total of occurrences of a given substring in a string.
+ * 
+ * @param s 
+ *        The string object.
+ * @param str 
+ *        The target substring.
+ * @return size_t 
+ */
+size_t lcount(const String s, const char* const str);
+
 //=====CONSTRUCTOR=====//
 String newStr(const char* const str) {
     String s;
@@ -381,7 +455,10 @@ String newStr(const char* const str) {
     s.concat = concat;
     s.lconcat = lconcat;
     s.replace = replace;
+    s.add = add;
+    s.ladd = ladd;
     s.cut = cut;
+    s.lcut = lcut;
     s.copy = copy;
     s.lcopy = lcopy;
     s.upper = upper;
@@ -413,7 +490,9 @@ String newStr(const char* const str) {
 
     //=====INT=====//
     s.indexOf = indexOf;
+    s.lindexOf = lindexOf;
     s.lastIndexOf = lastIndexOf;
+    s.llastIndexOf = llastIndexOf;
     s.compareTo = compareTo;
     s.lcompareTo = lcompareTo;
     s.hashCode = hashCode;
@@ -424,6 +503,8 @@ String newStr(const char* const str) {
 
     //=====SIZE_T=====//
     s.length = length;
+    s.count = count;
+    s.lcount = lcount;
 
     if(str != NULL) 
         s.lcopy(&s, str);
@@ -455,12 +536,28 @@ void lconcat(String* const s, const char* const str) {
     s->len = str_length(s->buf);
 }
 
-void replace(String* const s, const char r, const char c) {
-    str_replace(s->buf, r, c);
+void replace(String* const s, const char* const reg, const char* const str) {
+    str_replace(&s->buf, reg, str);
+    s->len = str_length(s->buf);
 }
 
-void cut(String* const s, const char c) {
-    str_cut(&s->buf, c);
+void add(String* const s, const String str, size_t idx) {
+    str_add(&s->buf, str.buf, idx);
+    s->len = str_length(s->buf);
+}
+
+void ladd(String* const s, const char* const str, size_t idx) {
+    str_add(&s->buf, str, idx);
+    s->len = str_length(s->buf);
+}
+
+void cut(String* const s, const String str) {
+    str_cut(&s->buf, str.buf);
+    s->len = str_length(s->buf);
+}
+
+void lcut(String* const s, const char* const str) {
+    str_cut(&s->buf, str);
     s->len = str_length(s->buf);
 }
 
@@ -510,8 +607,8 @@ String clone(const String s) {
 }
 
 //=====STRING*=====//
-String* split(const String s, const char c) {
-    String* strs = (String*)calloc(str_count(s.buf, c) + 1, sizeof(String));
+String* split(const String s, const char* const regex) {
+    String* strs = (String*)calloc(str_count(s.buf, regex) + 1, sizeof(String));
 
     int start = 0,
         end = 0;
@@ -520,7 +617,7 @@ String* split(const String s, const char c) {
 
     int j = 0;
     for(size_t i = 0; i < s.len; i++, end++) {
-        if(s.buf[i] == c) {
+        if(s.buf[i] == regex[0]) {
             new_str = str_substr(s.buf, start, end);
             strs[j++] = newStr(new_str);
             start = end + 1;
@@ -585,12 +682,20 @@ int* toBytes(const String s) {
 }
 
 //=====INT=====//
-int indexOf(const String s, const char c) {
-    return str_indexOf(s.buf, c);
+int indexOf(const String s, const String str) {
+    return str_indexOf(s.buf, str.buf);
 }
 
-int lastIndexOf(const String s, const char c) {
-    return str_lastIndexOf(s.buf, c);
+int lindexOf(const String s, const char* const str) {
+    return str_indexOf(s.buf, str);
+}
+
+int lastIndexOf(const String s, const String str) {
+    return str_lastIndexOf(s.buf, str.buf);
+}
+
+int llastIndexOf(const String s, const char* const str) {
+    return str_lastIndexOf(s.buf, str);
 }
 
 int compareTo(const String s, const String str) {
@@ -642,8 +747,8 @@ double parseFloat(const String s) {
     }
     
     String str = s.clone(s);
-    str.cut(&str, '.');
-    str.cut(&str, ',');
+    str.lcut(&str, ".");
+    str.lcut(&str, ",");
 
     for(int k = str.len - 1; k >= sig; k--, j *= 10) 
         sum += (str.buf[k] - 48) * j;
@@ -652,9 +757,17 @@ double parseFloat(const String s) {
     return (pos) ? sum : -sum;
 }
 
-//=====size_t=====//
+//=====SIZE_T=====//
 size_t length(const String s) {
     return str_length(s.buf);
+}
+
+size_t count(const String s, const String str) {
+    return str_count(s.buf, str.buf);
+}
+
+size_t lcount(const String s, const char* const str) {
+    return str_count(s.buf, str);
 }
 
 //=====CHAR*_MANIP=====//
@@ -689,28 +802,89 @@ void str_copy(char** s, const char* const c) {
     (*s)[i] = '\0';
 }
 
-void str_replace(char* const s, const char r, const char c) {
-    size_t len = str_length(s);
-    
-    for(size_t i = 0; i < len; i++) 
-        if(s[i] == r) s[i] = c;
-}
+void str_replace(char** const s, const char* const reg, const char* const str) {
+    size_t sl = str_length(*s),
+           regl = str_length(reg),
+           strl = str_length(str),
+           limit = sl - regl,
+           nstrl = sl + (strl - regl) * str_count(*s, reg);
 
-void str_cut(char** s, const char c) {
-    size_t len = str_length(*s),
-        strl = len - str_count(*s, c);
+    bool found;
+    size_t k = 0;
+    char* nstr = (char*)calloc(nstrl + 1, sizeof(char));
+    for(size_t i = 0, j = 0; i < sl; i++) {
 
-    char* str = (char*)calloc(strl + 1, sizeof(char));
+        found = i <= limit;
+        for(j = 0; found && j < regl; j++) 
+            found = (*s)[i + j] == reg[j];
 
-    int j = 0;
-    for(size_t i = 0; i < len; i++) 
-        if((*s)[i] != c) 
-            str[j++] = (*s)[i];
+        if(found) {
+            for(size_t len = 0; len < strl; len++) 
+                nstr[k++] = str[len];
 
-    str[j] = '\0';
+            i += j - 1;
+        } else nstr[k++] = (*s)[i];
+    }
+
+    nstr[k] = '\0';
 
     free(*s);
-    *s = str;
+    *s = nstr;
+}
+
+void str_add(char** s, const char* const str, size_t idx) {
+    size_t sl = str_length(*s);
+
+    if(idx > sl) return;
+    else if(idx == sl) str_concat(s, str);
+    else {
+        size_t strl = str_length(str),
+               nstrl = sl + strl;
+
+        char* nstr = (char*)calloc(nstrl + 1, sizeof(char));
+
+        for(size_t i = 0, j = 0, k = 0; i < nstrl; i++, k++) {
+            if(i == idx) 
+                for(j = 0; j < strl; j++)
+                    nstr[i++] = str[j];
+
+            nstr[i] = (*s)[k];
+        }
+
+        nstrl = '\0';
+
+        free(*s);
+        *s = nstr;
+    }
+}
+
+void str_cut(char** s, const char* const str) {
+    size_t sl = str_length(*s),
+           strl = str_length(str),
+           limit = sl - strl,
+           nstrl = sl - str_count(*s, str) * strl;
+
+    char* nstr = (char*)calloc(nstrl + 1, sizeof(char));
+
+    bool found;
+    size_t k = 0;
+    for(size_t i = 0, j = 0; i < sl; i++) {
+        
+        j = 0;
+        found = (*s)[i] == str[j] && i <= limit;
+        while(found && j < strl) {
+            found = (*s)[i + j] == str[j];
+            j++;
+        } 
+
+        if(found) i += j - 1;
+        else nstr[k++] = (*s)[i];
+    }
+
+    nstr[k] = '\0';
+
+    free(*s);
+    *s = nstr;
 }
 
 void str_upper(char* const s) {
@@ -792,22 +966,36 @@ int* str_toBytes(const char* const s) {
 }
 
 //=====INT=====//
-int str_indexOf(const char* const s, const char c) {
+int str_indexOf(const char* const s, const char* const str) {
     int i = -1,
-        len = str_length(s);
+        sl = str_length(s),
+        strl = str_length(str);
     
-    for(int k = 0; i == -1 && k < len; k++)
-        if(s[k] == c) i = k;
+    bool found;
+    for(int k = 0; i == -1 && k < sl; k++) {
+        found = true;
+        for(int j = 0; found && j < strl; j++) 
+            found = s[k + j] == str[j];
+
+        if(found) i = (int)k;
+    }
 
     return i;
 }
 
-int str_lastIndexOf(const char* const s, const char c) {
+int str_lastIndexOf(const char* const s, const char* const str) {
     int i = -1,
-        len = str_length(s);
+        sl = str_length(s),
+        strl = str_length(str);
     
-    for(int k = len - 1; i == -1 && k >= 0; k--)
-        if(s[k] == c) i = k;
+    bool found;
+    for(int k = sl - 1; i == -1 && k >= 0; k--) {
+        found = true;
+        for(int j = strl - 1; found && j >= 0; j--)
+            found = s[k - j] == str[j];
+
+        if(found) i = (int)k;
+    }
 
     return i;
 }
@@ -836,18 +1024,6 @@ int str_hashCode(const char* const s) {
     }
 
     return sum;
-}
-
-//=====UNS_INT=====//
-unsigned int str_count(const char* const s, const char c) {
-    unsigned int num = 0;
-    size_t len = str_length(s); 
-
-    if(s != NULL)
-        for(size_t i = 0; i < len; i++)
-            if(s[i] == c) num++;
-
-    return num;
 }
 
 //=====BOOL=====//
@@ -907,4 +1083,21 @@ size_t str_length(const char* const s) {
     if(s != NULL)
         while(s[len] != '\0') len++;
     return len;
+}
+
+size_t str_count(const char* const s, const char* const str) {        
+    size_t num = 0;
+    size_t sl = str_length(s),
+           strl = str_length(str); 
+
+    bool found;
+    for(size_t i = 0, j = 0; i <= sl - strl; i++) {
+        found = true;
+        for(j = 0; found && j < strl; j++) 
+            found = s[i + j] == str[j];
+        
+        if(found) num++;
+    }    
+
+    return num;
 }
