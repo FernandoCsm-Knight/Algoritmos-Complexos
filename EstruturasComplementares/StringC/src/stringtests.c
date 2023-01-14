@@ -260,8 +260,8 @@ bool toBytes_test() {
 bool indexOf_test() {
     String s = newStr("Fernando Campos Silva Dal Maria");
 
-    bool value = s.indexOf(s, 'C') == 9;
-    value &= s.indexOf(s, 'a') == 4;
+    bool value = s.lindexOf(s, "C") == 9;
+    value &= s.lindexOf(s, "a") == 4;
     value &= s.len == strlen(s.buf);
 
     delStr(s);
@@ -272,8 +272,8 @@ bool indexOf_test() {
 bool lastIdxOf_test() {
     String s = newStr("Fernando Campos Silva Dal Maria");
 
-    bool value = s.lastIndexOf(s, 'C') == 9;
-    value &= s.lastIndexOf(s, 'a') == (int)s.len - 1;
+    bool value = s.llastIndexOf(s, "C") == 9;
+    value &= s.llastIndexOf(s, "a") == (int)s.len - 1;
     value &= s.len == strlen(s.buf);
 
     delStr(s);

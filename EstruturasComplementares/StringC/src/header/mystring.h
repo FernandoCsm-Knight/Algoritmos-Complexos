@@ -308,27 +308,49 @@ typedef struct string {
     //=====INT=====//
 
     /**
-     * @brief Returns the index within this string of the first occurrence of the specified character. 
+     * @brief Returns the index within this string for the first occurrence of the substring. 
      * 
      * @param s 
      *        The string object.
-     * @param c 
-     *        The target character.
-     * @return int - index of the first occurrence of the character in the character sequence represented by this object, or -1 if the character does not occur.
+     * @param str
+     *        The target substring.
+     * @return int - index of the first occurrence of the substring in the character sequence represented by this object, or -1 if the character does not occur.
      */
-    int (*indexOf)(const struct string, const char);
-
+    int (*indexOf)(const struct string, const struct string);
 
     /**
-     * @brief Returns the index within this string of the last occurrence of the specified character. 
+     * @brief Returns the index within this string for the first occurrence of the substring. 
      * 
      * @param s 
      *        The string object.
-     * @param c 
-     *        The target character.
-     * @return int - index of the last occurrence of the character in the character sequence represented by this object, or -1 if the character does not occur.
+     * @param str
+     *        The target substring.
+     * @return int - index of the first occurrence of the substring in the character sequence represented by this object, or -1 if the character does not occur.
      */
-    int (*lastIndexOf)(const struct string, const char);
+    int (*lindexOf)(const struct string, const char* const);
+
+    /**
+     * @brief Returns the index within this string for the last occurrence of the substring. 
+     * 
+     * @param s 
+     *        The string object.
+     * @param str
+     *        The target substring.
+     * @return int - index of the last occurrence of the substring in the character sequence represented by this object, or -1 if the character does not occur.
+     */
+    int (*lastIndexOf)(const struct string, const struct string);
+
+    /**
+     * @brief Returns the index within this string for the last occurrence of the substring. 
+     * 
+     * @param s 
+     *        The string object.
+     * @param str
+     *        The target substring.
+     * @return int - index of the last occurrence of the substring in the character sequence represented by this object, or -1 if the character does not occur.
+     */
+    int (*llastIndexOf)(const struct string, const char* const);
+
 
     /**
      * @brief Compares two strings lexicographically. The comparison is based on the Unicode value of each character in the strings. The result is a negative integer if this String object lexicographically precedes the argument string. The result is a positive integer if this String object lexicographically follows the argument string. The result is zero if the strings are equal.
@@ -455,8 +477,8 @@ char* str_substr(const char* const s, int start, int end);
 int* str_toBytes(const char* const s);
 
 //=====INT=====//
-int str_indexOf(const char* const s, const char c);
-int str_lastIndexOf(const char* const s, const char c);
+int str_indexOf(const char* const s, const char* const str);
+int str_lastIndexOf(const char* const s, const char* const str);
 int str_compareTo(const char* const s, const char* const str);
 int str_hashCode(const char* const s);
 

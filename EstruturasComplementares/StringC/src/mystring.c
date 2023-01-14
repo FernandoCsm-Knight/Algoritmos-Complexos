@@ -296,26 +296,48 @@ int* toBytes(const String s);
 //=====INT=====//
 
 /**
- * @brief Returns the index within this string of the first occurrence of the specified character. 
+ * @brief Returns the index within this string for the first occurrence of the substring. 
  * 
  * @param s 
  *        The string object.
- * @param c 
- *        The target character.
- * @return int - index of the first occurrence of the character in the character sequence represented by this object, or -1 if the character does not occur.
+ * @param str
+ *        The target substring.
+ * @return int - index of the first occurrence of the substring in the string object represented by this object, or -1 if the character does not occur.
  */
-int indexOf(const String s, const char c);
+int indexOf(const String s, const String str);
 
 /**
- * @brief Returns the index within this string of the last occurrence of the specified character. 
+ * @brief Returns the index within this string for the first occurrence of the substring. 
  * 
  * @param s 
  *        The string object.
- * @param c 
- *        The target character.
- * @return int - index of the last occurrence of the character in the character sequence represented by this object, or -1 if the character does not occur.
+ * @param str
+ *        The target substring.
+ * @return int - index of the first occurrence of the substring in the character sequence represented by this object, or -1 if the character does not occur.
  */
-int lastIndexOf(const String s, const char c);
+int lindexOf(const String s, const char* const str);
+
+/**
+ * @brief Returns the index within this string for the last occurrence of the substring. 
+ * 
+ * @param s 
+ *        The string object.
+ * @param str
+ *        The target substring.
+ * @return int - index of the last occurrence of the substring in the string represented by this object, or -1 if the character does not occur.
+ */
+int lastIndexOf(const String s, const String str);
+
+/**
+ * @brief Returns the index within this string for the last occurrence of the substring. 
+ * 
+ * @param s 
+ *        The string object.
+ * @param str
+ *        The target substring.
+ * @return int - index of the last occurrence of the substring in the character sequence represented by this object, or -1 if the character does not occur.
+ */
+int llastIndexOf(const String s, const char* const str);
 
 /**
  * @brief Compares two strings lexicographically. The comparison is based on the Unicode value of each character in the strings. The result is a negative integer if this String object lexicographically precedes the argument string. The result is a positive integer if this String object lexicographically follows the argument string. The result is zero if the strings are equal.
@@ -446,7 +468,9 @@ String newStr(const char* const str) {
 
     //=====INT=====//
     s.indexOf = indexOf;
+    s.lindexOf = lindexOf;
     s.lastIndexOf = lastIndexOf;
+    s.llastIndexOf = llastIndexOf;
     s.compareTo = compareTo;
     s.lcompareTo = lcompareTo;
     s.hashCode = hashCode;
@@ -625,12 +649,20 @@ int* toBytes(const String s) {
 }
 
 //=====INT=====//
-int indexOf(const String s, const char c) {
-    return str_indexOf(s.buf, c);
+int indexOf(const String s, const String str) {
+    return str_indexOf(s.buf, str.buf);
 }
 
-int lastIndexOf(const String s, const char c) {
-    return str_lastIndexOf(s.buf, c);
+int lindexOf(const String s, const char* const str) {
+    return str_indexOf(s.buf, str);
+}
+
+int lastIndexOf(const String s, const String str) {
+    return str_lastIndexOf(s.buf, str.buf);
+}
+
+int llastIndexOf(const String s, const char* const str) {
+    return str_lastIndexOf(s.buf, str);
 }
 
 int compareTo(const String s, const String str) {
@@ -851,22 +883,36 @@ int* str_toBytes(const char* const s) {
 }
 
 //=====INT=====//
-int str_indexOf(const char* const s, const char c) {
+int str_indexOf(const char* const s, const char* const str) {
     int i = -1,
-        len = str_length(s);
+        sl = str_length(s),
+        strl = str_length(str);
     
-    for(int k = 0; i == -1 && k < len; k++)
-        if(s[k] == c) i = k;
+    bool found;
+    for(int k = 0; i == -1 && k < sl; k++) {
+        found = true;
+        for(int j = 0; found && j < strl; j++) 
+            found = s[k + j] == str[j];
+
+        if(found) i = (int)k;
+    }
 
     return i;
 }
 
-int str_lastIndexOf(const char* const s, const char c) {
+int str_lastIndexOf(const char* const s, const char* const str) {
     int i = -1,
-        len = str_length(s);
+        sl = str_length(s),
+        strl = str_length(str);
     
-    for(int k = len - 1; i == -1 && k >= 0; k--)
-        if(s[k] == c) i = k;
+    bool found;
+    for(int k = sl - 1; i == -1 && k >= 0; k--) {
+        found = true;
+        for(int j = strl - 1; found && j >= 0; j--)
+            found = s[k - j] == str[j];
+
+        if(found) i = (int)k;
+    }
 
     return i;
 }
