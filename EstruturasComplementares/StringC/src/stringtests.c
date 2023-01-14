@@ -42,6 +42,18 @@ bool replace_test() {
     return value; 
 }
 
+//=====ADD=====//
+bool add_test() {
+    String s = newStr("Genercao ");
+    s.ladd(&s, "aliza", 5);
+
+    bool value = s.len == strlen(s.buf);
+    value &= strcmp(s.buf, "Generalizacao ") == 0;
+
+    delStr(s);
+    return value;
+}
+
 //=====CUT=====//
 bool cut_test() {
     String s = newStr(" aaaabbbbababababakdbdqwyahhvcjasowebcj");

@@ -8,6 +8,7 @@
 bool trim_test();
 bool concat_test();
 bool replace_test();
+bool add_test();
 bool cut_test();
 bool copy_test();
 bool upper_test();

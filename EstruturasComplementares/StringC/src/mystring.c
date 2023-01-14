@@ -59,6 +59,16 @@ void lconcat(String* const s, const char* const str);
 void replace(String* const s, const char* const reg, const char* const str);
 
 /**
+ * @brief 
+ * 
+ * @param s 
+ * @param str
+ */
+void add(String* const s, const String str, size_t idx);
+
+void ladd(String* const s, const char* const str, size_t idx);
+
+/**
  * @brief Removes all occurrences of a given substring.
  * 
  * @param s 
@@ -435,6 +445,8 @@ String newStr(const char* const str) {
     s.concat = concat;
     s.lconcat = lconcat;
     s.replace = replace;
+    s.add = add;
+    s.ladd = ladd;
     s.cut = cut;
     s.lcut = lcut;
     s.copy = copy;
@@ -516,6 +528,16 @@ void lconcat(String* const s, const char* const str) {
 
 void replace(String* const s, const char* const reg, const char* const str) {
     str_replace(&s->buf, reg, str);
+    s->len = str_length(s->buf);
+}
+
+void add(String* const s, const String str, size_t idx) {
+    str_add(&s->buf, str.buf, idx);
+    s->len = str_length(s->buf);
+}
+
+void ladd(String* const s, const char* const str, size_t idx) {
+    str_add(&s->buf, str, idx);
     s->len = str_length(s->buf);
 }
 
@@ -798,6 +820,32 @@ void str_replace(char** const s, const char* const reg, const char* const str) {
 
     free(*s);
     *s = nstr;
+}
+
+void str_add(char** s, const char* const str, size_t idx) {
+    size_t sl = str_length(*s);
+
+    if(idx > sl) return;
+    else if(idx == sl) str_concat(s, str);
+    else {
+        size_t strl = str_length(str),
+               nstrl = sl + strl;
+
+        char* nstr = (char*)calloc(nstrl + 1, sizeof(char));
+
+        for(size_t i = 0, j = 0, k = 0; i < nstrl; i++, k++) {
+            if(i == idx) 
+                for(j = 0; j < strl; j++)
+                    nstr[i++] = str[j];
+
+            nstr[i] = (*s)[k];
+        }
+
+        nstrl = '\0';
+
+        free(*s);
+        *s = nstr;
+    }
 }
 
 void str_cut(char** s, const char* const str) {

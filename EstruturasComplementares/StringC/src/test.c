@@ -7,6 +7,7 @@ int main() {
     printf("Trim test:        |  %s  |\n", trim_test() ? "true :D" : "false :d");
     printf("Concat test:      |  %s  |\n", concat_test() ? "true :D" : "false :d");
     printf("Replace test:     |  %s  |\n", replace_test() ? "true :D" : "false :d");
+    printf("Add test:         |  %s  |\n", add_test() ? "true :D" : "false :d");
     printf("Cut test:         |  %s  |\n", cut_test() ? "true :D" : "false :d");
     printf("Copy test:        |  %s  |\n", copy_test() ? "true :D" : "false :d");
     printf("Upper test:       |  %s  |\n", upper_test() ? "true :D" : "false :d");
