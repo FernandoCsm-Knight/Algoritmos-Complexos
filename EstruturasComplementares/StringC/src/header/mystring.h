@@ -70,11 +70,23 @@ typedef struct string {
     void (*replace)(struct string* const, const char* const, const char* const);
 
     /**
-     * @brief 
+     * @brief Interpolates a given string into another, at a given index.
      * 
+     * @param s 
+     *        The string object.
+     * @param str
+     *        The target string to be interpolated.
      */
     void (*add)(struct string* const, const struct string, size_t);
 
+    /**
+     * @brief Interpolates a given string into another, at a given index.
+     * 
+     * @param s 
+     *        The string object.
+     * @param str
+     *        The target character sequence to be interpolated.
+     */
     void (*ladd)(struct string* const, const char* const, size_t);
 
     /**

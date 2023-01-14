@@ -59,13 +59,23 @@ void lconcat(String* const s, const char* const str);
 void replace(String* const s, const char* const reg, const char* const str);
 
 /**
- * @brief 
+ * @brief Interpolates a given string into another, at a given index.
  * 
  * @param s 
+ *        The string object.
  * @param str
+ *        The target string to be interpolated.
  */
 void add(String* const s, const String str, size_t idx);
 
+/**
+ * @brief Interpolates a given string into another, at a given index.
+ * 
+ * @param s 
+ *        The string object.
+ * @param str
+ *        The target character sequence to be interpolated.
+ */
 void ladd(String* const s, const char* const str, size_t idx);
 
 /**
