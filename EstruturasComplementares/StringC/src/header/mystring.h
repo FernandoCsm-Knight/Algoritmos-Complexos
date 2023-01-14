@@ -58,16 +58,16 @@ typedef struct string {
     void (*lconcat)(struct string* const, const char* const);
 
     /**
-     * @brief Replaces all occurrences of a given char by another.
+     * @brief Replaces all occurrences of a given substring by another.
      * 
      * @param s 
      *        The reference to specify a string. 
-     * @param r
-     *        Character to be replaced. 
-     * @param c 
-     *        Character to be reseted.
+     * @param reg
+     *        Old substring that must be replaced. 
+     * @param str
+     *        New substring to be reseted.
      */
-    void (*replace)(struct string* const, const char, const char);
+    void (*replace)(struct string* const, const char* const, const char* const);
 
     /**
      * @brief Removes all occurrences of a given substring.
@@ -462,7 +462,7 @@ void delStr(String s);
 //=====VOID=====//
 void str_concat(char** s, const char* const str);
 void str_copy(char** s, const char* const c);
-void str_replace(char* const s, const char r, const char c);
+void str_replace(char** const s, const char* const reg, const char* const str);
 void str_cut(char** s, const char* const str);
 void str_upper(char* const s);
 void str_lower(char* const s);

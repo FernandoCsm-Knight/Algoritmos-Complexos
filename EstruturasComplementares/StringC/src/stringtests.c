@@ -28,10 +28,15 @@ bool concat_test() {
 //=====REPLACE=====//
 bool replace_test() {
     String s = newStr(" aaaabbbbababababakdbdqwyahhvcjasowebcj");
-    s.replace(&s, 'a', 'P');
+    s.replace(&s, "a", "P");
 
     bool value = s.len == strlen(s.buf);
     value &= strcmp(s.buf, " PPPPbbbbPbPbPbPbPkdbdqwyPhhvcjPsowebcj") == 0;
+
+    s.replace(&s, "Pb", "Fer");
+
+    value &= s.len == strlen(s.buf);
+    value &= strcmp(s.buf, " PPPFerbbbFerFerFerFerPkdbdqwyPhhvcjPsowebcj") == 0;
 
     delStr(s);
     return value; 
@@ -344,7 +349,7 @@ bool length_test() {
 
 //=====COUNT=====//
 bool count_test() {
-    String s = newStr("erFerernandoer");
+    String s = newStr("erFerernandoere");
 
     bool value = s.lcount(s, "F") == 1;
     value &= s.lcount(s, "o") == 1;

@@ -47,16 +47,16 @@ void concat(String* const s, const String str);
 void lconcat(String* const s, const char* const str);
 
 /**
- * @brief Replaces all occurrences of a given char by another.
+ * @brief Replaces all occurrences of a given substring by another.
  * 
  * @param s 
  *        The reference to specify a string. 
- * @param r
- *        Character to be replaced. 
- * @param c 
- *        Character to be reseted.
+ * @param reg
+ *        Old substring that must be replaced. 
+ * @param str
+ *        New substring to be reseted.
  */
-void replace(String* const s, const char r, const char c);
+void replace(String* const s, const char* const reg, const char* const str);
 
 /**
  * @brief Removes all occurrences of a given substring.
@@ -514,8 +514,9 @@ void lconcat(String* const s, const char* const str) {
     s->len = str_length(s->buf);
 }
 
-void replace(String* const s, const char r, const char c) {
-    str_replace(s->buf, r, c);
+void replace(String* const s, const char* const reg, const char* const str) {
+    str_replace(&s->buf, reg, str);
+    s->len = str_length(s->buf);
 }
 
 void cut(String* const s, const String str) {
@@ -769,16 +770,40 @@ void str_copy(char** s, const char* const c) {
     (*s)[i] = '\0';
 }
 
-void str_replace(char* const s, const char r, const char c) {
-    size_t len = str_length(s);
-    
-    for(size_t i = 0; i < len; i++) 
-        if(s[i] == r) s[i] = c;
+void str_replace(char** const s, const char* const reg, const char* const str) {
+    size_t sl = str_length(*s),
+           regl = str_length(reg),
+           strl = str_length(str),
+           limit = sl - regl,
+           nstrl = sl + (strl - regl) * str_count(*s, reg);
+
+    bool found;
+    size_t k = 0;
+    char* nstr = (char*)calloc(nstrl + 1, sizeof(char));
+    for(size_t i = 0, j = 0; i < sl; i++) {
+
+        found = i <= limit;
+        for(j = 0; found && j < regl; j++) 
+            found = (*s)[i + j] == reg[j];
+
+        if(found) {
+            for(size_t len = 0; len < strl; len++) 
+                nstr[k++] = str[len];
+
+            i += j - 1;
+        } else nstr[k++] = (*s)[i];
+    }
+
+    nstr[k] = '\0';
+
+    free(*s);
+    *s = nstr;
 }
 
 void str_cut(char** s, const char* const str) {
     size_t sl = str_length(*s),
            strl = str_length(str),
+           limit = sl - strl,
            nstrl = sl - str_count(*s, str) * strl;
 
     char* nstr = (char*)calloc(nstrl + 1, sizeof(char));
@@ -788,7 +813,7 @@ void str_cut(char** s, const char* const str) {
     for(size_t i = 0, j = 0; i < sl; i++) {
         
         j = 0;
-        found = ((*s)[i] == str[j]);
+        found = (*s)[i] == str[j] && i <= limit;
         while(found && j < strl) {
             found = (*s)[i + j] == str[j];
             j++;
