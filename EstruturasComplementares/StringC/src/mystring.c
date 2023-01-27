@@ -79,6 +79,18 @@ void add(String* const s, const String str, size_t idx);
 void ladd(String* const s, const char* const str, size_t idx);
 
 /**
+ * @brief Removes all characters between the start index (inclusive) and the end index (exclusive).
+ * 
+ * @param s 
+ *        The string object.
+ * @param start 
+ *        The target start index (inclusive).
+ * @param end 
+ *        The target end index (exclusive).
+ */
+void del(String* const s, size_t start, size_t end);
+
+/**
  * @brief Removes all occurrences of a given substring.
  * 
  * @param s 
@@ -457,6 +469,7 @@ String newStr(const char* const str) {
     s.replace = replace;
     s.add = add;
     s.ladd = ladd;
+    s.del = del;
     s.cut = cut;
     s.lcut = lcut;
     s.copy = copy;
@@ -548,6 +561,11 @@ void add(String* const s, const String str, size_t idx) {
 
 void ladd(String* const s, const char* const str, size_t idx) {
     str_add(&s->buf, str, idx);
+    s->len = str_length(s->buf);
+}
+
+void del(String* const s, size_t start, size_t end) {
+    str_del(&s->buf, start, end);
     s->len = str_length(s->buf);
 }
 
@@ -856,6 +874,26 @@ void str_add(char** s, const char* const str, size_t idx) {
         free(*s);
         *s = nstr;
     }
+}
+
+void str_del(char** s, size_t start, size_t end) {
+    size_t sl = str_length(*s),
+           nstrl = sl - (end - start);
+    
+    if(end > sl) return;
+
+    char* nstr = (char*)calloc(nstrl + 1, sizeof(char));
+
+    size_t j = 0;
+    for(size_t i = 0; j < nstrl; i++, j++) {
+        if(i == start) i = end;
+        nstr[j] = (*s)[i];
+    }
+
+    nstr[j] = '\0';
+
+    free(*s);
+    *s = nstr;
 }
 
 void str_cut(char** s, const char* const str) {

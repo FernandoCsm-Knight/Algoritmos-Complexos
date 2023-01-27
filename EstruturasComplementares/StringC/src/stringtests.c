@@ -54,6 +54,18 @@ bool add_test() {
     return value;
 }
 
+//=====DEL=====//
+bool del_test() {
+    String s = newStr("Fernando Campos Silva Dal Maria");
+    s.del(&s, 3, 14);
+
+    bool value = s.len == strlen(s.buf);
+    value &= strcmp(s.buf, "Fers Silva Dal Maria") == 0;
+
+    delStr(s);
+    return value;
+}
+
 //=====CUT=====//
 bool cut_test() {
     String s = newStr(" aaaabbbbababababakdbdqwyahhvcjasowebcj");

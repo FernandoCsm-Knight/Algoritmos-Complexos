@@ -90,6 +90,18 @@ typedef struct string {
     void (*ladd)(struct string* const, const char* const, size_t);
 
     /**
+     * @brief Removes all characters between the start index (inclusive) and the end index (exclusive).
+     * 
+     * @param s 
+     *        The string object.
+     * @param start 
+     *        The target start index (inclusive).
+     * @param end 
+     *        The target end index (exclusive).
+     */
+    void (*del)(struct string* const, size_t, size_t);
+
+    /**
      * @brief Removes all occurrences of a given substring.
      * 
      * @param s 
@@ -484,6 +496,7 @@ void str_concat(char** s, const char* const str);
 void str_copy(char** s, const char* const c);
 void str_replace(char** const s, const char* const reg, const char* const str);
 void str_add(char** s, const char* const str, size_t idx);
+void str_del(char** s, size_t start, size_t end);
 void str_cut(char** s, const char* const str);
 void str_upper(char* const s);
 void str_lower(char* const s);
