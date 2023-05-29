@@ -56,33 +56,33 @@ public class Tree {
 
    //=====POP=====//
    public Boolean pop(String s) {
-      if(s == null || s.isEmpty()) 
-         throw new IllegalArgumentException();
-         
-      Stack<Node> stack = new Stack<>();
-
-      Node curr = this.getRoot();
-      for(int i = 0; i < s.length() && curr != null; i++) {
-         stack.push(curr);
-         curr = curr.children[s.charAt(i)];
-      } 
-      
-      if(curr == null) return false;
-
-      if(curr.isWord() && this._isEmpty(curr)) {
-         Node next = curr;
-         curr = stack.pop();
-         
-         while(!curr.isWord() && this._isEmpty(curr) && !stack.isEmpty()) {
-            next = curr;
-            curr = stack.pop();
-         }
-
-         if(next != null) curr.children[next.getChar()] = null;
-      } else curr.setWord(false);
-
-      return true;
-   }
+       if(s == null || s.isEmpty()) 
+          throw new IllegalArgumentException();
+          
+       Stack<Node> stack = new Stack<>();
+ 
+       Node curr = this.getRoot();
+       for(int i = 0; curr != null && i < s.length(); i++) {
+          stack.push(curr);
+          curr = curr.children[s.charAt(i)];
+       } 
+       
+       if(curr == null || !curr.isWord()) return false;
+ 
+       if(this._isEmpty(curr)) {
+          Node next = stack.pop();
+          curr = stack.peek();
+          
+          while(!curr.isWord() && this._isEmpty(curr) && !stack.isEmpty()) {
+             next = stack.pop();
+             curr = stack.peek();
+          }
+ 
+          curr.children[next.getChar()] = null;
+       } else curr.setWord(false);
+ 
+       return true;
+    }
 
    //=====CONTAINS=====//
    public Boolean contains(String s) {
